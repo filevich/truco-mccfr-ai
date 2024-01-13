@@ -19,10 +19,11 @@ type IAbstraccion interface {
 type Abstractor_ID string
 
 const (
-	A1_ID Abstractor_ID = "a1"
-	A2_ID Abstractor_ID = "a2"
-	A3_ID Abstractor_ID = "a3"
-	B1_ID Abstractor_ID = "b1"
+	A1_ID   Abstractor_ID = "a1"
+	A2_ID   Abstractor_ID = "a2"
+	A3_ID   Abstractor_ID = "a3"
+	B1_ID   Abstractor_ID = "b1"
+	ZERO_ID Abstractor_ID = "zero"
 )
 
 type A1 struct{}
@@ -205,4 +206,63 @@ func (a B1) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
 	}
 
 	return 0
+}
+
+/*
+
+
+
+
+
+
+ */
+
+type Zero struct{}
+
+// abstraction Zero:
+
+/*
+
+si estamos jugando al truco, y en una ronda la muestra es el 3 de oro,
+entonces, tanto el 4 de bastro como el 4 de espada determinan infosets
+diferentes (a pesar de tener el mismo "poder").
+Los queremos distinguir.
+Cada carta tiene asociada un único número.
+
+*/
+
+/*
+ *  Barajas; orden absoluto:
+ *  ----------------------------------------------------------
+ * | ID	| Carta	    ID | Carta	  ID | Carta	    ID | Carta |
+ * |---------------------------------------------------------|
+ * | 00 | 1,basto   10 | 1,copa   20 | 1,espada   30 | 1,oro |
+ * | 01 | 2,basto   11 | 2,copa   21 | 2,espada   31 | 2,oro |
+ * | 02 | 3,basto   12 | 3,copa   22 | 3,espada   32 | 3,oro |
+ * | 03 | 4,basto   13 | 4,copa   23 | 4,espada   33 | 4,oro |
+ * | 04 | 5,basto   14 | 5,copa   24 | 5,espada   34 | 5,oro |
+ * | 05 | 6,basto   15 | 6,copa   25 | 6,espada   35 | 6,oro |
+ * | 06 | 7,basto   16 | 7,copa   26 | 7,espada   36 | 7,oro |
+ *  ----------------------------------------------------------
+ * | 07 |10,basto   17 |10,copa   27 |10,espada   37 |10,oro |
+ * | 08 |11,basto   18 |11,copa   28 |11,espada   38 |11,oro |
+ * | 09 |12,basto   19 |12,copa   29 |12,espada   39 |12,oro |
+ *  ----------------------------------------------------------
+ */
+
+func (a Zero) String() string {
+	return string(ZERO_ID)
+}
+
+func (a Zero) MarshalJSON() ([]byte, error) {
+	str := a.String()
+	return json.Marshal(str)
+}
+
+func (a Zero) Len() int {
+	return 40
+}
+
+func (a Zero) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
+	return int(c.ID()) + 1
 }
