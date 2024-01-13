@@ -7,7 +7,7 @@ import (
 )
 
 // Cards abstractions:
-// A1, A2, A3, B1
+// A1, A2, A3, B
 
 type IAbstraccion interface {
 	Len() int                                      // returns abstraction's number of buckets
@@ -20,9 +20,9 @@ type Abstractor_ID string
 
 const (
 	A1_ID   Abstractor_ID = "a1"
+	B_ID    Abstractor_ID = "b"
 	A2_ID   Abstractor_ID = "a2"
 	A3_ID   Abstractor_ID = "a3"
-	B1_ID   Abstractor_ID = "b1"
 	NULL_ID Abstractor_ID = "null"
 )
 
@@ -171,7 +171,7 @@ func (a A3) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
 
  */
 
-type B1 struct{}
+type B struct{}
 
 // abstraction A1:
 //
@@ -183,20 +183,20 @@ type B1 struct{}
 // -------
 // {7,6,5,4} (resto)
 
-func (a B1) String() string {
-	return string(B1_ID)
+func (a B) String() string {
+	return string(B_ID)
 }
 
-func (a B1) MarshalJSON() ([]byte, error) {
+func (a B) MarshalJSON() ([]byte, error) {
 	str := a.String()
 	return json.Marshal(str)
 }
 
-func (a B1) Len() int {
+func (a B) Len() int {
 	return 4 // <--- its max bucket +1
 }
 
-func (a B1) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
+func (a B) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
 	if c.EsPieza(*muestra) {
 		return 3
 	} else if c.EsMata() {
@@ -263,6 +263,7 @@ func (a Null) Len() int {
 	return 40
 }
 
+// notar que esta abstaccion es independiente de la muestra
 func (a Null) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
 	return int(c.ID())
 }
