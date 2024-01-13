@@ -1,4 +1,4 @@
-package cfr
+package info
 
 import (
 	"crypto/sha1"
@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"strconv"
 
+	"github.com/filevich/truco-cfr/abs"
 	"github.com/filevich/truco-cfr/utils"
 	"github.com/truquito/truco/pdt"
 )
@@ -86,7 +87,7 @@ func (info *Infoset1) setNuestras_Cartas(
 
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
-	abs IAbstraccion,
+	abs abs.IAbstraccion,
 
 ) {
 	// 2. cartas "nuestras":
@@ -160,7 +161,7 @@ func (info *Infoset1) setChi(
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
 	chi_i pdt.A,
-	abs IAbstraccion,
+	abs abs.IAbstraccion,
 
 ) {
 	// 6. chi(I):
@@ -233,7 +234,7 @@ func (info *Infoset1) Iterable(
 	p *pdt.Partida,
 	m *pdt.Manojo,
 	aixs pdt.A, // array de 15 acciones (bool): 3 cartas + 12 "jugadas"
-	abs IAbstraccion,
+	abs abs.IAbstraccion,
 
 ) []pdt.IJugada {
 
@@ -346,7 +347,7 @@ func vamos(
 
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
-	abs IAbstraccion,
+	abs abs.IAbstraccion,
 
 ) (maxWeAbstracto, maxOpAbstracto int, vamosExacto string) {
 
@@ -401,7 +402,7 @@ func (info *Infoset1) setRonda(
 
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
-	abs IAbstraccion,
+	abs abs.IAbstraccion,
 
 ) {
 	// 8. estado de la mano actual
@@ -500,7 +501,7 @@ func MkInfoset1(
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
 	chi_i pdt.A,
-	abs IAbstraccion,
+	abs abs.IAbstraccion,
 
 ) Infoset {
 

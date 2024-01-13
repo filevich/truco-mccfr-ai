@@ -1,15 +1,15 @@
-package cfr_test
+package abs_test
 
 import (
 	"testing"
 
-	cfr "github.com/filevich/truco-cfr"
+	abs "github.com/filevich/truco-cfr/abstraccion"
 	"github.com/truquito/truco/pdt"
 )
 
 func TestAbstraccionNull(t *testing.T) {
 	var (
-		abs     cfr.IAbstraccion = cfr.Null{}
+		abs     abs.IAbstraccion = abs.Null{}
 		muestra *pdt.Carta       = nil
 	)
 

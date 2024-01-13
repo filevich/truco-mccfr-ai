@@ -1,6 +1,7 @@
-package cfr
+package info
 
 import (
+	"github.com/filevich/truco-cfr/abs"
 	"github.com/truquito/truco/pdt"
 )
 
@@ -42,6 +43,6 @@ type Infoset interface {
 		p *pdt.Partida,
 		m *pdt.Manojo,
 		aixs pdt.A,
-		abs IAbstraccion,
+		abs abs.IAbstraccion,
 	) []pdt.IJugada
 }
