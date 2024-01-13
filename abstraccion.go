@@ -264,5 +264,5 @@ func (a Zero) Len() int {
 }
 
 func (a Zero) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
-	return int(c.ID()) + 1
+	return int(c.ID())
 }
