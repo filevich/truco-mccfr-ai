@@ -23,7 +23,7 @@ const (
 	A2_ID   Abstractor_ID = "a2"
 	A3_ID   Abstractor_ID = "a3"
 	B1_ID   Abstractor_ID = "b1"
-	ZERO_ID Abstractor_ID = "zero"
+	NULL_ID Abstractor_ID = "null"
 )
 
 type A1 struct{}
@@ -217,9 +217,9 @@ func (a B1) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
 
  */
 
-type Zero struct{}
+type Null struct{}
 
-// abstraction Zero:
+// abstraction Null:
 
 /*
 
@@ -250,19 +250,19 @@ Cada carta tiene asociada un único número.
  *  ----------------------------------------------------------
  */
 
-func (a Zero) String() string {
-	return string(ZERO_ID)
+func (a Null) String() string {
+	return string(NULL_ID)
 }
 
-func (a Zero) MarshalJSON() ([]byte, error) {
+func (a Null) MarshalJSON() ([]byte, error) {
 	str := a.String()
 	return json.Marshal(str)
 }
 
-func (a Zero) Len() int {
+func (a Null) Len() int {
 	return 40
 }
 
-func (a Zero) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
+func (a Null) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
 	return int(c.ID())
 }
