@@ -1,16 +1,16 @@
-package trucocfr_test
+package cfr_test
 
 import (
 	"testing"
 
-	trucocfr "github.com/filevich/truco-cfr"
+	cfr "github.com/filevich/truco-cfr"
 	"github.com/truquito/truco/pdt"
 )
 
 func TestAbstraccionZero(t *testing.T) {
 	var (
-		abs     trucocfr.IAbstraccion = trucocfr.Zero{}
-		muestra *pdt.Carta            = nil
+		abs     cfr.IAbstraccion = cfr.Zero{}
+		muestra *pdt.Carta       = nil
 	)
 
 	for i := 0; i < 40; i++ {

@@ -1,4 +1,4 @@
-package trucocfr
+package cfr
 
 import (
 	"encoding/json"
