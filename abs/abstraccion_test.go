@@ -3,7 +3,7 @@ package abs_test
 import (
 	"testing"
 
-	abs "github.com/filevich/truco-cfr/abstraccion"
+	"github.com/filevich/truco-cfr/abs"
 	"github.com/truquito/truco/pdt"
 )
 
@@ -17,7 +17,7 @@ func TestAbstraccionNull(t *testing.T) {
 		c := pdt.NuevaCarta(pdt.CartaID(i))
 		exp := i
 		got := abs.Abstraer(&c, muestra)
-		t.Logf("i:%d carta:%s abs_null:%d", i, c, got)
+		t.Logf("i:%d carta:`%s` abs_null:%d", i, c, got)
 		if ok := got == exp; !ok {
 			t.Errorf("el id no es el esperado. got:%d exp:%d", got, exp)
 		}
