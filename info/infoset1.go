@@ -19,14 +19,21 @@ const (
 )
 
 /*
+
+Primera de implementación de `Infoset` propuesta en 2022 durante el PDG.
+Solo abstrae la `Ronda` mas no la `Partida`.
+
 Lo bueno de esta implementación:
  - Es "liviana"/"barata" y a los efectos prácticos obtiene buenos resultados
+ - Usa sha1 -> 160 bit max -> 2^160 = 1.46e48 max
 
 Lo malo de esta implementación:
+ - Solo se abstrae información relacionada a la Ronda; nada de la Partida
  - No es compatible con la abstracción `Null`
  - Descarta la info sobre qué cartas tiraron OP en las manos anteriores
  - No contiene la info sobre cómo va la puntuación a nivel de parida; esto hace
    que el "falta-envido" o "contra-flor-al-rest" no se puedan "calcular".
+
 */
 
 type Infoset1 struct {
