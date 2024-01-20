@@ -78,3 +78,20 @@ func RIX(p *pdt.Partida, m *pdt.Manojo) int {
 	manojoIx := p.Ronda.MIXS[m.Jugador.ID]
 	return utils.Mod(manojoIx-manoIx, n)
 }
+
+func PrimifyManojo(
+
+	m *pdt.Manojo,
+	muestra *pdt.Carta,
+	a abs.IAbstraccion,
+
+) int {
+
+	manojoPrimeID := 1
+	for _, c := range m.Cartas {
+		cartaAbstraida := a.Abstraer(c, muestra)
+		manojoPrimeID *= utils.AllPrimes[cartaAbstraida]
+	}
+	return manojoPrimeID
+
+}
