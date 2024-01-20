@@ -2,6 +2,7 @@ package info
 
 import (
 	"github.com/filevich/truco-cfr/abs"
+	"github.com/filevich/truco-cfr/utils"
 	"github.com/truquito/truco/pdt"
 )
 
@@ -68,4 +69,12 @@ func vamos(
 	}
 
 	return maxWeAbstracto, maxOpAbstracto, vamosExacto
+}
+
+// índice *relativo AL MANO* de un jugador dado
+func RIX(p *pdt.Partida, m *pdt.Manojo) int {
+	n := len(p.Ronda.Manojos)
+	manoIx := int(p.Ronda.ElMano)
+	manojoIx := p.Ronda.MIXS[m.Jugador.ID]
+	return utils.Mod(manojoIx-manoIx, n)
 }
