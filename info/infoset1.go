@@ -1,10 +1,10 @@
 package info
 
 import (
-	"crypto/sha1"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"hash"
 	"math/rand"
 	"strconv"
 
@@ -216,7 +216,7 @@ func (info *Infoset1) setChi(
 
 // varia la implementacion, de abstraccion en abstraccion
 // al igual que setChi
-func (info *Infoset1) Chi_len() int {
+func (info *Infoset1) ChiLen() int {
 	// finalmente
 	// cuento cuantos de estos buckets+acciones son "positivos":
 	// esto lo uso para crear el RNode; no para el Infoset en sí
@@ -374,8 +374,8 @@ func (info *Infoset1) setRonda(
 	info.ManoActual = estadoRonda
 }
 
-func (info *Infoset1) Hash() string {
-	h := sha1.New()
+func (info *Infoset1) Hash(h hash.Hash) string {
+	// h := sha1.New()
 	hsep := []byte(sep)
 
 	// 1

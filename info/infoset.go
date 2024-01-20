@@ -1,6 +1,8 @@
 package info
 
 import (
+	"hash"
+
 	"github.com/filevich/truco-cfr/abs"
 	"github.com/truquito/truco/pdt"
 )
@@ -36,8 +38,8 @@ notas:
 // administrar mejor los recursos.
 
 type Infoset interface {
-	Hash() string
-	Chi_len() int
+	Hash(hash.Hash) string
+	ChiLen() int
 	Dump(indent bool) string
 	Iterable(
 		p *pdt.Partida,
