@@ -3,7 +3,7 @@ package info_test
 import (
 	"testing"
 
-	info "github.com/filevich/truco-cfr/infoset"
+	"github.com/filevich/truco-cfr/info"
 	"github.com/truquito/truco/pdt"
 )
 
