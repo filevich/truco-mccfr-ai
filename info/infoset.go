@@ -7,6 +7,11 @@ import (
 	"github.com/truquito/truco/pdt"
 )
 
+const (
+	sep = "--" // separador
+	div = "."  // divisor
+)
+
 /*
 
 notas:

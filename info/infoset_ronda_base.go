@@ -13,11 +13,6 @@ import (
 	"github.com/truquito/truco/pdt"
 )
 
-const (
-	sep = "--" // separador
-	div = "."  // divisor
-)
-
 /*
 
 Primera de implementación de `Infoset` propuesta en 2022 durante el PDG.
@@ -36,7 +31,7 @@ Lo malo de esta implementación:
 
 */
 
-type Infoset1 struct {
+type InfosetRondaBase struct {
 	// debug
 	Vision string
 
@@ -81,7 +76,7 @@ type Infoset1 struct {
 	Chi []int
 }
 
-func (info *Infoset1) setMuestra(p *pdt.Partida) {
+func (info *InfosetRondaBase) setMuestra(p *pdt.Partida) {
 	// 1. muestra:
 	//	el numero/valor de la muestra (no se inculye el palo)
 
@@ -90,7 +85,7 @@ func (info *Infoset1) setMuestra(p *pdt.Partida) {
 	info.Muestra = p.Ronda.Muestra.Valor
 }
 
-func (info *Infoset1) setNuestras_Cartas(
+func (info *InfosetRondaBase) setNuestras_Cartas(
 
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
@@ -137,7 +132,7 @@ func (info *Infoset1) setNuestras_Cartas(
 	}
 }
 
-func (info *Infoset1) setManojos_en_juego(p *pdt.Partida, manojo *pdt.Manojo) {
+func (info *InfosetRondaBase) setManojos_en_juego(p *pdt.Partida, manojo *pdt.Manojo) {
 	// 3. manojos que se fueron al mazo:
 
 	// 	formato:
@@ -153,17 +148,17 @@ func (info *Infoset1) setManojos_en_juego(p *pdt.Partida, manojo *pdt.Manojo) {
 	}
 }
 
-func (info *Infoset1) setEnvido(p *pdt.Partida) {
+func (info *InfosetRondaBase) setEnvido(p *pdt.Partida) {
 	// 4. envido:
 	info.Envido = p.Ronda.Envite.Estado.String()
 }
 
-func (info *Infoset1) setTruco(p *pdt.Partida) {
+func (info *InfosetRondaBase) setTruco(p *pdt.Partida) {
 	// 5. el truco:
 	info.Truco = p.Ronda.Truco.Estado.String()
 }
 
-func (info *Infoset1) setChi(
+func (info *InfosetRondaBase) setChi(
 
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
@@ -216,7 +211,7 @@ func (info *Infoset1) setChi(
 
 // varia la implementacion, de abstraccion en abstraccion
 // al igual que setChi
-func (info *Infoset1) ChiLen() int {
+func (info *InfosetRondaBase) ChiLen() int {
 	// finalmente
 	// cuento cuantos de estos buckets+acciones son "positivos":
 	// esto lo uso para crear el RNode; no para el Infoset en sí
@@ -236,7 +231,7 @@ func (info *Infoset1) ChiLen() int {
 // funcion.
 // Transforma de un "Chi" a un `[]pdt.IJugada`
 // PRE: ya se "inicio" el infoset
-func (info *Infoset1) Iterable(
+func (info *InfosetRondaBase) Iterable(
 
 	p *pdt.Partida,
 	m *pdt.Manojo,
@@ -317,7 +312,7 @@ func (info *Infoset1) Iterable(
 	return res
 }
 
-func (info *Infoset1) setResultadoManos(p *pdt.Partida, manojo *pdt.Manojo) {
+func (info *InfosetRondaBase) setResultadoManos(p *pdt.Partida, manojo *pdt.Manojo) {
 	// 7. balance manos
 	info.ResultadoManos = make([]string, 3)
 
@@ -340,7 +335,7 @@ func (info *Infoset1) setResultadoManos(p *pdt.Partida, manojo *pdt.Manojo) {
 	}
 }
 
-func (info *Infoset1) setRonda(
+func (info *InfosetRondaBase) setRonda(
 
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
@@ -374,7 +369,7 @@ func (info *Infoset1) setRonda(
 	info.ManoActual = estadoRonda
 }
 
-func (info *Infoset1) Hash(h hash.Hash) string {
+func (info *InfosetRondaBase) Hash(h hash.Hash) string {
 	// h := sha1.New()
 	hsep := []byte(sep)
 
@@ -428,7 +423,7 @@ func (info *Infoset1) Hash(h hash.Hash) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func (info *Infoset1) Dump(indent bool) string {
+func (info *InfosetRondaBase) Dump(indent bool) string {
 	var bs []byte = nil
 	if indent {
 		bs, _ = json.MarshalIndent(info, "", "\t")
@@ -447,7 +442,7 @@ func MkInfoset1(
 
 ) Infoset {
 
-	info := &Infoset1{
+	info := &InfosetRondaBase{
 		Vision: manojo.Jugador.ID, // <- tiene motivos solo depurativos
 	}
 
