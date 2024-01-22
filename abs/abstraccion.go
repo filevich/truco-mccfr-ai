@@ -2,6 +2,7 @@ package abs
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/truquito/truco/pdt"
 )
@@ -25,6 +26,23 @@ const (
 	A3_ID   Abstractor_ID = "a3"
 	NULL_ID Abstractor_ID = "null"
 )
+
+func ParseAbstractor(aID string) IAbstraccion {
+	switch Abstractor_ID(strings.ToLower(aID)) {
+	case A1_ID:
+		return &A1{}
+	case B_ID:
+		return &B{}
+	case A2_ID:
+		return &A2{}
+	case A3_ID:
+		return &A3{}
+	case NULL_ID:
+		return &Null{}
+	}
+
+	panic("abstraccion no concida")
+}
 
 type A1 struct{}
 
