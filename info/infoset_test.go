@@ -19,7 +19,7 @@ func TestInfosetRondaBase(t *testing.T) {
 	t.Log(p)
 	a := abs.A1{}
 	c := pdt.GetA(p, p.Manojo("Anna"))
-	i := MkInfoset1(p, p.Manojo("Anna"), c, a)
+	i := NewInfosetRondaBase(p, p.Manojo("Anna"), c, a)
 	t.Log(i.Dump(false))
 }
 

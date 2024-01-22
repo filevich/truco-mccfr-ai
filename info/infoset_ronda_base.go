@@ -433,7 +433,7 @@ func (info *InfosetRondaBase) Dump(indent bool) string {
 	return string(bs)
 }
 
-func MkInfoset1(
+func NewInfosetRondaBase(
 
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
