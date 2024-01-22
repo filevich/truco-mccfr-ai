@@ -123,7 +123,7 @@ func (info *InfosetRondaLarge) setNuestrasCartas(
 	// partida.
 	// Nota: dividir entre 2 es igual a hacer un shift right `n >> 1`
 	n := len(p.Ronda.Manojos)
-	info.nuestrasCartas = make([]int, n>>1)
+	info.nuestrasCartas = make([]int, 0, n>>1)
 	e := m.Jugador.Equipo
 
 	// tengo que empezar a iterar a partir del JIX del MANO
@@ -131,7 +131,7 @@ func (info *InfosetRondaLarge) setNuestrasCartas(
 	for i := 0; i < n; i++ {
 		if esDeNuestroEquipo := manojo.Jugador.Equipo == e; esDeNuestroEquipo {
 			pid := PrimifyManojo(manojo, &p.Ronda.Muestra, a)
-			info.nuestrasCartas[i] = pid
+			info.nuestrasCartas = append(info.nuestrasCartas, pid)
 			if itsMe := manojo.Jugador.ID == m.Jugador.ID; itsMe {
 				if !m.SeFueAlMazo {
 					info._miManojoPID = pid
@@ -350,7 +350,7 @@ func (info *InfosetRondaLarge) setChi(
 		res = append(res, bucketsSeen[bucket])
 	}
 
-	info.chi = append(res, info.chi[ixAccionesStart:]...)
+	info.chi = append(res, chi[ixAccionesStart:]...)
 }
 
 func (info *InfosetRondaLarge) ChiLen() int {
