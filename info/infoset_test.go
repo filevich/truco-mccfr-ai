@@ -18,8 +18,7 @@ func TestInfosetRondaBase(t *testing.T) {
 	p, _ := pdt.Parse(`{"puntuacion":20,"puntajes":{"azul":0,"rojo":0},"ronda":{"manoEnJuego":0,"cantJugadoresEnJuego":{"azul":2,"rojo":2},"elMano":0,"turno":0,"envite":{"estado":"noCantadoAun","puntaje":0,"cantadoPor":"","sinCantar":["Ben"]},"truco":{"cantadoPor":"","estado":"noGritadoAun"},"manojos":[{"seFueAlMazo":false,"cartas":[{"palo":"espada","valor":5},{"palo":"basto","valor":1},{"palo":"oro","valor":7}],"tiradas":[false,false,false],"ultimaTirada":-1,"jugador":{"id":"Alice","equipo":"azul"}},{"seFueAlMazo":false,"cartas":[{"palo":"espada","valor":1},{"palo":"oro","valor":10},{"palo":"copa","valor":10}],"tiradas":[false,false,false],"ultimaTirada":-1,"jugador":{"id":"Bob","equipo":"rojo"}},{"seFueAlMazo":false,"cartas":[{"palo":"basto","valor":10},{"palo":"basto","valor":7},{"palo":"copa","valor":7}],"tiradas":[false,false,false],"ultimaTirada":-1,"jugador":{"id":"Anna","equipo":"azul"}},{"seFueAlMazo":false,"cartas":[{"palo":"copa","valor":6},{"palo":"copa","valor":3},{"palo":"copa","valor":12}],"tiradas":[false,false,false],"ultimaTirada":-1,"jugador":{"id":"Ben","equipo":"rojo"}}],"mixs":{"Alice":0,"Anna":2,"Ben":3,"Bob":1},"muestra":{"palo":"espada","valor":6},"manos":[{"resultado":"indeterminado","ganador":"","cartasTiradas":[]},{"resultado":"indeterminado","ganador":"","cartasTiradas":[]},{"resultado":"indeterminado","ganador":"","cartasTiradas":[]}]},"limiteEnvido":1}`, verbose)
 	t.Log(p)
 	a := abs.A1{}
-	c := pdt.GetA(p, p.Manojo("Anna"))
-	i := NewInfosetRondaBase(p, p.Manojo("Anna"), c, a)
+	i := NewInfosetRondaBase(p, p.Manojo("Anna"), a, nil)
 	t.Log(i.Dump(false))
 }
 

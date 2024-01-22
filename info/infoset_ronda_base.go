@@ -10,6 +10,7 @@ import (
 
 	"github.com/filevich/truco-cfr/abs"
 	"github.com/filevich/truco-cfr/utils"
+	"github.com/truquito/truco/enco"
 	"github.com/truquito/truco/pdt"
 )
 
@@ -436,24 +437,26 @@ func (info *InfosetRondaBase) Dump(indent bool) string {
 func NewInfosetRondaBase(
 
 	p *pdt.Partida,
-	manojo *pdt.Manojo,
-	chi_i pdt.A,
-	abs abs.IAbstraccion,
+	m *pdt.Manojo,
+	a abs.IAbstraccion,
+	msgs []enco.IMessage,
 
 ) Infoset {
 
 	info := &InfosetRondaBase{
-		Vision: manojo.Jugador.ID, // <- tiene motivos solo depurativos
+		Vision: m.Jugador.ID, // <- tiene motivos solo depurativos
 	}
 
+	chi_i := pdt.GetA(p, m)
+
 	info.setMuestra(p)
-	info.setNuestras_Cartas(p, manojo, abs)
-	info.setManojos_en_juego(p, manojo)
+	info.setNuestras_Cartas(p, m, a)
+	info.setManojos_en_juego(p, m)
 	info.setEnvido(p)
 	info.setTruco(p)
-	info.setChi(p, manojo, chi_i, abs)
-	info.setResultadoManos(p, manojo)
-	info.setRonda(p, manojo, abs)
+	info.setChi(p, m, chi_i, a)
+	info.setResultadoManos(p, m)
+	info.setRonda(p, m, a)
 
 	return info
 }
