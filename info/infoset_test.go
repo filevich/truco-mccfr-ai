@@ -276,3 +276,111 @@ func TestInfosetRondaLarge1NullAbs(t *testing.T) {
 		}
 	}
 }
+
+func TestInfosetRondaLarge1A1Abs(t *testing.T) {
+	p, _ := pdt.Parse(`{"puntuacion":20,"puntajes":{"azul":0,"rojo":0},"ronda":{"manoEnJuego":0,"cantJugadoresEnJuego":{"azul":2,"rojo":2},"elMano":0,"turno":0,"envite":{"estado":"noCantadoAun","puntaje":0,"cantadoPor":"","sinCantar":["Ben"]},"truco":{"cantadoPor":"","estado":"noGritadoAun"},"manojos":[{"seFueAlMazo":false,"cartas":[{"palo":"espada","valor":5},{"palo":"basto","valor":1},{"palo":"oro","valor":7}],"tiradas":[false,false,false],"ultimaTirada":-1,"jugador":{"id":"Alice","equipo":"azul"}},{"seFueAlMazo":false,"cartas":[{"palo":"espada","valor":1},{"palo":"oro","valor":10},{"palo":"copa","valor":10}],"tiradas":[false,false,false],"ultimaTirada":-1,"jugador":{"id":"Bob","equipo":"rojo"}},{"seFueAlMazo":false,"cartas":[{"palo":"basto","valor":10},{"palo":"basto","valor":7},{"palo":"copa","valor":7}],"tiradas":[false,false,false],"ultimaTirada":-1,"jugador":{"id":"Anna","equipo":"azul"}},{"seFueAlMazo":false,"cartas":[{"palo":"copa","valor":6},{"palo":"copa","valor":3},{"palo":"copa","valor":12}],"tiradas":[false,false,false],"ultimaTirada":-1,"jugador":{"id":"Ben","equipo":"rojo"}}],"mixs":{"Alice":0,"Anna":2,"Ben":3,"Bob":1},"muestra":{"palo":"espada","valor":6},"manos":[{"resultado":"indeterminado","ganador":"","cartasTiradas":[]},{"resultado":"indeterminado","ganador":"","cartasTiradas":[]},{"resultado":"indeterminado","ganador":"","cartasTiradas":[]}]},"limiteEnvido":1}`, verbose)
+	t.Log(p)
+	a := abs.A1{}
+
+	// para Anna
+	{
+		i := NewInfosetRondaLarge(p, p.Manojo("Anna"), a, nil)
+		// t.Log(i.Dump(true))
+
+		irl, _ := i.(*InfosetRondaLarge)
+
+		// 1. `muestra`
+		if ok := irl.muestra == 25; !ok {
+			t.Error()
+		}
+
+		// 6. `nuestrasCartas` representa nuestras cartas.
+		{
+			// cartas alice
+			// (1,basto;5,espada;7,oro) --> (1;2;1) --> (3*5*3) --> 45
+			// (10,basto;7,basto;7,copa) --> (0;0;0) --> (2*2*2) --> 8
+			exp := []int{45, 8}
+			if ok := eq(irl.nuestrasCartas, exp); !ok {
+				t.Error()
+			}
+		}
+
+		// mi manojo
+		if ok := irl._miManojoPID == 8; !ok {
+			t.Error()
+		}
+
+		// 9. chi
+		if ok := irl.ChiLen() == 1; !ok {
+			t.Error()
+		}
+	}
+
+	// para Alice
+	{
+		i := NewInfosetRondaLarge(p, p.Manojo("Alice"), a, nil)
+		irl, _ := i.(*InfosetRondaLarge)
+
+		// 9. chi: 2C + E|RE|FE + T + M = 7
+		// Notar que tiene solo 2 acción de carta porque son 1 muestra + 2 matas
+		if ok := irl.ChiLen() == 7; !ok {
+			t.Error()
+		}
+	}
+
+	// para Bob
+	{
+		i := NewInfosetRondaLarge(p, p.Manojo("Bob"), a, nil)
+		// t.Log(i.Dump(true))
+
+		irl, _ := i.(*InfosetRondaLarge)
+
+		// 6. `nuestrasCartas` representa nuestras cartas.
+		{
+			// (1,esp;10,oro;10,copa) --> (1;0;0) --> (3*2*2) --> 12
+			// (6,copa;3,copa;12,copa) --> (0;0;0) --> (2*2*2) --> 8
+			exp := []int{12, 8}
+			if ok := eq(irl.nuestrasCartas, exp); !ok {
+				t.Error()
+			}
+		}
+
+		// mi manojo
+		if ok := irl._miManojoPID == 12; !ok {
+			t.Error()
+		}
+	}
+
+	// para Ben
+	{
+		i := NewInfosetRondaLarge(p, p.Manojo("Ben"), a, nil)
+		// t.Log(i.Dump(true))
+
+		irl, _ := i.(*InfosetRondaLarge)
+
+		// 3. `rixMe` ~ RIX: who?
+		if ok := irl.rixMe == 3; !ok {
+			t.Error()
+		}
+
+		// 6. `nuestrasCartas` representa nuestras cartas.
+		{
+			// (1,esp;10,oro;10,copa) --> (1;0;0) --> (3*2*2) --> 12
+			// (6,copa;3,copa;12,copa) --> (0;0;0) --> (2*2*2) --> 8
+			exp := []int{12, 8}
+			if ok := eq(irl.nuestrasCartas, exp); !ok {
+				t.Error()
+			}
+		}
+
+		// mi manojo
+		if ok := irl._miManojoPID == 8; !ok {
+			t.Error()
+		}
+
+		// 9. chi: M+F
+		if ok := irl.ChiLen() == 2; !ok {
+			t.Error()
+		}
+	}
+}
