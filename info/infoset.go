@@ -4,6 +4,7 @@ import (
 	"hash"
 
 	"github.com/filevich/truco-cfr/abs"
+	"github.com/truquito/truco/enco"
 	"github.com/truquito/truco/pdt"
 )
 
@@ -52,4 +53,25 @@ type Infoset interface {
 		aixs pdt.A,
 		abs abs.IAbstraccion,
 	) []pdt.IJugada
+}
+
+type InfosetBuilder func(
+
+	p *pdt.Partida,
+	m *pdt.Manojo,
+	a abs.IAbstraccion,
+	msgs []enco.IMessage,
+
+) Infoset
+
+func ParseInfosetBuilder(ID string) InfosetBuilder {
+	builders := map[string]InfosetBuilder{
+		"InfosetRondaBase":  NewInfosetRondaBase,
+		"InfosetRondaLarge": NewInfosetRondaLarge,
+	}
+	if maker, ok := builders[ID]; ok {
+		return maker
+	}
+
+	panic("infoset impl. does not exists")
 }
