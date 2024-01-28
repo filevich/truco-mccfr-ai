@@ -44,6 +44,7 @@ notas:
 // administrar mejor los recursos.
 
 type Infoset interface {
+	HashBytes(hash.Hash) []byte
 	Hash(hash.Hash) string
 	ChiLen() int
 	Dump(indent bool) string

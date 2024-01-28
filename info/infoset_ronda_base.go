@@ -370,7 +370,7 @@ func (info *InfosetRondaBase) setRonda(
 	info.ManoActual = estadoRonda
 }
 
-func (info *InfosetRondaBase) Hash(h hash.Hash) string {
+func (info *InfosetRondaBase) HashBytes(h hash.Hash) []byte {
 	// h := sha1.New()
 	hsep := []byte(sep)
 
@@ -421,7 +421,11 @@ func (info *InfosetRondaBase) Hash(h hash.Hash) string {
 	h.Write(bs)
 	// h.Write(hsep) // <- not necessary
 
-	return hex.EncodeToString(h.Sum(nil))
+	return h.Sum(nil)
+}
+
+func (info *InfosetRondaBase) Hash(h hash.Hash) string {
+	return hex.EncodeToString(info.HashBytes(h))
 }
 
 func (info *InfosetRondaBase) Dump(indent bool) string {

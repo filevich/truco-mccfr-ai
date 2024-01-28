@@ -361,7 +361,7 @@ func (info *InfosetRondaLarge) Dump(_ bool) string {
 	return fmt.Sprintf("%+v", info)
 }
 
-func (info *InfosetRondaLarge) Hash(h hash.Hash) string {
+func (info *InfosetRondaLarge) HashBytes(h hash.Hash) []byte {
 	hsep := []byte(sep)
 
 	// 1. muestra int
@@ -452,7 +452,11 @@ func (info *InfosetRondaLarge) Hash(h hash.Hash) string {
 		// h.Write(hsep) // <- not necessary
 	}
 
-	return hex.EncodeToString(h.Sum(nil))
+	return h.Sum(nil)
+}
+
+func (info *InfosetRondaLarge) Hash(h hash.Hash) string {
+	return hex.EncodeToString(info.HashBytes(h))
 }
 
 func (info *InfosetRondaLarge) Iterable(
