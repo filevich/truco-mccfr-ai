@@ -12,11 +12,11 @@ import (
 // de la carta; (como sí sucede con A1, A2 y A3)
 // ---------------------------
 // retorna true si Vamos ganando, desde la perspectiva de `manojo`
-// para decidir si vamos ganando|perdiendo|empatados NO USA ABSTRACCION
+// para decidir si Vamos ganando|perdiendo|empatados NO USA ABSTRACCION
 // pero Max_us, Max_op si está abstraido
 // ---------------------------
-// el `vamos` NO depende de la abstracción
-func vamos(
+// el `Vamos` NO depende de la abstracción
+func Vamos(
 
 	p *pdt.Partida,
 	manojo *pdt.Manojo,

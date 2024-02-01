@@ -1,8 +1,10 @@
-package eval
+package bot
 
 import (
 	"math"
 
+	"github.com/filevich/truco-cfr/abs"
+	"github.com/filevich/truco-cfr/info"
 	"github.com/truquito/truco/enco"
 	"github.com/truquito/truco/pdt"
 )
@@ -49,7 +51,7 @@ func (b *BotSimple) cartas(p *pdt.Partida) (min, max *pdt.Carta) {
 
 func (b *BotSimple) jugar_carta(p *pdt.Partida) *pdt.TirarCarta {
 	m := p.Manojo(b.inGameID)
-	_, max_op, vamos := vamos(p, m)
+	_, max_op, vamos := info.Vamos(p, m, &abs.Null{})
 
 	switch vamos {
 	case "ganando":
