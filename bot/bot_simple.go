@@ -21,7 +21,7 @@ func (b *BotSimple) UID() string {
 	return "BBSimple"
 }
 
-func (b *BotSimple) Catch(*pdt.Partida, []*enco.IMessage) {}
+func (b *BotSimple) Catch(*pdt.Partida, []enco.Envelope) {}
 
 func (b *BotSimple) ResetCatch() {}
 

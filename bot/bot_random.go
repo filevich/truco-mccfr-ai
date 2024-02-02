@@ -17,7 +17,7 @@ func (b *BotRandom) UID() string {
 	return "Random"
 }
 
-func (b *BotRandom) Catch(*pdt.Partida, []*enco.Envelope) {}
+func (b *BotRandom) Catch(*pdt.Partida, []enco.Envelope) {}
 
 func (b *BotRandom) ResetCatch() {}
 
