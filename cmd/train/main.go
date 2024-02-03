@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"runtime"
 	"sync"
 	"time"
@@ -19,9 +19,9 @@ func main() {
 
 	threads := 1
 	num_players := 2
-	tiny_eval := 1000
+	tiny_eval := 1_000
 
-	trainer := cfr.New_Trainer(cfr.ESVMCCFR_T, num_players, &abs.A2{})
+	trainer := cfr.New_Trainer(cfr.ESVMCCFR_T, num_players, &abs.A1{})
 
 	// trainer := cfr.Load(
 	// 	cfr.CFR_T,
@@ -33,18 +33,18 @@ func main() {
 	// 	1_000_000)
 
 	// tiny eval
-	fmt.Printf("loading T1K22...")
+	log.Println("loading t1k22")
 	var ds eval.Dataset = eval.Load_dataset("eval/t1k22.json")
-	fmt.Println(" [done]")
+	log.Println("done loading t1k22")
 
 	post_save := func() {
 		agent := &cfr.BotCFR{
 			N:     trainer.String(),
 			Model: trainer,
 		}
-		fmt.Println("\ntiny evaluating...")
+		log.Println("tiny evaluating")
 		ale, det, di1, di2, wu_ale, wd_ale, wu_det, wd_det, delta := eval.Tiny_eval_float(agent, num_players, ds[:tiny_eval])
-		fmt.Printf("%s\n\n", eval.Format_Tiny_eval(ale, det, di1, di2, wu_ale, wd_ale, wu_det, wd_det, delta))
+		log.Printf("%s\n\n", eval.Format_Tiny_eval(ale, det, di1, di2, wu_ale, wd_ale, wu_det, wd_det, delta))
 		runtime.GC()
 	}
 
@@ -69,7 +69,7 @@ func main() {
 	// 	},
 	// )
 
-	// fmt.Printf("Resetting strategy sums")
+	// log.Printf("Resetting strategy sums")
 	// trainer.Reset()
 
 	trainer.Train(
@@ -80,13 +80,13 @@ func main() {
 			Threads: threads,
 			Mu:      &sync.Mutex{},
 			// io
-			Save_every:  24 * time.Hour,
+			Save_every:  2 * time.Minute,
 			Silent:      true,
 			Save_dir:    save_dir,
 			Save_prefix: "final_",
 			// tiny eval
 			PostSave:   post_save,
-			Eval_every: 5 * time.Minute,
+			Eval_every: 1 * time.Minute,
 			// GC
 			GC_every: 100 * time.Hour,
 		},

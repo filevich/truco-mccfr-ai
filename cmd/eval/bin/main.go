@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/filevich/truco-cfr/bot"
 	"github.com/filevich/truco-cfr/eval"
@@ -36,11 +36,11 @@ func main() {
 	torneo.Start(ds[:], true)
 
 	torneo.Report()
-	fmt.Println()
+	log.Println()
 
 	// guardo el resultado
 	t := utils.Mini_Current_time()
 	utils.Write(torneo.Partidas, "/tmp/res-"+t+".json", true)
-	fmt.Printf("resultado guardado en %s\n\n", "/tmp/res-"+t+".json")
+	log.Printf("resultado guardado en %s\n\n", "/tmp/res-"+t+".json")
 
 }

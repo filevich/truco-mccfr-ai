@@ -2,6 +2,7 @@ package eval
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/filevich/truco-cfr/bot"
@@ -21,12 +22,12 @@ func (t *Torneo) Start(cant_partidas_simples, cant_rondas_dobles int) {
 	t.Cant_partidas_simples = cant_partidas_simples
 	t.Cant_rondas_dobles = cant_rondas_dobles
 
-	fmt.Println("\nTorneo:")
+	log.Println("\nTorneo:")
 	for ix, agent := range t.Agents {
-		fmt.Printf("\t%2d. %s\n", ix+1, agent.UID())
+		log.Printf("\t%2d. %s\n", ix+1, agent.UID())
 	}
 
-	fmt.Printf("\nDone: ")
+	log.Printf("\nDone: ")
 
 	for i := 0; i < len(t.Agents)-1; i++ {
 		agent1 := t.Agents[i]
@@ -42,11 +43,11 @@ func (t *Torneo) Start(cant_partidas_simples, cant_rondas_dobles int) {
 			}
 
 		}
-		fmt.Printf("%s", agent1.UID())
+		log.Printf("%s", agent1.UID())
 		if i == len(t.Agents)-2 {
-			fmt.Printf("\n\n")
+			log.Printf("\n\n")
 		} else {
-			fmt.Printf(", ")
+			log.Printf(", ")
 		}
 	}
 }
@@ -102,12 +103,12 @@ func (torneo *Torneo) PrintTabla(tabla Tabla) {
 
 func (torneo *Torneo) Report() {
 	if torneo.Cant_partidas_simples > 0 {
-		fmt.Printf("%d Partidas simples:\n", torneo.Cant_partidas_simples)
+		log.Printf("%d Partidas simples:\n", torneo.Cant_partidas_simples)
 		torneo.PrintTabla(torneo.Partidas)
 	}
 
 	if torneo.Cant_rondas_dobles > 0 {
-		fmt.Printf("\n%d Rondas simples:\n", torneo.Cant_rondas_dobles)
+		log.Printf("\n%d Rondas simples:\n", torneo.Cant_rondas_dobles)
 		torneo.PrintTabla(torneo.Rondas)
 	}
 }

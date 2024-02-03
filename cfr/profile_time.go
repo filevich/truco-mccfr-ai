@@ -2,6 +2,7 @@ package cfr
 
 import (
 	"fmt"
+	"log"
 	"math"
 	"runtime"
 	"sync"
@@ -78,7 +79,7 @@ func (p *ProfileTime) Init(trainer ITrainer) {
 		prunning = fmt.Sprintf("[prunning @ %s]", p.Prunning_treshold.Round(time.Second))
 	}
 
-	fmt.Printf("\nRunning %s x %s for %s [saving every %s][GC every %s] %s %s [%d threads] starting at %s\n\n",
+	log.Printf("Running %s x %s for %s [saving every %s][GC every %s] %s %s [%d threads] starting at %s\n",
 		trainer.String(),
 		trainer.Get_abs().String(),
 		p.TotalRunningTime,
@@ -184,7 +185,7 @@ func (p *ProfileTime) PrintProgress(trainer ITrainer) {
 
 		AGV := trainer.Max_Avg_Game_Value()
 
-		fmt.Printf("![%3.f%%] - (%s/%s) - #iter:%d - AGV:%.4f - #infos: %d (+%d ~ %.3f) %s @%s",
+		log.Printf("[%3.f%%] - (%s/%s) - #iter:%d - AGV:%.4f - #infos: %d (+%d ~ %.3f) %s @%s",
 			p.PercentageDone(t),
 			time.Since(p.start).Round(time.Second),
 			p.TotalRunningTime,
@@ -196,10 +197,6 @@ func (p *ProfileTime) PrintProgress(trainer ITrainer) {
 			P,
 			utils.Mini_Current_time()[2:],
 		)
-
-		// if !p.IsSilent() {
-		// 	fmt.Println()
-		// }
 	}
 }
 
@@ -218,19 +215,19 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 
 	if !p.shouldSave(t) {
 		if !p.Silent {
-			fmt.Println()
+			log.Println()
 		}
 		return
 	}
 
 	// anres de guardar, corro el GC 5 veces
-	total := 5
-	for i := 0; i < total; i++ {
-		fmt.Printf("PRE save GC...")
-		runtime.GC()
-		fmt.Printf("; sleep 10s... [%d/%d]\n", i+1, total)
-		time.Sleep(time.Second * 10)
-	}
+	// total := 5
+	// for i := 0; i < total; i++ {
+	// 	log.Printf("PRE save GC...")
+	// 	runtime.GC()
+	// 	log.Printf("; sleep 10s... [%d/%d]\n", i+1, total)
+	// 	time.Sleep(time.Second * 10)
+	// }
 
 	p.last_save = time.Now() // <- seguro porque estoy con el Mu
 
@@ -269,11 +266,11 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 
 	// report el filesave?
 	// minimo
-	fmt.Println(" [*]")
+	log.Println(" [*]")
 
 	// completo
 	// p := float32(iter_name) / float32(t.T) * 100
-	// fmt.Printf("[%.f%%] - (%d/%d) %s\n", p, iter_name, t.T, filename)
+	// log.Printf("[%.f%%] - (%d/%d) %s\n", p, iter_name, t.T, filename)
 
 	if p.PostSave != nil {
 		p.PostSave()
@@ -287,15 +284,15 @@ func (p *ProfileTime) CheckGC(t ITrainer) {
 
 	if !p.shouldGC(t) {
 		if !p.Silent {
-			fmt.Println()
+			log.Println()
 		}
 		return
 	}
 
 	p.last_GC = time.Now() // <- seguro porque estoy con el Mu
-	// fmt.Printf("GC...")
+	// log.Printf("GC...")
 	runtime.GC()
-	// fmt.Println(" [done]")
+	// log.Println(" [done]")
 }
 
 func (p *ProfileTime) Exploit() bot.Agent {

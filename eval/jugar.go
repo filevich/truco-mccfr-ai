@@ -23,7 +23,7 @@ func Jugar_partida_hasta_el_final(
 	// juega hasta terminar la partida, no la ronda
 	for !p.Terminada() {
 
-		// fmt.Println(pdt.Renderizar(p))
+		// log.Println(pdt.Renderizar(p))
 
 		m := pdt.Rho(p)
 		agent := agent1
@@ -32,7 +32,7 @@ func Jugar_partida_hasta_el_final(
 		}
 		a, _ := agent.Action(p, m.Jugador.ID)
 
-		// fmt.Println(a)
+		// log.Println(a)
 
 		_, ok := a.Ok(p)
 		if !ok {
@@ -47,10 +47,10 @@ func Jugar_partida_hasta_el_final(
 	}
 
 	// termino la partida
-	// fmt.Println(pdt.Renderizar(p))
+	// log.Println(pdt.Renderizar(p))
 	gano_agent1 = p.ElQueVaGanando() == pdt.Azul
 	diff_pts_agent1 = p.Puntajes[pdt.Azul] - p.Puntajes[pdt.Rojo]
-	// fmt.Println(gano_agent1, diff_pts_agent1)
+	// log.Println(gano_agent1, diff_pts_agent1)
 
 	return gano_agent1, diff_pts_agent1
 }
@@ -128,9 +128,9 @@ func Jugar_ronda_hasta_el_final(
 		if !ok {
 			aa, _ := agent.Action(p, m.Jugador.ID)
 			// bs, _ := json.Marshal(p)
-			// fmt.Println(string(bs))
-			// fmt.Println("-------------")
-			// fmt.Println(a)
+			// log.Println(string(bs))
+			// log.Println("-------------")
+			// log.Println(a)
 			aa.Ok(p)
 			panic("LA ACCION NO ES VALIDA")
 		}
@@ -146,7 +146,7 @@ func Jugar_ronda_hasta_el_final(
 	}
 
 	// termino la ronda
-	// fmt.Println(pdt.Renderizar(p))
+	// log.Println(pdt.Renderizar(p))
 	gano_agent1 = p.Manojo(ganador).Jugador.Equipo == pdt.Azul
 	diff_pts_agent1 = p.Puntajes[pdt.Azul] - p.Puntajes[pdt.Rojo]
 

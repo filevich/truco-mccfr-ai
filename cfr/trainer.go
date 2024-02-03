@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"runtime"
 	"strconv"
@@ -151,15 +152,15 @@ func (t *Trainer) FinalReport(profile IProfile) {
 		return
 	}
 
-	fmt.Println()
+	log.Println()
 	for player := 0; player < t.get_num_players(); player++ {
 		r := t.Get_rnode("__ROOT__", 0).Cumulative_regrets[player]
-		fmt.Printf("Computed average game value for player %d: %.3f\n",
+		log.Printf("Computed average game value for player %d: %.3f\n",
 			player+1,
 			r/float32(t.Total_Iter), // <-- OJO CON ESTO!!! todo: si es un perfil de tiempo el tital iters debe ser actualizado
 		)
 	}
-	fmt.Println()
+	log.Println()
 }
 
 // io
@@ -198,7 +199,7 @@ func (t *Trainer) Save_model(filename string, report_interval int, id string, ex
 	verbose := report_interval > 0
 
 	if verbose {
-		fmt.Printf("\nGuardando: 0%%")
+		log.Printf("\nGuardando: 0%%")
 	}
 
 	// Infoset_map  map[string]*RNode
@@ -223,7 +224,7 @@ func (t *Trainer) Save_model(filename string, report_interval int, id string, ex
 	for hash, rnode := range t.Infoset_map {
 		if verbose && utils.Mod(i+1, report_interval) == 0 {
 			progress := float32(i+1) / float32(len(t.Infoset_map))
-			fmt.Printf(" | %d%%", int(progress*100))
+			log.Printf(" | %d%%", int(progress*100))
 			runtime.GC()
 		}
 
@@ -237,7 +238,7 @@ func (t *Trainer) Save_model(filename string, report_interval int, id string, ex
 	}
 
 	if report_interval > 0 {
-		fmt.Println()
+		log.Println()
 	}
 
 	// retorno Current_Iter a su estado orig
@@ -387,14 +388,14 @@ func Load_model(filename string, verbose bool, report_interval int) ITrainer {
 	}
 
 	if verbose {
-		fmt.Printf("Leyendo tamano del modelo...\n")
+		log.Printf("Leyendo tamano del modelo...\n")
 	}
 
 	locs, _ := lineCounter(filename)
 
 	if verbose {
-		fmt.Printf("%d lineas leidas\n", locs)
-		fmt.Printf("Cargando modelo: 0%%")
+		log.Printf("%d lineas leidas\n", locs)
+		log.Printf("Cargando modelo: 0%%")
 	}
 
 	defer file.Close()
@@ -449,7 +450,7 @@ func Load_model(filename string, verbose bool, report_interval int) ITrainer {
 				runtime.GC()
 				if verbose {
 					progress := float32(i+1) / float32(locs)
-					fmt.Printf(" | %d%%", int(progress*100))
+					log.Printf(" | %d%%", int(progress*100))
 				}
 			}
 
@@ -468,7 +469,7 @@ func Load_model(filename string, verbose bool, report_interval int) ITrainer {
 	}
 
 	if verbose {
-		fmt.Println()
+		log.Println()
 	}
 
 	return Embed(t, base)

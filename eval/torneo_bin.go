@@ -2,6 +2,7 @@ package eval
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"runtime"
 
@@ -21,12 +22,12 @@ func (t *TBinomial) Start(ds Dataset, verbose bool) {
 	t.Cant_partidas_dobles = len(ds)
 
 	if verbose {
-		fmt.Printf("\nTorneo Binomial de %dp:\n", t.Num_players)
+		log.Printf("\nTorneo Binomial de %dp:\n", t.Num_players)
 		for ix, agent := range t.Agents {
-			fmt.Printf("\t%2d. %s\n", ix+1, agent.UID())
+			log.Printf("\t%2d. %s\n", ix+1, agent.UID())
 		}
 
-		fmt.Printf("\nDone: ")
+		log.Printf("\nDone: ")
 	}
 
 	for i := 0; i < len(t.Agents)-1; i++ {
@@ -47,11 +48,11 @@ func (t *TBinomial) Start(ds Dataset, verbose bool) {
 		}
 
 		if verbose {
-			fmt.Printf("%s", agent1.UID())
+			log.Printf("%s", agent1.UID())
 			if i == len(t.Agents)-2 {
-				fmt.Printf("\n\n")
+				log.Printf("\n\n")
 			} else {
-				fmt.Printf(", ")
+				log.Printf(", ")
 			}
 		}
 
@@ -194,18 +195,18 @@ func (torneo *TBinomial) PrintTablaWaldInterval(tabla Tabla) {
 
 func (torneo *TBinomial) Report() {
 	if torneo.Cant_partidas_dobles > 0 {
-		fmt.Printf("%d Partidas dobles:\n", torneo.Cant_partidas_dobles)
+		log.Printf("%d Partidas dobles:\n", torneo.Cant_partidas_dobles)
 
-		fmt.Println()
-		fmt.Printf("\nTABLA: WP (win percentage) & ADP (Avg. Diff. Points) para A vs B\n\n")
+		log.Println()
+		log.Printf("\nTABLA: WP (win percentage) & ADP (Avg. Diff. Points) para A vs B\n\n")
 		torneo.PrintTablaMedia(torneo.Partidas)
 
-		fmt.Println()
-		fmt.Printf("\nTABLA: Intervalos Ajustados de Wald al 90%% para A vs B\n\n")
+		log.Println()
+		log.Printf("\nTABLA: Intervalos Ajustados de Wald al 90%% para A vs B\n\n")
 		torneo.PrintTablaWaldInterval(torneo.Partidas)
 
-		// fmt.Println()
-		// fmt.Printf("\nTABLA: Intervalos Normales al 90%% para A vs B\n\n")
+		// log.Println()
+		// log.Printf("\nTABLA: Intervalos Normales al 90%% para A vs B\n\n")
 		// torneo.PrintTablaNormalInterval(torneo.Partidas)
 	}
 }
