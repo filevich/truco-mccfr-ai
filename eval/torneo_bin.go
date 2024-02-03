@@ -154,46 +154,6 @@ func (torneo *TBinomial) PrintTablaWaldInterval(tabla Tabla) {
 	t.Render()
 }
 
-// func (torneo *TBinomial) PrintTablaNormalInterval(tabla Tabla) {
-// 	t := table.NewWriter()
-// 	t.SetOutputMirror(os.Stdout)
-// 	t.AppendHeader(
-// 		append(
-// 			table.Row{"A\\B"},
-// 			append(
-// 				torneo.Inscriptos("l    u"),
-// 				"B/A",
-// 			)...,
-// 		),
-// 	)
-
-// 	for i := 0; i < len(torneo.Agents); i++ {
-
-// 		agent1 := torneo.Agents[i]
-// 		row := []interface{}{
-// 			agent1.UID(),
-// 		}
-
-// 		for j := 0; j < len(torneo.Agents); j++ {
-// 			if i == j {
-// 				row = append(row, "             ")
-// 				continue
-// 			}
-// 			agent2 := torneo.Agents[j]
-// 			u, l := tabla.NormalInterval(agent1.UID(), agent2.UID())
-// 			row = append(row, fmt.Sprintf("%.3f %.3f", l, u))
-// 		}
-
-// 		row = append(row, agent1.UID())
-
-// 		t.AppendRow(row)
-// 		t.AppendSeparator()
-// 	}
-
-// 	// t.AppendFooter(table.Row{"", "", "Total", 10000})
-// 	t.Render()
-// }
-
 func (torneo *TBinomial) Report() {
 	if torneo.Cant_partidas_dobles > 0 {
 		log.Printf("%d Partidas dobles:\n", torneo.Cant_partidas_dobles)
