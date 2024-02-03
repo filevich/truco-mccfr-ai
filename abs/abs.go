@@ -27,7 +27,7 @@ const (
 	NULL_ID Abstractor_ID = "null"
 )
 
-func ParseAbstractor(aID string) IAbstraction {
+func ParseAbs(aID string) IAbstraction {
 	switch Abstractor_ID(strings.ToLower(aID)) {
 	case A1_ID:
 		return &A1{}
