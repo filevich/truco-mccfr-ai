@@ -70,10 +70,7 @@ func (trainer *ESVMCCFR) Train(profile IProfile) {
 		}()
 	}
 
-	// join
-	trainer.Wg.Done()
-
-	// trainer.Wg.Wait()
+	trainer.Wg.Wait()
 	trainer.FinalReport(profile)
 }
 
