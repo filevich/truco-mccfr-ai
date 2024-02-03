@@ -426,15 +426,7 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 			case "Num_players":
 				base.Num_players, _ = strconv.Atoi(val)
 			case "Abstractor":
-				if val == string(abs.A1_ID) {
-					base.Abstractor = &abs.A1{}
-				} else if val == string(abs.A2_ID) {
-					base.Abstractor = &abs.A2{}
-				} else if val == string(abs.NULL_ID) {
-					base.Abstractor = &abs.Null{}
-				} else {
-					panic("abstraccion desconocida")
-				}
+				base.Abstractor = abs.ParseAbs(val)
 			default:
 				continue
 			}
