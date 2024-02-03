@@ -63,7 +63,7 @@ func (tournament *Tournament) Start(ds dataset.Dataset, verbose bool) {
 	}
 }
 
-func (tournament *Tournament) Inscriptos(subtitle string) []interface{} {
+func (tournament *Tournament) Registered(subtitle string) []interface{} {
 	// "0.857   8.437" ~> tiene len=20
 	res := make([]interface{}, 0)
 	for _, agent := range tournament.Agents {
@@ -79,7 +79,7 @@ func (tournament *Tournament) PrintWrTable(tabla Table) {
 		append(
 			table.Row{"A\\B"},
 			append(
-				tournament.Inscriptos("WP    ADP"),
+				tournament.Registered("WP    ADP"),
 				"B/A",
 			)...,
 		),
@@ -119,7 +119,7 @@ func (tournament *Tournament) PrintWaldTable(tabla Table) {
 		append(
 			table.Row{"A\\B"},
 			append(
-				tournament.Inscriptos("L    U"),
+				tournament.Registered("L    U"),
 				"B/A",
 			)...,
 		),
