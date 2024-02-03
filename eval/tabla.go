@@ -4,7 +4,7 @@ import "github.com/filevich/truco-cfr/utils"
 
 type Tabla map[string](map[string]*Resultados)
 
-func New_Tabla() Tabla {
+func NewTabla() Tabla {
 	return make(map[string](map[string]*Resultados))
 }
 

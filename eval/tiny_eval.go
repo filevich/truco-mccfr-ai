@@ -7,7 +7,7 @@ import (
 	"github.com/filevich/truco-cfr/bot"
 )
 
-func Tiny_eval_float(
+func TinyEvalFloat(
 
 	agent bot.Agent,
 	num_players int,
@@ -61,7 +61,7 @@ func Tiny_eval_float(
 		time.Since(tic).Seconds()
 }
 
-func Format_Tiny_eval(
+func FormatTinyEval(
 
 	ale float32,
 	det float32,

@@ -44,42 +44,42 @@ func Test_dumbo_2p(t *testing.T) {
 
 	{
 		j, _ := pdt.ParseJugada(p, "alice 4 basto")
-		if ok := Is_dumbo(p, alice, j, abs.A2{}); !ok {
+		if ok := IsDumbo(p, alice, j, abs.A2{}); !ok {
 			t.Fatal("tirar el 4 de oro deberia considerarse dumbo")
 		}
 	}
 
 	{
 		j, _ := pdt.ParseJugada(p, "alice 4 basto")
-		if ok := !Is_dumbo(p, alice, j, abs.A1{}); !ok {
+		if ok := !IsDumbo(p, alice, j, abs.A1{}); !ok {
 			t.Fatal("tirar el 4 de oro NO deberia considerarse dumbo")
 		}
 	}
 
 	{
 		j, _ := pdt.ParseJugada(p, "alice 3 oro")
-		if ok := !Is_dumbo(p, alice, j, abs.A2{}); !ok {
+		if ok := !IsDumbo(p, alice, j, abs.A2{}); !ok {
 			t.Fatal("tirar el 3 de oro NO deberia considerarse dumbo")
 		}
 	}
 
 	{
 		j, _ := pdt.ParseJugada(p, "alice 3 oro")
-		if ok := !Is_dumbo(p, alice, j, abs.A1{}); !ok {
+		if ok := !IsDumbo(p, alice, j, abs.A1{}); !ok {
 			t.Fatal("tirar el 3 de oro NO deberia considerarse dumbo")
 		}
 	}
 
 	{
 		j, _ := pdt.ParseJugada(p, "alice 2 espada")
-		if ok := !Is_dumbo(p, alice, j, abs.A2{}); !ok {
+		if ok := !IsDumbo(p, alice, j, abs.A2{}); !ok {
 			t.Fatal("tirar el 2 de espada NO deberia considerarse dumbo")
 		}
 	}
 
 	{
 		j, _ := pdt.ParseJugada(p, "alice 2 espada")
-		if ok := !Is_dumbo(p, alice, j, abs.A1{}); !ok {
+		if ok := !IsDumbo(p, alice, j, abs.A1{}); !ok {
 			t.Fatal("tirar el 2 de espada NO deberia considerarse dumbo")
 		}
 	}
@@ -121,7 +121,7 @@ func Test_es_ultimo(t *testing.T) {
 	alice := p.Manojo("Alice")
 	anna := p.Manojo("Anna")
 
-	if ok := es_el_ultimo_en_tirar(p, bill); !ok {
+	if ok := esElUltimoEnTirar(p, bill); !ok {
 		t.Fatal("Deberia ser el ultimo en tirar")
 	}
 
@@ -131,28 +131,28 @@ func Test_es_ultimo(t *testing.T) {
 	// gana bob
 	// recordar: ben y ariana se fueron
 
-	if ok := !es_el_ultimo_en_tirar(p, bob); !ok {
+	if ok := !esElUltimoEnTirar(p, bob); !ok {
 		t.Fatal("NO Deberia ser el ultimo en tirar")
 	}
 
-	if ok := !es_el_ultimo_en_tirar(p, anna); !ok {
+	if ok := !esElUltimoEnTirar(p, anna); !ok {
 		t.Fatal("NO Deberia ser el ultimo en tirar")
 	}
 
-	if ok := !es_el_ultimo_en_tirar(p, bill); !ok {
+	if ok := !esElUltimoEnTirar(p, bill); !ok {
 		t.Fatal("NO Deberia ser el ultimo en tirar")
 	}
 
 	p.Cmd("Bob 1 copa")
 	p.Cmd("Anna 5 basto")
 
-	if ok := !es_el_ultimo_en_tirar(p, bill); !ok {
+	if ok := !esElUltimoEnTirar(p, bill); !ok {
 		t.Fatal("NO Deberia ser el ultimo en tirar")
 	}
 
 	p.Cmd("Bill 1 basto")
 
-	if ok := es_el_ultimo_en_tirar(p, alice); !ok {
+	if ok := esElUltimoEnTirar(p, alice); !ok {
 		t.Fatal("*Deberia ser el ultimo en tirar")
 	}
 
@@ -170,7 +170,7 @@ func Test_dumbo_6p(t *testing.T) {
 	p.Cmd("Anna 12 basto")
 
 	t.Log(pdt.Renderizar(p))
-	t.Log("max tiradas:", _max_tiradas_str(p, abs.A1{}))
+	t.Log("max tiradas:", _maxTiradasStr(p, abs.A1{}))
 
 	// [Rojo] - Bob - 11 de Basto - a1 ~> bucket #0
 	// [Azul] - Anna - 12 de Oro - a1 ~> bucket #0
@@ -183,21 +183,21 @@ func Test_dumbo_6p(t *testing.T) {
 
 	{
 		j, _ := pdt.ParseJugada(p, "Bill 4 copa")
-		if ok := Is_dumbo(p, bill, j, abs.A1{}); !ok {
+		if ok := IsDumbo(p, bill, j, abs.A1{}); !ok {
 			t.Fatal("tirar el 4 de copa deberia considerarse dumbo")
 		}
 	}
 
 	{
 		j, _ := pdt.ParseJugada(p, "Bill 1 basto")
-		if ok := !Is_dumbo(p, bill, j, abs.A1{}); !ok {
+		if ok := !IsDumbo(p, bill, j, abs.A1{}); !ok {
 			t.Fatal("tirar el 1 de basto NO deberia considerarse dumbo")
 		}
 	}
 
 	{
 		j, _ := pdt.ParseJugada(p, "Bill 10 espada")
-		if ok := !Is_dumbo(p, bill, j, abs.A1{}); !ok {
+		if ok := !IsDumbo(p, bill, j, abs.A1{}); !ok {
 			t.Fatal("tirar el 10 de espada NO deberia considerarse dumbo")
 		}
 	}
@@ -210,7 +210,7 @@ func Test_dumbo_6p(t *testing.T) {
 	p.Cmd("Bob 1 copa")
 
 	t.Log(pdt.Renderizar(p))
-	t.Log("max tiradas:", _max_tiradas_str(p, abs.A2{}))
+	t.Log("max tiradas:", _maxTiradasStr(p, abs.A2{}))
 
 	{
 		muestra := p.Ronda.Muestra
@@ -224,14 +224,14 @@ func Test_dumbo_6p(t *testing.T) {
 
 	{
 		j, _ := pdt.ParseJugada(p, "Anna 11 copa")
-		if ok := Is_dumbo(p, anna, j, abs.A2{}); !ok {
+		if ok := IsDumbo(p, anna, j, abs.A2{}); !ok {
 			t.Fatal("tirar el 11 de copa deberia considerarse dumbo")
 		}
 	}
 
 	{
 		j, _ := pdt.ParseJugada(p, "Anna 7 oro")
-		if ok := !Is_dumbo(p, anna, j, abs.A2{}); !ok {
+		if ok := !IsDumbo(p, anna, j, abs.A2{}); !ok {
 			t.Fatal("tirar el 7 de oro NO deberia considerarse dumbo")
 		}
 	}

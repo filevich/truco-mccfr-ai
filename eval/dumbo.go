@@ -7,11 +7,11 @@ import (
 	"github.com/truquito/truco/pdt"
 )
 
-func es_el_ultimo_en_tirar(p *pdt.Partida, m *pdt.Manojo) bool {
+func esElUltimoEnTirar(p *pdt.Partida, m *pdt.Manojo) bool {
 	return p.Ronda.GetSigHabilitado(*m) == nil
 }
 
-func max_tiradas(p *pdt.Partida) map[pdt.Equipo]*pdt.CartaTirada {
+func maxTiradas(p *pdt.Partida) map[pdt.Equipo]*pdt.CartaTirada {
 
 	var (
 		maxPoder = map[pdt.Equipo]int{pdt.Rojo: -1, pdt.Azul: -1}
@@ -32,7 +32,7 @@ func max_tiradas(p *pdt.Partida) map[pdt.Equipo]*pdt.CartaTirada {
 }
 
 // PRE: m es el utlimo habilitado en tirar
-func hay_menor_y_sigue_ganando(
+func hayMenorYSigueGanando(
 
 	p *pdt.Partida,
 	m *pdt.Manojo,
@@ -42,7 +42,7 @@ func hay_menor_y_sigue_ganando(
 ) bool {
 
 	var (
-		maxTiradas                 = max_tiradas(p)
+		maxTiradas                 = maxTiradas(p)
 		mejor_ellos                = maxTiradas[m.Jugador.GetEquipoContrario()]
 		bucket_la_que_pienso_tirar = abs.Abstract(&tc.Carta, &p.Ronda.Muestra)
 		bucket_la_mejor_de_ellos   = abs.Abstract(&mejor_ellos.Carta, &p.Ronda.Muestra)
@@ -75,8 +75,8 @@ func hay_menor_y_sigue_ganando(
 	// si vamos PERDIENDO -> no habia necesidad de tirar una carta mas alta
 }
 
-func _max_tiradas_str(p *pdt.Partida, abs abs.IAbstraction) string {
-	tiradas := max_tiradas(p)
+func _maxTiradasStr(p *pdt.Partida, abs abs.IAbstraction) string {
+	tiradas := maxTiradas(p)
 	s := "\n"
 	for e, t := range tiradas {
 		s += fmt.Sprintf("[%s] - %s - %s - %s ~> bucket #%d\n",
@@ -96,7 +96,7 @@ func _max_tiradas_str(p *pdt.Partida, abs abs.IAbstraction) string {
 	return s
 }
 
-func Is_dumbo(
+func IsDumbo(
 
 	p *pdt.Partida,
 	m *pdt.Manojo,
@@ -112,10 +112,10 @@ func Is_dumbo(
 
 	if j.ID() == pdt.JID_TIRAR_CARTA {
 		if tc, ok := j.(*pdt.TirarCarta); ok {
-			return es_el_ultimo_en_tirar(p, m) && hay_menor_y_sigue_ganando(p, m, *tc, a)
+			return esElUltimoEnTirar(p, m) && hayMenorYSigueGanando(p, m, *tc, a)
 		}
 		tc := j.(pdt.TirarCarta)
-		return es_el_ultimo_en_tirar(p, m) && hay_menor_y_sigue_ganando(p, m, tc, a)
+		return esElUltimoEnTirar(p, m) && hayMenorYSigueGanando(p, m, tc, a)
 
 	}
 

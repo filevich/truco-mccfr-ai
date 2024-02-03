@@ -7,7 +7,7 @@ import (
 	"github.com/truquito/truco/pdt"
 )
 
-func Jugar_partida_hasta_el_final(
+func JugarPartidaHastaElFinal(
 
 	agent1,
 	agent2 bot.Agent,
@@ -55,7 +55,7 @@ func Jugar_partida_hasta_el_final(
 	return gano_agent1, diff_pts_agent1
 }
 
-func Jugar_ronda_hasta_el_final(
+func JugarRondaHastaElFinal(
 
 	azul,
 	rojo bot.Agent,
@@ -114,7 +114,7 @@ func Jugar_ronda_hasta_el_final(
 		// 	// }
 		// 	dumboid = Is_dumbo(p, m, a, cfr.Z0{})
 		// }
-		dumboid = Is_dumbo(p, m, a, &abs.Null{})
+		dumboid = IsDumbo(p, m, a, &abs.Null{})
 
 		if dumboid {
 			if m.Jugador.Equipo == pdt.Azul {

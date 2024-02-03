@@ -15,12 +15,12 @@ func main() {
 	// b = "/media/jp/6e5bdfb0-c84b-4144-8d6d-4688934f1afe/models/6p/48np-multi6/a1"
 	)
 
-	ds := eval.Load_dataset("eval/t1k22.json")
+	ds := eval.LoadDataset("eval/t1k22.json")
 
 	// un tournament reune a varios agentes, y los hace pelear a todos contra todos
 	torneo := &eval.TBinomial{
 		Num_players: 6,
-		Partidas:    eval.New_Tabla(),
+		Partidas:    eval.NewTabla(),
 		Agents: []bot.Agent{
 			// &eval.BotCFR{
 			// 	N: "ESL-A1",

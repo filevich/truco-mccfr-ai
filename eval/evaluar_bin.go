@@ -30,7 +30,7 @@ func SimPartidasBin(ds Dataset, agent1, agent2 bot.Agent, num_players int) *Resu
 	// partidas simples (hasta el final)
 	for i := 0; i < num_partidas/2; i++ {
 		entries := ds[i]
-		agent1_won, diff_pts_won_agent_1_acc, di_1, di_2 := partida_segun_entradas(entries, agent1, agent2, num_players)
+		agent1_won, diff_pts_won_agent_1_acc, di_1, di_2 := partidaSegunEntradas(entries, agent1, agent2, num_players)
 		res.Dumbo1 += di_1
 		res.Dumbo2 += di_2
 		if agent1_won {
@@ -47,7 +47,7 @@ func SimPartidasBin(ds Dataset, agent1, agent2 bot.Agent, num_players int) *Resu
 	// ahora los cambio de posicion
 	for i := 0; i < num_partidas/2; i++ {
 		entries := ds[i]
-		agent2_won, diff_pts_won_agent_2_acc, di_2, di_1 := partida_segun_entradas(entries, agent2, agent1, num_players)
+		agent2_won, diff_pts_won_agent_2_acc, di_2, di_1 := partidaSegunEntradas(entries, agent2, agent1, num_players)
 		res.Dumbo1 += di_1
 		res.Dumbo2 += di_2
 		if !agent2_won {
@@ -63,9 +63,9 @@ func SimPartidasBin(ds Dataset, agent1, agent2 bot.Agent, num_players int) *Resu
 	return res
 }
 
-func partida_segun_entradas(
+func partidaSegunEntradas(
 
-	entradas []*Entrada,
+	entradas []*Row,
 	agent1,
 	agent2 bot.Agent,
 	Num_players int,
@@ -82,7 +82,7 @@ func partida_segun_entradas(
 	verbose := true
 
 	// genero los nombres
-	A, B := gen_nombres(agent1, agent2, Num_players)
+	A, B := genNombres(agent1, agent2, Num_players)
 	p, _ := pdt.NuevaPartida(pdt.A20, A, B, limEnvite, verbose)
 	// p, _ := pdt.Parse(`{"puntuacion":20,"puntajes":{"Azul":0,"Rojo":0},"ronda":{"manoEnJuego":0,"cantJugadoresEnJuego":{"Azul":1,"Rojo":1},"elMano":0,"turno":0,"envite":{"estado":"noCantadoAun","puntaje":0,"cantadoPor":"","sinCantar":[]},"truco":{"cantadoPor":"","estado":"noCantado"},"manojos":[{"seFueAlMazo":false,"cartas":[{"palo":"Oro","valor":3},{"palo":"Espada","valor":2},{"palo":"Basto","valor":4}],"tiradas":[false,false,false],"ultimaTirada":0,"jugador":{"id":"Alice","equipo":"Azul"}},{"seFueAlMazo":false,"cartas":[{"palo":"Espada","valor":5},{"palo":"Copa","valor":2},{"palo":"Basto","valor":11}],"tiradas":[false,false,false],"ultimaTirada":0,"jugador":{"id":"Bob","equipo":"Rojo"}}],"mixs":{"Alice":0,"Bob":1},"muestra":{"palo":"Basto","valor":2},"manos":[{"resultado":"ganoRojo","ganador":"","cartasTiradas":null},{"resultado":"ganoRojo","ganador":"","cartasTiradas":null},{"resultado":"ganoRojo","ganador":"","cartasTiradas":null}]}}`)
 
@@ -94,7 +94,7 @@ func partida_segun_entradas(
 		agent1.ResetCatch()
 		agent2.ResetCatch()
 		entradas[i].Override(p)
-		_, _, di1, di2, _, _ := Jugar_ronda_hasta_el_final(agent1, agent2, Num_players, p)
+		_, _, di1, di2, _, _ := JugarRondaHastaElFinal(agent1, agent2, Num_players, p)
 		d1_acc += di1
 		d2_acc += di2
 	}
@@ -107,7 +107,7 @@ func partida_segun_entradas(
 	return gano_agent1, float32(diff_pts_agent1), d1_acc, d2_acc
 }
 
-func gen_nombres(agent1, agent2 bot.Agent, Num_players int) (A, B []string) {
+func genNombres(agent1, agent2 bot.Agent, Num_players int) (A, B []string) {
 
 	// genero los nombres
 	// A := []string{} // equipo azul

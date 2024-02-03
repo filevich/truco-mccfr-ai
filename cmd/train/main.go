@@ -34,7 +34,7 @@ func main() {
 
 	// tiny eval
 	log.Println("loading t1k22")
-	var ds eval.Dataset = eval.Load_dataset("eval/t1k22.json")
+	var ds eval.Dataset = eval.LoadDataset("eval/t1k22.json")
 	log.Println("done loading t1k22")
 
 	post_save := func() {
@@ -43,8 +43,8 @@ func main() {
 			Model: trainer,
 		}
 		log.Println("tiny evaluating")
-		ale, det, di1, di2, wu_ale, wd_ale, wu_det, wd_det, delta := eval.Tiny_eval_float(agent, num_players, ds[:tiny_eval])
-		log.Printf("%s\n\n", eval.Format_Tiny_eval(ale, det, di1, di2, wu_ale, wd_ale, wu_det, wd_det, delta))
+		ale, det, di1, di2, wu_ale, wd_ale, wu_det, wd_det, delta := eval.TinyEvalFloat(agent, num_players, ds[:tiny_eval])
+		log.Printf("%s\n\n", eval.FormatTinyEval(ale, det, di1, di2, wu_ale, wd_ale, wu_det, wd_det, delta))
 		runtime.GC()
 	}
 

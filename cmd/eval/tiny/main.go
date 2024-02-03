@@ -15,7 +15,7 @@ func main() {
 	)
 
 	log.Printf("loading T1K22...")
-	ds := eval.Load_dataset("eval/t1k22.json")
+	ds := eval.LoadDataset("eval/t1k22.json")
 	log.Println(" [done]")
 
 	agents := []bot.Agent{
@@ -31,8 +31,8 @@ func main() {
 	for i, agent := range agents {
 		agent.Initialize()
 		log.Printf("[%2d/%2d] tiny evaluating %s...", i+1, len(agents), agent.UID())
-		wr_ale, wr_det, di_ale, di_det, wu_ale, wd_ale, wu_det, wd_det, delta := eval.Tiny_eval_float(agent, num_players, ds[:tiny_eval])
-		log.Println(" -> " + eval.Format_Tiny_eval(wr_ale, wr_det, di_ale, di_det, wu_ale, wd_ale, wu_det, wd_det, delta))
+		wr_ale, wr_det, di_ale, di_det, wu_ale, wd_ale, wu_det, wd_det, delta := eval.TinyEvalFloat(agent, num_players, ds[:tiny_eval])
+		log.Println(" -> " + eval.FormatTinyEval(wr_ale, wr_det, di_ale, di_det, wu_ale, wd_ale, wu_det, wd_det, delta))
 		agent.Free()
 	}
 }

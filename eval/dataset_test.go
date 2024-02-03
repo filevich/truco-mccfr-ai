@@ -6,8 +6,8 @@ import (
 	"github.com/truquito/truco/pdt"
 )
 
-func Test_Entry_Override_2p(t *testing.T) {
-	ds := Load_dataset("t1k22.json")
+func TestEntryOverride2p(t *testing.T) {
+	ds := LoadDataset("t1k22.json")
 
 	p, _ := pdt.NuevaPartida(
 		pdt.A20,
@@ -63,8 +63,8 @@ func Test_Entry_Override_2p(t *testing.T) {
 	t.Log(pdt.Renderizar(p))
 }
 
-func Test_Entry_Override_4p(t *testing.T) {
-	ds := Load_dataset("t1k22.json")
+func TestEntryOverride4p(t *testing.T) {
+	ds := LoadDataset("t1k22.json")
 
 	p, _ := pdt.NuevaPartida(
 		pdt.A20,
@@ -120,8 +120,8 @@ func Test_Entry_Override_4p(t *testing.T) {
 	t.Log(pdt.Renderizar(p))
 }
 
-func Test_Entry_Override_6p(t *testing.T) {
-	ds := Load_dataset("t1k22.json")
+func TestEntryOverride6p(t *testing.T) {
+	ds := LoadDataset("t1k22.json")
 
 	p, _ := pdt.NuevaPartida(
 		pdt.A20,

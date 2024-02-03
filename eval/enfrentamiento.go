@@ -9,7 +9,7 @@ import (
 	"github.com/truquito/truco/pdt"
 )
 
-func ronda_doble(
+func rondaDoble(
 
 	agent1,
 	agent2 bot.Agent,
@@ -52,7 +52,7 @@ func ronda_doble(
 	data_manojos, _ := json.Marshal(p.Ronda.Manojos)
 
 	// 1. ronda de ida
-	if gano_agent1, diff_pts, di_1, di_2, _, _ := Jugar_ronda_hasta_el_final(agent1, agent2, Num_players, p); gano_agent1 {
+	if gano_agent1, diff_pts, di_1, di_2, _, _ := JugarRondaHastaElFinal(agent1, agent2, Num_players, p); gano_agent1 {
 		gano_agent1_count += 1
 		diff_pts_agent1_acc += diff_pts
 		dumbo_agent1 += di_1
@@ -79,7 +79,7 @@ func ronda_doble(
 	p.Ronda.SetManojos(manojos)
 	p.Ronda.SetMuestra(muestra)
 
-	if gano_agent2, diff_pts, di_2, di_1, _, _ := Jugar_ronda_hasta_el_final(agent2, agent1, Num_players, p); gano_agent2 {
+	if gano_agent2, diff_pts, di_2, di_1, _, _ := JugarRondaHastaElFinal(agent2, agent1, Num_players, p); gano_agent2 {
 		// gano_agent1_count -= 1 // no resto! sino no es el porcentaje
 		diff_pts_agent1_acc -= diff_pts
 		dumbo_agent1 += di_1
@@ -95,7 +95,7 @@ func ronda_doble(
 	// lo divido entre 2 porque fueron 2 partidos: el de ida y el de vuelta
 }
 
-func partida_unica(
+func partidaUnica(
 
 	agent1,
 	agent2 bot.Agent,
@@ -122,7 +122,7 @@ func partida_unica(
 
 	p, _ := pdt.NuevaPartida(pdt.A20, A, B, limEnvite, verbose)
 
-	agent1_won, diff_pts := Jugar_partida_hasta_el_final(agent1, agent2, Num_players, p)
+	agent1_won, diff_pts := JugarPartidaHastaElFinal(agent1, agent2, Num_players, p)
 
 	return agent1_won, float32(diff_pts)
 }

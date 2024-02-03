@@ -20,7 +20,7 @@ func SimPartidas(num_partidas int, agent1, agent2 bot.Agent, num_players int) *R
 
 	// partidas simples (hasta el final)
 	for i := 0; i < num_partidas/2; i++ {
-		agent1_won, diff_pts_won_agent_1_acc := partida_unica(agent1, agent2, 2)
+		agent1_won, diff_pts_won_agent_1_acc := partidaUnica(agent1, agent2, 2)
 		if agent1_won {
 			res.Wins_by_A_count++
 		}
@@ -32,7 +32,7 @@ func SimPartidas(num_partidas int, agent1, agent2 bot.Agent, num_players int) *R
 
 	// ahora los cambio de posicion
 	for i := 0; i < num_partidas/2; i++ {
-		agent2_won, diff_pts_won_agent_2_acc := partida_unica(agent2, agent1, 2)
+		agent2_won, diff_pts_won_agent_2_acc := partidaUnica(agent2, agent1, 2)
 		if !agent2_won {
 			res.Wins_by_A_count++
 		}
@@ -60,7 +60,7 @@ func SimRondas(num_rondas int, agent1, agent2 bot.Agent, Num_players int) *Resul
 
 	// rondas dobles
 	for i := 0; i < num_rondas; i++ {
-		agent1_win_count, diff_pts_won_agent_1_acc, di_1, di_2 := ronda_doble(agent1, agent2, 2)
+		agent1_win_count, diff_pts_won_agent_1_acc, di_1, di_2 := rondaDoble(agent1, agent2, 2)
 		res.Wins_by_A_count += agent1_win_count // {2,1,0}
 		// res.points_won_delta[i] = diff_pts_won_agent_1_acc
 		res.Points_won_diff = append(res.Points_won_diff, diff_pts_won_agent_1_acc)
