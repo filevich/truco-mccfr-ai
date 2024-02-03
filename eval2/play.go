@@ -2,6 +2,7 @@ package eval2
 
 import (
 	"fmt"
+	"runtime"
 	"strconv"
 
 	"github.com/filevich/truco-cfr/abs"
@@ -11,6 +12,33 @@ import (
 	"github.com/filevich/truco-cfr/utils"
 	"github.com/truquito/truco/pdt"
 )
+
+func PlayMultipleDoubleGames(
+
+	agent bot.Agent,
+	ops []bot.Agent,
+	numPlayers int,
+	ds dataset.Dataset,
+
+) []*Results {
+
+	agent.Initialize()
+	res := make([]*Results, 0, len(ops))
+
+	for _, op := range ops {
+		op.Initialize()
+
+		// evaluar_bin.go
+		r := PlayDoubleGames(ds, agent, op, numPlayers)
+		res = append(res, r)
+
+		// termino de jugar contra op -> ya no lo necesito
+		op.Free()
+		runtime.GC()
+	}
+
+	return res
+}
 
 // partidas dobles/bin (hasta el final)
 // la primera mitad el agent1 empieza primero

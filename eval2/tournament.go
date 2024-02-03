@@ -15,7 +15,7 @@ type Tournament struct {
 	NumPlayers     int
 	NumDoubleGames int
 	Agents         []bot.Agent
-	Games          Table
+	Table          Table
 }
 
 func (t *Tournament) Start(ds dataset.Dataset, verbose bool) {
@@ -23,33 +23,28 @@ func (t *Tournament) Start(ds dataset.Dataset, verbose bool) {
 	t.NumDoubleGames = len(ds)
 
 	if verbose {
-		log.Printf("\nTournament %dp:\n", t.NumPlayers)
+		log.Printf("Tournament %dp:\n", t.NumPlayers)
 		for ix, agent := range t.Agents {
 			log.Printf("\t%2d. %s\n", ix+1, agent.UID())
 		}
-
-		log.Printf("\nDone: ")
 	}
 
 	for i := 0; i < len(t.Agents)-1; i++ {
 		agent1 := t.Agents[i]
-		agent1.Initialize()
+		ops := t.Agents[i+1:]
 
-		for j := i + 1; j < len(t.Agents); j++ {
-			agent2 := t.Agents[j]
-			agent2.Initialize()
+		ress := PlayMultipleDoubleGames(
+			agent1,
+			ops,
+			t.NumPlayers,
+			ds)
 
-			// evaluar_bin.go
-			res_partidas := PlayDoubleGames(ds, agent1, agent2, t.NumPlayers)
-			t.Games.Add(
+		for j := 0; j < len(ops); j++ {
+			t.Table.Add(
 				agent1.UID(),
-				agent2.UID(),
-				res_partidas,
+				ops[j].UID(),
+				ress[j],
 			)
-
-			// termino de jugar contra agent2 -> ya no lo necesito
-			agent2.Free()
-			runtime.GC()
 		}
 
 		if verbose {
@@ -62,8 +57,7 @@ func (t *Tournament) Start(ds dataset.Dataset, verbose bool) {
 		}
 
 		// Just finished `agent1` evaluation
-		// No longer needed
-		// Free it
+		// No longer needed; Free it
 		agent1.Free()
 		runtime.GC()
 	}
@@ -164,12 +158,10 @@ func (torneo *Tournament) Report() {
 	if torneo.NumDoubleGames > 0 {
 		log.Printf("%d Double games:\n", torneo.NumDoubleGames)
 
-		log.Println()
-		log.Printf("\nTABLE: WR (win ratio) & ADP (Avg. Diff. Points) for A vs B\n\n")
-		torneo.PrintWrTable(torneo.Games)
+		log.Printf("TABLE: WR (Win Rate) & ADP (Avg. Diff. Points) for A vs B\n\n")
+		torneo.PrintWrTable(torneo.Table)
 
-		log.Println()
-		log.Printf("\nTABLE: Adjusted Wald Intervals (90%%) for A vs B\n\n")
-		torneo.PrintWaldTable(torneo.Games)
+		log.Printf("TABLE: Adjusted Wald Intervals (90%%) for A vs B\n\n")
+		torneo.PrintWaldTable(torneo.Table)
 	}
 }
