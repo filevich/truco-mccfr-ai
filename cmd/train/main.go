@@ -43,8 +43,8 @@ func main() {
 			Model: trainer,
 		}
 		log.Println("tiny evaluating")
-		ale, det, di1, di2, wu_ale, wd_ale, wu_det, wd_det, delta := eval.TinyEvalFloat(agent, num_players, ds[:tiny_eval])
-		log.Printf("%s\n\n", eval.FormatTinyEval(ale, det, di1, di2, wu_ale, wd_ale, wu_det, wd_det, delta))
+		res := eval.TinyEvalFloat(agent, num_players, ds[:tiny_eval])
+		log.Printf("%s\n\n", res.String())
 		runtime.GC()
 	}
 

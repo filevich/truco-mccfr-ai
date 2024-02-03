@@ -14,9 +14,9 @@ func main() {
 		b           = "/media/jp/6e5bdfb0-c84b-4144-8d6d-4688934f1afe/models/6p/48np-multi6/a1"
 	)
 
-	log.Printf("loading T1K22...")
-	ds := eval.LoadDataset("eval/t1k22.json")
-	log.Println(" [done]")
+	log.Println("loading t1k22")
+	var ds eval.Dataset = eval.LoadDataset("eval/t1k22.json")
+	log.Println("done loading t1k22")
 
 	agents := []bot.Agent{
 		&bot.Random{},
@@ -30,9 +30,12 @@ func main() {
 
 	for i, agent := range agents {
 		agent.Initialize()
-		log.Printf("[%2d/%2d] tiny evaluating %s...", i+1, len(agents), agent.UID())
-		wr_ale, wr_det, di_ale, di_det, wu_ale, wd_ale, wu_det, wd_det, delta := eval.TinyEvalFloat(agent, num_players, ds[:tiny_eval])
-		log.Println(" -> " + eval.FormatTinyEval(wr_ale, wr_det, di_ale, di_det, wu_ale, wd_ale, wu_det, wd_det, delta))
+		res := eval.TinyEvalFloat(agent, num_players, ds[:tiny_eval])
+		log.Printf("[%2d/%2d] %s: %s",
+			i+1,
+			len(agents),
+			agent.UID(),
+			res.String())
 		agent.Free()
 	}
 }

@@ -7,26 +7,40 @@ import (
 	"github.com/filevich/truco-cfr/bot"
 )
 
+type TinyEvalResult struct {
+	// winrates
+	WinRateRandom,
+	WinRateSimple float32
+	// d-index
+	DumboIndexRandom,
+	DumboIndexSimple int
+	// intervalos de wald
+	WaldUpperRandom, WaldLowerRandom float64
+	WaldUpperSimple, WaldLowerSimple float64
+	Delta                            float64
+}
+
+func (r TinyEvalResult) String() string {
+	s := fmt.Sprintf("random=%.3f [%.3f,%.3f] (di=%d) - simple=%.3f [%.3f,%.3f] (di=%d)",
+		r.WinRateRandom,
+		r.WaldLowerRandom,
+		r.WaldUpperRandom,
+		r.DumboIndexRandom,
+		r.WinRateSimple,
+		r.WaldLowerSimple,
+		r.WaldUpperSimple,
+		r.DumboIndexSimple)
+	s += fmt.Sprintf(" (%.0fs)", r.Delta)
+	return s
+}
+
 func TinyEvalFloat(
 
 	agent bot.Agent,
 	num_players int,
 	ds Dataset,
 
-) (
-
-	// winrates
-	wr_ale,
-	wr_det float32,
-	// d-index
-	di_ale,
-	di_det int,
-	// intervalos de wald
-	wu_ale, wd_ale float64,
-	wu_det, wd_det float64,
-	delta float64,
-
-) {
+) *TinyEvalResult {
 
 	ops := []bot.Agent{
 		&bot.Random{},
@@ -38,45 +52,27 @@ func TinyEvalFloat(
 	res := SingleSimPartidasBin(agent, ops, num_players, ds)
 
 	// winrates
-	wr_ale = res[0].WP()
-	wr_det = res[1].WP()
+	wr_ale := res[0].WP()
+	wr_det := res[1].WP()
 
 	// d-index
-	di_ale = res[0].Dumbo1
-	di_det = res[1].Dumbo1
+	di_ale := res[0].Dumbo1
+	di_det := res[1].Dumbo1
 
 	// walds
-	wu_ale, wd_ale = res[0].WaldInterval(true)
-	wu_det, wd_det = res[1].WaldInterval(true)
+	wu_ale, wd_ale := res[0].WaldInterval(true)
+	wu_det, wd_det := res[1].WaldInterval(true)
 
-	return wr_ale,
-		wr_det,
+	return &TinyEvalResult{
+		WinRateRandom: wr_ale,
+		WinRateSimple: wr_det,
 		// dumbos
-		di_ale,
-		di_det,
+		DumboIndexRandom: di_ale,
+		DumboIndexSimple: di_det,
 		// wald
-		wu_ale, wd_ale,
-		wu_det, wd_det,
+		WaldUpperRandom: wu_ale, WaldLowerRandom: wd_ale,
+		WaldUpperSimple: wu_det, WaldLowerSimple: wd_det,
 		// elapsed time
-		time.Since(tic).Seconds()
-}
-
-func FormatTinyEval(
-
-	ale float32,
-	det float32,
-	di_ale,
-	di_det int,
-	wu_ale, wd_ale float64,
-	wu_det, wd_det float64,
-	delta float64,
-
-) string {
-
-	s := fmt.Sprintf("ale=%.3f (%.3f..%.3f) [di=%d] - det=%.3f (%.3f..%.3f) [di=%d]",
-		ale, wd_ale, wu_ale, di_ale,
-		det, wd_det, wu_det, di_det)
-	s += fmt.Sprintf(" (%.0fs)", delta)
-	return s
-
+		Delta: time.Since(tic).Seconds(),
+	}
 }
