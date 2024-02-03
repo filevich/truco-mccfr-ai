@@ -90,7 +90,7 @@ func (info *InfosetRondaBase) setNuestras_Cartas(
 
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
-	abs abs.IAbstraccion,
+	abs abs.IAbstraction,
 
 ) {
 	// 2. cartas "nuestras":
@@ -124,7 +124,7 @@ func (info *InfosetRondaBase) setNuestras_Cartas(
 				if !m.Tiradas[cix] {
 					info.NuestrasCartas[i/2] = append(
 						info.NuestrasCartas[i/2],
-						abs.Abstraer(c, &p.Ronda.Muestra),
+						abs.Abstract(c, &p.Ronda.Muestra),
 					)
 				}
 			}
@@ -164,7 +164,7 @@ func (info *InfosetRondaBase) setChi(
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
 	chi_i pdt.A,
-	abs abs.IAbstraccion,
+	abs abs.IAbstraction,
 
 ) {
 	// 6. chi(I):
@@ -193,7 +193,7 @@ func (info *InfosetRondaBase) setChi(
 	for i := 0; i < 3; i++ {
 		if cartaHabilitada := chi_i[i]; cartaHabilitada {
 			c := manojo.Cartas[i]
-			bucket := abs.Abstraer(c, &p.Ronda.Muestra)
+			bucket := abs.Abstract(c, &p.Ronda.Muestra)
 			counter[bucket]++
 		}
 	}
@@ -237,7 +237,7 @@ func (info *InfosetRondaBase) Iterable(
 	p *pdt.Partida,
 	m *pdt.Manojo,
 	aixs pdt.A, // array de 15 acciones (bool): 3 cartas + 12 "jugadas"
-	abs abs.IAbstraccion,
+	abs abs.IAbstraction,
 
 ) []pdt.IJugada {
 
@@ -264,7 +264,7 @@ func (info *InfosetRondaBase) Iterable(
 		cartaHabilitada := noLaTiro && laPuedeTirar
 		if cartaHabilitada {
 			c := m.Cartas[i]
-			bucket := abs.Abstraer(c, &p.Ronda.Muestra)
+			bucket := abs.Abstract(c, &p.Ronda.Muestra)
 			if counter[bucket] == nil {
 				counter[bucket] = []int{i}
 			} else {
@@ -340,7 +340,7 @@ func (info *InfosetRondaBase) setRonda(
 
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
-	abs abs.IAbstraccion,
+	abs abs.IAbstraction,
 
 ) {
 	// 8. estado de la mano actual
@@ -442,7 +442,7 @@ func NewInfosetRondaBase(
 
 	p *pdt.Partida,
 	m *pdt.Manojo,
-	a abs.IAbstraccion,
+	a abs.IAbstraction,
 	msgs []enco.IMessage,
 
 ) Infoset {

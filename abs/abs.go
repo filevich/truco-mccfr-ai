@@ -10,9 +10,9 @@ import (
 // Cards abstractions:
 // A1, A2, A3, B
 
-type IAbstraccion interface {
+type IAbstraction interface {
 	Len() int                                      // returns abstraction's number of buckets
-	Abstraer(c *pdt.Carta, muestra *pdt.Carta) int // returns card's bucket
+	Abstract(c *pdt.Carta, muestra *pdt.Carta) int // returns card's bucket
 	String() string                                // retrns abstraction's ID
 	MarshalJSON() ([]byte, error)
 }
@@ -27,7 +27,7 @@ const (
 	NULL_ID Abstractor_ID = "null"
 )
 
-func ParseAbstractor(aID string) IAbstraccion {
+func ParseAbstractor(aID string) IAbstraction {
 	switch Abstractor_ID(strings.ToLower(aID)) {
 	case A1_ID:
 		return &A1{}
@@ -41,7 +41,7 @@ func ParseAbstractor(aID string) IAbstraccion {
 		return &Null{}
 	}
 
-	panic("abstraccion no concida")
+	panic("abstraction unknown")
 }
 
 type A1 struct{}
@@ -67,7 +67,7 @@ func (a A1) Len() int {
 	return 3 // <--- its max bucket +1
 }
 
-func (a A1) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
+func (a A1) Abstract(c *pdt.Carta, muestra *pdt.Carta) int {
 	if c.EsPieza(*muestra) {
 		return 2
 	} else if c.EsMata() {
@@ -113,7 +113,7 @@ func (a A2) Len() int {
 	return 7 // <--- its max bucket +1
 }
 
-func (a A2) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
+func (a A2) Abstract(c *pdt.Carta, muestra *pdt.Carta) int {
 	if c.EsPieza(*muestra) {
 		if c.Valor == 2 || c.Valor == 4 || c.Valor == 5 {
 			return 6
@@ -176,7 +176,7 @@ var A3_map = map[int]int{
 	10: 0,  // 4 ?
 }
 
-func (a A3) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
+func (a A3) Abstract(c *pdt.Carta, muestra *pdt.Carta) int {
 	return A3_map[c.CalcPoder(*muestra)]
 }
 
@@ -214,7 +214,7 @@ func (a B) Len() int {
 	return 4 // <--- its max bucket +1
 }
 
-func (a B) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
+func (a B) Abstract(c *pdt.Carta, muestra *pdt.Carta) int {
 	if c.EsPieza(*muestra) {
 		return 3
 	} else if c.EsMata() {
@@ -282,6 +282,6 @@ func (a Null) Len() int {
 }
 
 // notar que esta abstaccion es independiente de la muestra
-func (a Null) Abstraer(c *pdt.Carta, muestra *pdt.Carta) int {
+func (a Null) Abstract(c *pdt.Carta, muestra *pdt.Carta) int {
 	return int(c.ID())
 }

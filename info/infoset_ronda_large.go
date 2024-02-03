@@ -116,7 +116,7 @@ func (info *InfosetRondaLarge) setNuestrasCartas(
 
 	p *pdt.Partida,
 	m *pdt.Manojo,
-	a abs.IAbstraccion,
+	a abs.IAbstraction,
 
 ) {
 	// cada equipo tiene n/2 manojos donde n es la cantidad de jugadores en la
@@ -144,7 +144,7 @@ func (info *InfosetRondaLarge) setNuestrasCartas(
 	}
 }
 
-func (info *InfosetRondaLarge) setTiradas(p *pdt.Partida, a abs.IAbstraccion) {
+func (info *InfosetRondaLarge) setTiradas(p *pdt.Partida, a abs.IAbstraction) {
 	cartasTiradasPorMano := make([][]int, 3)
 	whoTiradasPorMano := make([][]int, 3)
 
@@ -153,7 +153,7 @@ func (info *InfosetRondaLarge) setTiradas(p *pdt.Partida, a abs.IAbstraccion) {
 		cartasTiradasPorMano[mix] = make([]int, cantTiradas)
 		whoTiradasPorMano[mix] = make([]int, cantTiradas)
 		for tix, tirada := range mano.CartasTiradas {
-			cartasTiradasPorMano[mix][tix] = a.Abstraer(&tirada.Carta, &p.Ronda.Muestra)
+			cartasTiradasPorMano[mix][tix] = a.Abstract(&tirada.Carta, &p.Ronda.Muestra)
 			whoTiradasPorMano[mix][tix] = RIX(p, p.Manojo(tirada.Jugador))
 		}
 	}
@@ -290,7 +290,7 @@ func (info *InfosetRondaLarge) setChi(
 
 	p *pdt.Partida,
 	m *pdt.Manojo,
-	a abs.IAbstraccion,
+	a abs.IAbstraction,
 
 ) {
 	// Notar que el simulador puede repartirme las mismas cartas pero con una
@@ -324,7 +324,7 @@ func (info *InfosetRondaLarge) setChi(
 	for i, jugada := range chi {
 		if jugada.ID() == pdt.JID_TIRAR_CARTA {
 			tirar, _ := jugada.(pdt.TirarCarta)
-			bucket := a.Abstraer(&tirar.Carta, &p.Ronda.Muestra)
+			bucket := a.Abstract(&tirar.Carta, &p.Ronda.Muestra)
 			if _, ok := bucketsSeen[bucket]; ok {
 				continue
 			}
@@ -464,7 +464,7 @@ func (info *InfosetRondaLarge) Iterable(
 	p *pdt.Partida,
 	m *pdt.Manojo,
 	_ pdt.A,
-	a abs.IAbstraccion,
+	a abs.IAbstraction,
 
 ) []pdt.IJugada {
 
@@ -475,7 +475,7 @@ func NewInfosetRondaLarge(
 
 	p *pdt.Partida,
 	m *pdt.Manojo,
-	a abs.IAbstraccion,
+	a abs.IAbstraction,
 	msgs []enco.IMessage,
 
 ) Infoset {

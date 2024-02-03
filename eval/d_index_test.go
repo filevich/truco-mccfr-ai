@@ -216,8 +216,8 @@ func Test_dumbo_6p(t *testing.T) {
 		muestra := p.Ronda.Muestra
 		c1 := &pdt.Carta{Palo: pdt.Copa, Valor: 11}
 		c2 := &pdt.Carta{Palo: pdt.Oro, Valor: 7}
-		t.Log("buck abs 11 Co ~>", abs.A2{}.Abstraer(c1, &muestra))
-		t.Log("buck abs 7 Or ~>", abs.A2{}.Abstraer(c2, &muestra))
+		t.Log("buck abs 11 Co ~>", abs.A2{}.Abstract(c1, &muestra))
+		t.Log("buck abs 7 Or ~>", abs.A2{}.Abstract(c2, &muestra))
 	}
 
 	anna := p.Manojo("anna")

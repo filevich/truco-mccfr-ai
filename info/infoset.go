@@ -52,7 +52,7 @@ type Infoset interface {
 		p *pdt.Partida,
 		m *pdt.Manojo,
 		aixs pdt.A,
-		abs abs.IAbstraccion,
+		abs abs.IAbstraction,
 	) []pdt.IJugada
 }
 
@@ -60,7 +60,7 @@ type InfosetBuilder func(
 
 	p *pdt.Partida,
 	m *pdt.Manojo,
-	a abs.IAbstraccion,
+	a abs.IAbstraction,
 	msgs []enco.IMessage,
 
 ) Infoset

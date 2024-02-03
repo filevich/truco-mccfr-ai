@@ -19,7 +19,7 @@ type ITrainer interface {
 
 	Count_infosets() int
 	get_num_players() int
-	Get_abs() abs.IAbstraccion
+	Get_abs() abs.IAbstraction
 	Get_rnode(hash string, chi_len int) *RNode
 	sample_partida() *pdt.Partida
 	Max_Avg_Game_Value() float32

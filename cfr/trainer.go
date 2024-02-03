@@ -23,7 +23,7 @@ type Trainer struct {
 	Total_Iter   int
 	Infoset_map  map[string]*RNode
 	Num_players  int
-	Abstractor   abs.IAbstraccion
+	Abstractor   abs.IAbstraction
 	// multi
 	Mu      *sync.Mutex
 	Wg      *sync.WaitGroup
@@ -93,7 +93,7 @@ func (trainer *Trainer) get_num_players() int {
 	return 2 // trainer.Num_players
 }
 
-func (t *Trainer) Get_abs() abs.IAbstraccion {
+func (t *Trainer) Get_abs() abs.IAbstraction {
 	return t.Abstractor
 }
 
@@ -492,7 +492,7 @@ const (
 	// LCFR_T     Trainer_T = "lcfr" // <- DEPRECATED
 )
 
-func New_Trainer(t Trainer_T, num_players int, abs abs.IAbstraccion) ITrainer {
+func New_Trainer(t Trainer_T, num_players int, abs abs.IAbstraction) ITrainer {
 	base := Trainer{
 		Current_Iter: 0,
 		Total_Iter:   0,

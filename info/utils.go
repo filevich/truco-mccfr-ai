@@ -20,7 +20,7 @@ func Vamos(
 
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
-	abs abs.IAbstraccion,
+	abs abs.IAbstraction,
 
 ) (maxWeAbstracto, maxOpAbstracto int, vamosExacto string) {
 
@@ -49,10 +49,10 @@ func Vamos(
 	// seteo los valores máximos
 	// estos valores tienen como dominio el rango de los buckets de la abstraccion
 	if maxCarta[weEquipo] != nil {
-		maxWeAbstracto = abs.Abstraer(&maxCarta[weEquipo].Carta, &p.Ronda.Muestra)
+		maxWeAbstracto = abs.Abstract(&maxCarta[weEquipo].Carta, &p.Ronda.Muestra)
 	}
 	if maxCarta[opEquipo] != nil {
-		maxOpAbstracto = abs.Abstraer(&maxCarta[opEquipo].Carta, &p.Ronda.Muestra)
+		maxOpAbstracto = abs.Abstract(&maxCarta[opEquipo].Carta, &p.Ronda.Muestra)
 	}
 
 	// finalmente comparo los PODERES exactos y determino si vamos ganando o no
@@ -83,13 +83,13 @@ func PrimifyManojo(
 
 	m *pdt.Manojo,
 	muestra *pdt.Carta,
-	a abs.IAbstraccion,
+	a abs.IAbstraction,
 
 ) int {
 
 	manojoPrimeID := 1
 	for _, c := range m.Cartas {
-		cartaAbstraida := a.Abstraer(c, muestra)
+		cartaAbstraida := a.Abstract(c, muestra)
 		manojoPrimeID *= utils.AllPrimes[cartaAbstraida]
 	}
 	return manojoPrimeID

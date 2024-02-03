@@ -37,15 +37,15 @@ func hay_menor_y_sigue_ganando(
 	p *pdt.Partida,
 	m *pdt.Manojo,
 	tc pdt.TirarCarta,
-	abs abs.IAbstraccion,
+	abs abs.IAbstraction,
 
 ) bool {
 
 	var (
 		maxTiradas                 = max_tiradas(p)
 		mejor_ellos                = maxTiradas[m.Jugador.GetEquipoContrario()]
-		bucket_la_que_pienso_tirar = abs.Abstraer(&tc.Carta, &p.Ronda.Muestra)
-		bucket_la_mejor_de_ellos   = abs.Abstraer(&mejor_ellos.Carta, &p.Ronda.Muestra)
+		bucket_la_que_pienso_tirar = abs.Abstract(&tc.Carta, &p.Ronda.Muestra)
+		bucket_la_mejor_de_ellos   = abs.Abstract(&mejor_ellos.Carta, &p.Ronda.Muestra)
 	)
 
 	// tengo alguna de MENOR bucket que aun asi le gana a la mejor tirada?
@@ -53,7 +53,7 @@ func hay_menor_y_sigue_ganando(
 	for cix, tirada := range m.Tiradas {
 		if !tirada {
 			c := m.Cartas[cix]
-			bucket := abs.Abstraer(c, &p.Ronda.Muestra)
+			bucket := abs.Abstract(c, &p.Ronda.Muestra)
 			es_menor := bucket < bucket_la_que_pienso_tirar
 			le_gana := bucket_la_mejor_de_ellos < bucket
 			if es_menor && le_gana {
@@ -75,7 +75,7 @@ func hay_menor_y_sigue_ganando(
 	// si vamos PERDIENDO -> no habia necesidad de tirar una carta mas alta
 }
 
-func _max_tiradas_str(p *pdt.Partida, abs abs.IAbstraccion) string {
+func _max_tiradas_str(p *pdt.Partida, abs abs.IAbstraction) string {
 	tiradas := max_tiradas(p)
 	s := "\n"
 	for e, t := range tiradas {
@@ -84,7 +84,7 @@ func _max_tiradas_str(p *pdt.Partida, abs abs.IAbstraccion) string {
 			t.Jugador,
 			t.Carta,
 			abs,
-			abs.Abstraer(&t.Carta, &p.Ronda.Muestra))
+			abs.Abstract(&t.Carta, &p.Ronda.Muestra))
 	}
 
 	if tiradas[pdt.Azul].CalcPoder(p.Ronda.Muestra) > tiradas[pdt.Rojo].CalcPoder(p.Ronda.Muestra) {
@@ -101,7 +101,7 @@ func Is_dumbo(
 	p *pdt.Partida,
 	m *pdt.Manojo,
 	j pdt.IJugada,
-	a abs.IAbstraccion,
+	a abs.IAbstraction,
 
 ) bool {
 
