@@ -7,22 +7,22 @@ import (
 	"github.com/truquito/truco/pdt"
 )
 
-type BotRandom struct{}
+type Random struct{}
 
-func (b *BotRandom) Initialize() {}
+func (b *Random) Initialize() {}
 
-func (b *BotRandom) Free() {}
+func (b *Random) Free() {}
 
-func (b *BotRandom) UID() string {
+func (b *Random) UID() string {
 	return "Random"
 }
 
-func (b *BotRandom) Catch(*pdt.Partida, []enco.Envelope) {}
+func (b *Random) Catch(*pdt.Partida, []enco.Envelope) {}
 
-func (b *BotRandom) ResetCatch() {}
+func (b *Random) ResetCatch() {}
 
 // pre: el jugador no se fue al mazo
-func (b *BotRandom) Action(
+func (b *Random) Action(
 
 	p *pdt.Partida,
 	inGameID string,

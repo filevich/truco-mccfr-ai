@@ -28,8 +28,8 @@ func main() {
 			// },
 
 			// baselines
-			&bot.BotSimple{},
-			&bot.BotRandom{},
+			&bot.Simple{},
+			&bot.Random{},
 		},
 	}
 

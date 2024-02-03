@@ -19,8 +19,8 @@ func main() {
 	log.Println(" [done]")
 
 	agents := []bot.Agent{
-		&bot.BotRandom{},
-		&bot.BotSimple{},
+		&bot.Random{},
+		&bot.Simple{},
 
 		// &bot.BotCFR{
 		// 	N: "final_es-lmccfr_d25h0m_D48h0m_t24878_p0_a1_2208092259",

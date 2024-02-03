@@ -9,25 +9,25 @@ import (
 	"github.com/truquito/truco/pdt"
 )
 
-type BotSimple struct {
+type Simple struct {
 	inGameID string
 }
 
-func (b *BotSimple) Initialize() {}
+func (b *Simple) Initialize() {}
 
-func (b *BotSimple) Free() {}
+func (b *Simple) Free() {}
 
-func (b *BotSimple) UID() string {
-	return "BBSimple"
+func (b *Simple) UID() string {
+	return "Simple"
 }
 
-func (b *BotSimple) Catch(*pdt.Partida, []enco.Envelope) {}
+func (b *Simple) Catch(*pdt.Partida, []enco.Envelope) {}
 
-func (b *BotSimple) ResetCatch() {}
+func (b *Simple) ResetCatch() {}
 
 // retorna la carta mas chicas y mas poderosa en su poder SEGUN b.Abs.Abstraer(...) !
 // si no tiene cartas en su poder, retorna -1,-1
-func (b *BotSimple) cartas(p *pdt.Partida) (min, max *pdt.Carta) {
+func (b *Simple) cartas(p *pdt.Partida) (min, max *pdt.Carta) {
 	minPoder, maxPoder := math.MaxInt32, math.MinInt32
 	minCartaIx, maxCartaIx := -1, -1
 	m := p.Manojo(b.inGameID)
@@ -49,7 +49,7 @@ func (b *BotSimple) cartas(p *pdt.Partida) (min, max *pdt.Carta) {
 	return m.Cartas[minCartaIx], m.Cartas[maxCartaIx]
 }
 
-func (b *BotSimple) jugar_carta(p *pdt.Partida) *pdt.TirarCarta {
+func (b *Simple) jugar_carta(p *pdt.Partida) *pdt.TirarCarta {
 	m := p.Manojo(b.inGameID)
 	_, max_op, vamos := info.Vamos(p, m, &abs.Null{})
 
@@ -95,7 +95,7 @@ func (b *BotSimple) jugar_carta(p *pdt.Partida) *pdt.TirarCarta {
 
 }
 
-func (b *BotSimple) jugar_flor(p *pdt.Partida) pdt.IJugada {
+func (b *Simple) jugar_flor(p *pdt.Partida) pdt.IJugada {
 	// si no cante -> la canto
 	// si tengo que responder a una apuesta: respondo quiero solo cuando mi flor
 	// es > a la flor media (24 = 47/2 (max flor 47 = 30+29+28))
@@ -127,7 +127,7 @@ func (b *BotSimple) jugar_flor(p *pdt.Partida) pdt.IJugada {
 	}
 }
 
-func (b *BotSimple) jugar_envido(p *pdt.Partida) pdt.IJugada {
+func (b *Simple) jugar_envido(p *pdt.Partida) pdt.IJugada {
 	// envido maximo: 30 + 7 = 37
 	// responso si solo cuando: mi envido es mayor a 37/2 = 18
 	e := p.Manojo(b.inGameID).CalcularEnvido(p.Ronda.Muestra)
@@ -143,7 +143,7 @@ func (b *BotSimple) jugar_envido(p *pdt.Partida) pdt.IJugada {
 	}
 }
 
-func (b *BotSimple) jugar_truco(p *pdt.Partida) pdt.IJugada {
+func (b *Simple) jugar_truco(p *pdt.Partida) pdt.IJugada {
 	cantMuestras := 0
 	for _, c := range p.Manojo(b.inGameID).Cartas {
 		if c.EsPieza(p.Ronda.Muestra) {
@@ -170,7 +170,7 @@ func (b *BotSimple) jugar_truco(p *pdt.Partida) pdt.IJugada {
 }
 
 // pre: el jugador no se fue al mazo
-func (b *BotSimple) Action(
+func (b *Simple) Action(
 
 	p *pdt.Partida,
 	inGameID string,

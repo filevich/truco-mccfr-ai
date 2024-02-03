@@ -29,8 +29,8 @@ func TinyEvalFloat(
 ) {
 
 	ops := []bot.Agent{
-		&bot.BotRandom{},
-		&bot.BotSimple{},
+		&bot.Random{},
+		&bot.Simple{},
 	}
 
 	tic := time.Now()
