@@ -4,8 +4,8 @@ import (
 	"log"
 
 	"github.com/filevich/truco-cfr/bot"
-	"github.com/filevich/truco-cfr/eval"
 	"github.com/filevich/truco-cfr/eval/dataset"
+	"github.com/filevich/truco-cfr/eval2"
 	"github.com/filevich/truco-cfr/utils"
 )
 
@@ -19,11 +19,11 @@ func main() {
 	ds := dataset.LoadDataset("t1k22.json")
 
 	// un tournament reune a varios agentes, y los hace pelear a todos contra todos
-	torneo := &eval.TBinomial{
-		Num_players: 6,
-		Partidas:    eval.NewTabla(),
+	torneo := &eval2.Tournament{
+		NumPlayers: 4,
+		Table:      eval2.NewTable(),
 		Agents: []bot.Agent{
-			// &eval.BotCFR{
+			// &eval2.BotCFR{
 			// 	N: "ESL-A1",
 			// 	F: b + "/final_es-lmccfr_d48h1m_D48h0m_t398613799_p1_a1_2210061829.model",
 			// },
@@ -41,7 +41,7 @@ func main() {
 
 	// guardo el resultado
 	t := utils.MiniCurrentTime()
-	utils.Write(torneo.Partidas, "/tmp/res-"+t+".json", true)
+	utils.Write(torneo.Table, "/tmp/res-"+t+".json", true)
 	log.Printf("resultado guardado en %s\n\n", "/tmp/res-"+t+".json")
 
 }
