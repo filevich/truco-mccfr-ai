@@ -22,20 +22,31 @@ for root, dirs, files in os.walk(args.directory):
                 lines = f.readlines()
                 ale = []
                 simple = []
+                start = None
                 for line in lines:
+                    
+                    if "done loading t1k22" in line:
+                        start = parse_utils.parse_date(line[:19])
+
                     match_wr =re.search(r'ale=([\d\.]+) .([\d\.]+)\.\.([\d\.]+).+?di=(\d+).+?det=([\d\.]+) .([\d\.]+)\.\.([\d\.]+).+?di=(\d+)', line)
                     if match_wr:
+                        timestamp = line[:19]
+                        d = (parse_utils.parse_date(timestamp) - start).total_seconds()
                         ale.append({
                             "wr": float(match_wr.group(1)),
                             "l": float(match_wr.group(2)),
                             "u": float(match_wr.group(3)),
                             "di": int(match_wr.group(4)),
+                            "t": timestamp,
+                            "delta": d,
                         })
                         simple.append({
                             "wr": float(match_wr.group(5)),
                             "l": float(match_wr.group(6)),
                             "u": float(match_wr.group(7)),
                             "di": int(match_wr.group(8)),
+                            "t": timestamp,
+                            "delta": d,
                         })
                 data[file] = {
                     "ale": ale,
