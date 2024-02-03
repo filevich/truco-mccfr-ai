@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"log"
-	"runtime"
 	"sync"
 	"time"
 
@@ -76,14 +75,13 @@ func main() {
 		// },
 	}
 
-	postSave := func() {
+	evaluator := func() {
 		agent := &cfr.BotCFR{
 			N:     trainer.String(),
 			Model: trainer,
 		}
 		rr := eval.PlayMultipleDoubleGames(agent, agents, numPlayers, ds[:tinyEval])
 		log.Println(eval.Fmt(rr, agents))
-		runtime.GC()
 	}
 
 	// trainer.Train(
@@ -120,9 +118,10 @@ func main() {
 			Silent:     true,
 			SaveDir:    saveDir,
 			SavePrefix: "final_",
+			PostSave:   nil,
 			// tiny eval
-			PostSave:  postSave,
 			EvalEvery: 1 * time.Minute,
+			Evaluator: evaluator,
 			// GC
 			GCEvery: 100 * time.Hour,
 		},

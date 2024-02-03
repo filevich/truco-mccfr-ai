@@ -41,6 +41,7 @@ type ProfileTime struct {
 	FullySilent bool
 	SaveDir     string
 	SavePrefix  string
+	PostSave    func()
 
 	// gc
 	GCEvery time.Duration
@@ -50,7 +51,7 @@ type ProfileTime struct {
 
 	// eval
 	EvalEvery time.Duration
-	PostSave  func()
+	Evaluator func()
 }
 
 // is prunable: iteracion (int ~ 2k), tiempo (tiempo ~ 3hs), porcentage done (float ~ 25%)
@@ -202,8 +203,8 @@ func (p *ProfileTime) PrintProgress(trainer ITrainer) {
 func (p *ProfileTime) Checkpoint(t ITrainer) {
 	// eval ?
 	if p.shouldEval(t) {
-		if p.PostSave != nil {
-			p.PostSave()
+		if p.Evaluator != nil {
+			p.Evaluator()
 		}
 		p.lastEval = time.Now()
 	}
