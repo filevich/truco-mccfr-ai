@@ -9,7 +9,7 @@ import (
 
 func Append(x interface{}, file string, identation bool) {
 
-	precheck_dir_existance(file)
+	precheckDirExistance(file)
 
 	var (
 		bs  []byte
@@ -43,7 +43,7 @@ func Append(x interface{}, file string, identation bool) {
 
 func Write(x interface{}, file string, identation bool) {
 
-	precheck_dir_existance(file)
+	precheckDirExistance(file)
 
 	var (
 		bs  []byte
@@ -84,7 +84,7 @@ func Write(x interface{}, file string, identation bool) {
 
 func Touch(file string) *os.File {
 
-	precheck_dir_existance(file)
+	precheckDirExistance(file)
 
 	// ejemplo:
 	// si `pwd` retorna `/home/jp/Workspace/facu/pdg/truco-cfr`
@@ -111,7 +111,7 @@ func FastAppend(x interface{}, f *os.File) {
 	}
 }
 
-func precheck_dir_existance(path string) {
+func precheckDirExistance(path string) {
 	if r := strings.Split(path, "/"); len(r) > 1 {
 		// assure dir existance
 		subdirs := r[:len(r)-1]
