@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"runtime"
 	"sync"
@@ -13,30 +14,58 @@ import (
 	"github.com/filevich/truco-cfr/eval/dataset"
 )
 
+// flags
+var (
+	modelPtr      = flag.String("model", "", "Filepath to .model file to continue training")
+	numPlayersPtr = flag.Int("p", 2, "Number of players")
+	trainerPtr    = flag.String("trainer", "es-vmccfr", "CFR variant")
+	absPtr        = flag.String("abs", "a1", "Abstraction")
+	threadsPtr    = flag.Int("threads", 1, "Threads")
+	saveDirPtr    = flag.String("dir", "/tmp", "Save directory")
+	tinyEvalPtr   = flag.Int("eval", 1_000, "Progress eval length.")
+)
+
+func init() {
+	flag.Parse()
+	if len(*modelPtr) > 0 {
+		log.Println("model", *modelPtr)
+	} else {
+		log.Println("numPlayers", *numPlayersPtr)
+		log.Println("algo", *trainerPtr)
+		log.Println("abs", *absPtr)
+	}
+	log.Println("threads", *threadsPtr)
+	log.Println("saveDir", *saveDirPtr)
+	log.Println("tinyEval", *tinyEvalPtr)
+}
+
 func main() {
 
 	var (
-		saveDir    = "/tmp"
-		threads    = 1
-		numPlayers = 2
-		tinyEval   = 1_000
+		saveDir     = *saveDirPtr
+		threads     = *threadsPtr
+		numPlayers  = *numPlayersPtr
+		algo        = *trainerPtr
+		tinyEval    = *tinyEvalPtr
+		model       = *modelPtr
+		abstraction = abs.ParseAbs(*absPtr)
 	)
 
-	trainer := cfr.NewTrainer(cfr.ESVMCCFR_T, numPlayers, &abs.A1{})
+	var trainer cfr.ITrainer
 
-	// trainer := cfr.Load(
-	// 	cfr.CFR_T,
-	// 	"/media/jp/DATA/models/2p/models-24h+48p-multi-core/extension-2d/a2/final_CFR_d24h2m_D24h0m_t8435_p0_a2_2205262321.json")
-
-	// trainer := cfr.Load_model(
-	// 	"/media/jp/DATA/models/2p/models-24h+48p-multi-core/extension-2d/a2/final_cfr_d48h4m_D48h0m_t26190_p0_a2_2210141233.model",
-	// 	true,
-	// 	1_000_000)
+	if len(model) == 0 {
+		trainer = cfr.NewTrainer(
+			cfr.Trainer_T(algo),
+			numPlayers,
+			abstraction)
+	} else {
+		trainer = cfr.LoadModel(model, true, 1_000_000)
+	}
 
 	// tiny eval
-	log.Println("loading t1k22")
+	log.Println("Loading t1k22")
 	var ds dataset.Dataset = dataset.LoadDataset("t1k22.json")
-	log.Println("done loading t1k22")
+	log.Println("Done loading t1k22")
 
 	agents := []bot.Agent{
 		&bot.Random{},
