@@ -15,7 +15,7 @@ func main() {
 	)
 
 	fmt.Printf("loading T1K22...")
-	ds := eval.Load_dataset("/Users/jp/Workspace/go/truco-ai/truco-cfr/eval/t1k22.json")
+	ds := eval.Load_dataset("eval/t1k22.json")
 	fmt.Println(" [done]")
 
 	agents := []bot.Agent{

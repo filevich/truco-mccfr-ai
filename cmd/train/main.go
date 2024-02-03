@@ -34,7 +34,7 @@ func main() {
 
 	// tiny eval
 	fmt.Printf("loading T1K22...")
-	var ds eval.Dataset = eval.Load_dataset("/Users/jp/Workspace/go/truco-ai/truco-cfr/eval/t1k22.json")
+	var ds eval.Dataset = eval.Load_dataset("eval/t1k22.json")
 	fmt.Println(" [done]")
 
 	post_save := func() {
