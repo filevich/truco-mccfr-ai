@@ -5,6 +5,7 @@ import (
 
 	"github.com/filevich/truco-cfr/bot"
 	"github.com/filevich/truco-cfr/eval"
+	"github.com/filevich/truco-cfr/eval/dataset"
 	"github.com/filevich/truco-cfr/utils"
 )
 
@@ -15,7 +16,7 @@ func main() {
 	// b = "/media/jp/6e5bdfb0-c84b-4144-8d6d-4688934f1afe/models/6p/48np-multi6/a1"
 	)
 
-	ds := eval.LoadDataset("eval/t1k22.json")
+	ds := dataset.LoadDataset("eval/t1k22.json")
 
 	// un tournament reune a varios agentes, y los hace pelear a todos contra todos
 	torneo := &eval.TBinomial{

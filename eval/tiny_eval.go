@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/filevich/truco-cfr/bot"
+	"github.com/filevich/truco-cfr/eval/dataset"
 )
 
 type TinyEvalResult struct {
@@ -38,7 +39,7 @@ func TinyEval(
 
 	agent bot.Agent,
 	num_players int,
-	ds Dataset,
+	ds dataset.Dataset,
 
 ) *TinyEvalResult {
 

@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/filevich/truco-cfr/bot"
+	"github.com/filevich/truco-cfr/eval/dataset"
 	"github.com/filevich/truco-cfr/utils"
 	"github.com/truquito/truco/pdt"
 )
@@ -12,7 +13,7 @@ import (
 // partidas simples (hasta el final)
 // la primera mitad el agent1 empieza primero
 // la otra mitad el agent2 empieza primero
-func SimPartidasBin(ds Dataset, agent1, agent2 bot.Agent, num_players int) *Resultados {
+func SimPartidasBin(ds dataset.Dataset, agent1, agent2 bot.Agent, num_players int) *Resultados {
 
 	num_partidas := 2 * len(ds)
 
@@ -65,7 +66,7 @@ func SimPartidasBin(ds Dataset, agent1, agent2 bot.Agent, num_players int) *Resu
 
 func partidaSegunEntradas(
 
-	entradas []*Row,
+	entradas []*dataset.Row,
 	agent1,
 	agent2 bot.Agent,
 	Num_players int,
@@ -133,7 +134,7 @@ func SingleSimPartidasBin(
 	agent bot.Agent,
 	ops []bot.Agent,
 	num_players int,
-	ds Dataset,
+	ds dataset.Dataset,
 
 ) []*Resultados {
 

@@ -9,6 +9,7 @@ import (
 	"github.com/filevich/truco-cfr/abs"
 	"github.com/filevich/truco-cfr/cfr"
 	"github.com/filevich/truco-cfr/eval"
+	"github.com/filevich/truco-cfr/eval/dataset"
 )
 
 const (
@@ -34,7 +35,7 @@ func main() {
 
 	// tiny eval
 	log.Println("loading t1k22")
-	var ds eval.Dataset = eval.LoadDataset("eval/t1k22.json")
+	var ds dataset.Dataset = dataset.LoadDataset("eval/t1k22.json")
 	log.Println("done loading t1k22")
 
 	post_save := func() {

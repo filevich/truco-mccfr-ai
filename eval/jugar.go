@@ -3,6 +3,7 @@ package eval
 import (
 	"github.com/filevich/truco-cfr/abs"
 	"github.com/filevich/truco-cfr/bot"
+	"github.com/filevich/truco-cfr/eval/dumbo"
 	"github.com/filevich/truco-cfr/utils"
 	"github.com/truquito/truco/pdt"
 )
@@ -114,7 +115,7 @@ func JugarRondaHastaElFinal(
 		// 	// }
 		// 	dumboid = Is_dumbo(p, m, a, cfr.Z0{})
 		// }
-		dumboid = IsDumbo(p, m, a, &abs.Null{})
+		dumboid = dumbo.IsDumbo(p, m, a, &abs.Null{})
 
 		if dumboid {
 			if m.Jugador.Equipo == pdt.Azul {

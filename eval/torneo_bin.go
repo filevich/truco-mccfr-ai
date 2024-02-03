@@ -7,6 +7,7 @@ import (
 	"runtime"
 
 	"github.com/filevich/truco-cfr/bot"
+	"github.com/filevich/truco-cfr/eval/dataset"
 	"github.com/jedib0t/go-pretty/v6/table"
 )
 
@@ -17,7 +18,7 @@ type TBinomial struct {
 	Partidas             Tabla
 }
 
-func (t *TBinomial) Start(ds Dataset, verbose bool) {
+func (t *TBinomial) Start(ds dataset.Dataset, verbose bool) {
 
 	t.Cant_partidas_dobles = len(ds)
 
