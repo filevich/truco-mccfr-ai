@@ -384,14 +384,14 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 	}
 
 	if verbose {
-		log.Printf("Leyendo tamano del modelo...\n")
+		log.Printf("Fetching model size...\n")
 	}
 
 	locs, _ := lineCounter(filename)
 
 	if verbose {
-		log.Printf("%d lineas leidas\n", locs)
-		log.Printf("Cargando modelo: 0%%")
+		log.Printf("%d lines red\n", locs)
+		log.Printf("Loading model: 0%%")
 	}
 
 	defer file.Close()
