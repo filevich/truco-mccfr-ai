@@ -30,7 +30,7 @@ func main() {
 
 	for i, agent := range agents {
 		agent.Initialize()
-		res := eval.TinyEvalFloat(agent, num_players, ds[:tiny_eval])
+		res := eval.TinyEval(agent, num_players, ds[:tiny_eval])
 		log.Printf("[%2d/%2d] %s: %s",
 			i+1,
 			len(agents),

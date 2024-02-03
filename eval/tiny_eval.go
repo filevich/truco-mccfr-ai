@@ -34,7 +34,7 @@ func (r TinyEvalResult) String() string {
 	return s
 }
 
-func TinyEvalFloat(
+func TinyEval(
 
 	agent bot.Agent,
 	num_players int,

@@ -43,7 +43,7 @@ func main() {
 			Model: trainer,
 		}
 		log.Println("tiny evaluating")
-		res := eval.TinyEvalFloat(agent, num_players, ds[:tiny_eval])
+		res := eval.TinyEval(agent, num_players, ds[:tiny_eval])
 		log.Printf("%s\n\n", res.String())
 		runtime.GC()
 	}
