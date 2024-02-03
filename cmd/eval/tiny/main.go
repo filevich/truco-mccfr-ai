@@ -16,7 +16,7 @@ func main() {
 	)
 
 	log.Println("loading t1k22")
-	var ds dataset.Dataset = dataset.LoadDataset("eval/t1k22.json")
+	var ds dataset.Dataset = dataset.LoadDataset("t1k22.json")
 	log.Println("done loading t1k22")
 
 	agents := []bot.Agent{
