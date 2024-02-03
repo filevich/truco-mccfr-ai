@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"time"
 
 	"github.com/filevich/truco-cfr/bot"
-	"github.com/filevich/truco-cfr/eval"
 	"github.com/filevich/truco-cfr/eval/dataset"
+	"github.com/filevich/truco-cfr/eval2"
 )
 
 func main() {
@@ -30,13 +32,24 @@ func main() {
 	}
 
 	for i, agent := range agents {
-		agent.Initialize()
-		res := eval.TinyEval(agent, num_players, ds[:tiny_eval])
-		log.Printf("[%2d/%2d] %s: %s",
+		var (
+			rr                  = eval2.PlayMultipleDoubleGames(agent, agents, num_players, ds)
+			s                   = ""
+			delta time.Duration = 0
+		)
+
+		for i, r := range rr {
+			s += fmt.Sprintf("%s=%s - ", agents[i].UID(), r)
+			delta += r.Delta
+		}
+
+		log.Printf("[%2d/%2d] %s: %s %s\n",
 			i+1,
 			len(agents),
 			agent.UID(),
-			res.String())
+			s,
+			delta.Round(time.Second))
+
 		agent.Free()
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"runtime"
 	"strconv"
+	"time"
 
 	"github.com/filevich/truco-cfr/abs"
 	"github.com/filevich/truco-cfr/bot"
@@ -53,6 +54,7 @@ func PlayDoubleGames(
 ) *Results {
 
 	num_partidas := 2 * len(ds)
+	start := time.Now()
 
 	res := &Results{
 		Title:              fmt.Sprintf("Double games %s vs %s", agent1.UID(), agent2.UID()),
@@ -97,6 +99,8 @@ func PlayDoubleGames(
 			float32(-diffPtsWonAgent2Acc),
 		)
 	}
+
+	res.Delta = time.Since(start)
 
 	return res
 }

@@ -2,18 +2,20 @@ package eval2
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/filevich/truco-cfr/utils"
 )
 
 type Results struct {
-	Title              string    `json:"title"`
-	TotalNumberOfGames int       `json:"totalNumberOfGames"`
-	WonByACounter      int       `json:"wonByACounter"`
-	Wons               []float64 `json:"wons"`
-	PointsWonDiff      []float32 `json:"pointsWonDiff"`
-	Dumbo1             int       `json:"dumbo1"`
-	Dumbo2             int       `json:"dumbo2"`
+	Title              string        `json:"title"`
+	TotalNumberOfGames int           `json:"totalNumberOfGames"`
+	WonByACounter      int           `json:"wonByACounter"`
+	Wons               []float64     `json:"wons"`
+	PointsWonDiff      []float32     `json:"pointsWonDiff"`
+	Dumbo1             int           `json:"dumbo1"`
+	Dumbo2             int           `json:"dumbo2"`
+	Delta              time.Duration `json:"delta"`
 }
 
 // Winning Percentage The number of the games won by A divided by the total
@@ -46,10 +48,11 @@ func (r *Results) WaldInterval(agent1 bool) (upper, lower float64) {
 }
 
 func (r *Results) String() string {
-	// WP ~ Winning Percentage
-	// ADP ~ Average Difference in Points
-	return fmt.Sprintf("%s\nWP: %.1f%%\nADP: %.3f",
-		r.Title,
-		r.WP()*float32(100),
-		r.ADP())
+	u, l := r.WaldInterval(true)
+	s := fmt.Sprintf("%.3f [%.3f, %.3f] (di=%d)",
+		r.WP(),
+		l,
+		u,
+		r.Dumbo1)
+	return s
 }
