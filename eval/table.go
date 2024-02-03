@@ -1,4 +1,4 @@
-package eval2
+package eval
 
 import "github.com/filevich/truco-cfr/utils"
 

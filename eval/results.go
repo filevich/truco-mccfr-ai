@@ -1,9 +1,10 @@
-package eval2
+package eval
 
 import (
 	"fmt"
 	"time"
 
+	"github.com/filevich/truco-cfr/bot"
 	"github.com/filevich/truco-cfr/utils"
 )
 
@@ -55,4 +56,18 @@ func (r *Results) String() string {
 		u,
 		r.Dumbo1)
 	return s
+}
+
+func Fmt(rr []*Results, agents []bot.Agent) string {
+	var (
+		s                   = ""
+		delta time.Duration = 0
+	)
+
+	for i, r := range rr {
+		s += fmt.Sprintf("%s=%s - ", agents[i].UID(), r)
+		delta += r.Delta
+	}
+
+	return s + delta.Round(time.Second).String()
 }

@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/filevich/truco-cfr/bot"
+	"github.com/filevich/truco-cfr/eval"
 	"github.com/filevich/truco-cfr/eval/dataset"
-	"github.com/filevich/truco-cfr/eval2"
 )
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 
 	for i, agent := range agents {
 		var (
-			rr                  = eval2.PlayMultipleDoubleGames(agent, agents, num_players, ds)
+			rr                  = eval.PlayMultipleDoubleGames(agent, agents, num_players, ds)
 			s                   = ""
 			delta time.Duration = 0
 		)

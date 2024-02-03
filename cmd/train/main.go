@@ -7,22 +7,22 @@ import (
 	"time"
 
 	"github.com/filevich/truco-cfr/abs"
+	"github.com/filevich/truco-cfr/bot"
 	"github.com/filevich/truco-cfr/cfr"
 	"github.com/filevich/truco-cfr/eval"
 	"github.com/filevich/truco-cfr/eval/dataset"
 )
 
-const (
-	save_dir = "/tmp"
-)
-
 func main() {
 
-	threads := 1
-	num_players := 2
-	tiny_eval := 1_000
+	var (
+		saveDir    = "/tmp"
+		threads    = 1
+		numPlayers = 2
+		tinyEval   = 1_000
+	)
 
-	trainer := cfr.NewTrainer(cfr.ESVMCCFR_T, num_players, &abs.A1{})
+	trainer := cfr.NewTrainer(cfr.ESVMCCFR_T, numPlayers, &abs.A1{})
 
 	// trainer := cfr.Load(
 	// 	cfr.CFR_T,
@@ -38,18 +38,25 @@ func main() {
 	var ds dataset.Dataset = dataset.LoadDataset("t1k22.json")
 	log.Println("done loading t1k22")
 
-	post_save := func() {
+	agents := []bot.Agent{
+		&bot.Random{},
+		&bot.Simple{},
+		// &bot.BotCFR{
+		// 	N: "final_es-lmccfr_d25h0m_D48h0m_t24878_p0_a1_2208092259",
+		// 	F: b + "/final_es-lmccfr_d25h0m_D48h0m_t24878_p0_a1_2208092259.model",
+		// },
+	}
+
+	postSave := func() {
 		agent := &cfr.BotCFR{
 			N:     trainer.String(),
 			Model: trainer,
 		}
 		log.Println("tiny evaluating")
-		res := eval.TinyEval(agent, num_players, ds[:tiny_eval])
-		log.Printf("%s\n\n", res.String())
+		rr := eval.PlayMultipleDoubleGames(agent, agents, numPlayers, ds[:tinyEval])
+		log.Println(eval.Fmt(rr, agents))
 		runtime.GC()
 	}
-
-	post_save()
 
 	// trainer.Train(
 	// 	&cfr.ProfileTime{
@@ -83,10 +90,10 @@ func main() {
 			// io
 			SaveEvery:  2 * time.Minute,
 			Silent:     true,
-			SaveDir:    save_dir,
+			SaveDir:    saveDir,
 			SavePrefix: "final_",
 			// tiny eval
-			PostSave:  post_save,
+			PostSave:  postSave,
 			EvalEvery: 1 * time.Minute,
 			// GC
 			GCEvery: 100 * time.Hour,
