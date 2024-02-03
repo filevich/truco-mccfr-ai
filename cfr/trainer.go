@@ -199,7 +199,7 @@ func (t *Trainer) SaveModel(filename string, report_interval int, id string, ext
 	verbose := report_interval > 0
 
 	if verbose {
-		log.Printf("\nGuardando: 0%%")
+		log.Printf("Saving: 0%%")
 	}
 
 	// Infoset_map  map[string]*RNode
@@ -224,7 +224,7 @@ func (t *Trainer) SaveModel(filename string, report_interval int, id string, ext
 	for hash, rnode := range t.Infoset_map {
 		if verbose && utils.Mod(i+1, report_interval) == 0 {
 			progress := float32(i+1) / float32(len(t.Infoset_map))
-			log.Printf(" | %d%%", int(progress*100))
+			fmt.Printf(" | %d%%", int(progress*100))
 			runtime.GC()
 		}
 
@@ -235,10 +235,6 @@ func (t *Trainer) SaveModel(filename string, report_interval int, id string, ext
 		}
 
 		i++
-	}
-
-	if report_interval > 0 {
-		log.Println()
 	}
 
 	// retorno Current_Iter a su estado orig

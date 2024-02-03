@@ -52,7 +52,6 @@ func main() {
 			N:     trainer.String(),
 			Model: trainer,
 		}
-		log.Println("tiny evaluating")
 		rr := eval.PlayMultipleDoubleGames(agent, agents, numPlayers, ds[:tinyEval])
 		log.Println(eval.Fmt(rr, agents))
 		runtime.GC()

@@ -79,7 +79,7 @@ func (p *ProfileTime) Init(trainer ITrainer) {
 		prunning = fmt.Sprintf("[prunning @ %s]", p.PrunningTreshold.Round(time.Second))
 	}
 
-	log.Printf("Running %s x %s for %s [saving every %s][GC every %s] %s %s [%d threads] starting at %s\n",
+	log.Printf("Running %s x %s for %s [saving every %s][GC every %s] %s %s [%d threads]\n",
 		trainer.String(),
 		trainer.GetAbs().String(),
 		p.TotalRunningTime,
@@ -88,7 +88,6 @@ func (p *ProfileTime) Init(trainer ITrainer) {
 		prunning,
 		mode,
 		p.Threads,
-		utils.CurrentTimeFileFormat(),
 	)
 }
 
@@ -220,15 +219,6 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 		return
 	}
 
-	// anres de guardar, corro el GC 5 veces
-	// total := 5
-	// for i := 0; i < total; i++ {
-	// 	log.Printf("PRE save GC...")
-	// 	runtime.GC()
-	// 	log.Printf("; sleep 10s... [%d/%d]\n", i+1, total)
-	// 	time.Sleep(time.Second * 10)
-	// }
-
 	p.lastSave = time.Now() // <- seguro porque estoy con el Mu
 
 	// iter 0 *hecha* -> t1
@@ -242,7 +232,7 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 		prunned = 1
 	}
 
-	filename := fmt.Sprintf("%s/%s%s_d%s_D%s_t%d_p%d_%s_%s.json",
+	filename := fmt.Sprintf("%s/%s%s_d%s_D%s_t%d_p%d_%s_%s.model",
 		p.SaveDir,
 		p.SavePrefix,
 		t.String(),
@@ -254,19 +244,12 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 		utils.MiniCurrentTime(),
 	)
 
-	dotmodel := filename[:len(filename)-len(".json")] + ".model"
-
 	// iter 0 *hecha* -> t1
 	// pero la strucy dice Current_Iter=0
 	// entonces hago inc&desc
 
-	// deprecated
-	// t.Save(filename)
-	t.SaveModel(dotmodel, 1_000_000, t.String(), nil)
-
-	// report el filesave?
-	// minimo
-	log.Println(" [*]")
+	log.Printf("Saving model at %s\n", filename)
+	t.SaveModel(filename, 1_000_000, t.String(), nil)
 
 	// completo
 	// p := float32(iter_name) / float32(t.T) * 100
