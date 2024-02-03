@@ -33,7 +33,7 @@ type Trainer struct {
 func (trainer *Trainer) add_root_utils(new_utils []float32) {
 	root := trainer.Get_rnode("__ROOT__", 2)
 	trainer.Lock()
-	root.Cumulative_regrets = utils.Sum_float32_slices(root.Cumulative_regrets, new_utils)
+	root.Cumulative_regrets = utils.SumFloat32Slices(root.Cumulative_regrets, new_utils)
 	trainer.Unlock()
 }
 

@@ -7,7 +7,7 @@ import (
 
 var F = "02 Jan 2006 15:04:05"
 
-func Current_time_file_format() string {
+func CurrentTimeFileFormat() string {
 	currentTime := time.Now()
 	return fmt.Sprintf("%d-%02d-%02d-%02d%02d",
 		currentTime.Year(),
@@ -18,7 +18,7 @@ func Current_time_file_format() string {
 	)
 }
 
-func Mini_Current_time() string {
+func MiniCurrentTime() string {
 	currentTime := time.Now()
 	return fmt.Sprintf("%d%02d%02d%02d%02d",
 		currentTime.Year()%100,

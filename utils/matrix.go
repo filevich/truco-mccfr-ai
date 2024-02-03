@@ -10,7 +10,7 @@ func Prod(xs []float32) float32 {
 	return res
 }
 
-func Sum_float32_slices(xs, ys []float32) []float32 {
+func SumFloat32Slices(xs, ys []float32) []float32 {
 	res := make([]float32, len(xs))
 	for i := 0; i < len(xs); i++ {
 		res[i] = xs[i] + ys[i]

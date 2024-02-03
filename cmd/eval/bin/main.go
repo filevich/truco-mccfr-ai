@@ -39,7 +39,7 @@ func main() {
 	log.Println()
 
 	// guardo el resultado
-	t := utils.Mini_Current_time()
+	t := utils.MiniCurrentTime()
 	utils.Write(torneo.Partidas, "/tmp/res-"+t+".json", true)
 	log.Printf("resultado guardado en %s\n\n", "/tmp/res-"+t+".json")
 

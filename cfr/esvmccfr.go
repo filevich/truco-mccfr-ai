@@ -146,7 +146,7 @@ func (trainer *ESVMCCFR) run(
 			// no hace falta que vuelva a llamar recursivamente a cfr
 			// ya se lo que deberia devolver
 			new_pts := utils.Payoffs(p.Manojo(elMano), pts_ganados, p.Manojo(ganador))
-			new_acc := utils.Sum_float32_slices(acc, new_pts)
+			new_acc := utils.SumFloat32Slices(acc, new_pts)
 			return new_acc
 
 		} else {
@@ -155,7 +155,7 @@ func (trainer *ESVMCCFR) run(
 
 				// acumulo los puntos (del envite)
 				new_pts := utils.Payoffs(p.Manojo(elMano), pts_ganados, p.Manojo(ganador))
-				new_acc := utils.Sum_float32_slices(acc, new_pts)
+				new_acc := utils.SumFloat32Slices(acc, new_pts)
 				return trainer.run(profile, p, new_reach_probabilities, new_acc, update_player)
 
 			} else {
@@ -195,7 +195,7 @@ func (trainer *ESVMCCFR) run(
 			// no hace falta que vuelva a llamar recursivamente a cfr
 			// ya se lo que deberia devolver
 			new_pts := utils.Payoffs(p.Manojo(elMano), pts_ganados, p.Manojo(ganador))
-			new_acc := utils.Sum_float32_slices(acc, new_pts)
+			new_acc := utils.SumFloat32Slices(acc, new_pts)
 			counterfactual_values[aix] = new_acc
 
 		} else {
@@ -204,7 +204,7 @@ func (trainer *ESVMCCFR) run(
 
 				// acumulo los puntos (del envite)
 				new_pts := utils.Payoffs(p.Manojo(elMano), pts_ganados, p.Manojo(ganador))
-				new_acc := utils.Sum_float32_slices(acc, new_pts)
+				new_acc := utils.SumFloat32Slices(acc, new_pts)
 				counterfactual_values[aix] = trainer.run(
 					profile,
 					p,

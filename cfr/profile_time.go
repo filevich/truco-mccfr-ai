@@ -88,7 +88,7 @@ func (p *ProfileTime) Init(trainer ITrainer) {
 		prunning,
 		mode,
 		p.Threads,
-		utils.Current_time_file_format(),
+		utils.CurrentTimeFileFormat(),
 	)
 }
 
@@ -195,7 +195,7 @@ func (p *ProfileTime) PrintProgress(trainer ITrainer) {
 			inc,
 			relative_inc,
 			P,
-			utils.Mini_Current_time()[2:],
+			utils.MiniCurrentTime()[2:],
 		)
 	}
 }
@@ -251,7 +251,7 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 		iter_name,
 		prunned,
 		t.Get_abs().String(),
-		utils.Mini_Current_time(),
+		utils.MiniCurrentTime(),
 	)
 
 	dotmodel := filename[:len(filename)-len(".json")] + ".model"
