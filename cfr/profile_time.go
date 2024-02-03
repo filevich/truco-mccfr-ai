@@ -18,39 +18,39 @@ const (
 
 type ProfileTime struct {
 	//
-	TotalRunningTime  time.Duration
-	Prunning_treshold time.Duration
+	TotalRunningTime time.Duration
+	PrunningTreshold time.Duration
 
 	// privadas
-	start     time.Time
-	last_save time.Time
-	last_eval time.Time
-	last_GC   time.Time
+	start    time.Time
+	lastSave time.Time
+	lastEval time.Time
+	lastGC   time.Time
 
 	// Multi
 	Threads int
 	Mu      *sync.Mutex
 
 	// report
-	last_info_len  int
-	first_info_inc int
+	lastInfoLen  int
+	firstInfoInc int
 
 	// io
-	Save_every  time.Duration
+	SaveEvery   time.Duration
 	Silent      bool
 	FullySilent bool
-	Save_dir    string
-	Save_prefix string
+	SaveDir     string
+	SavePrefix  string
 
 	// gc
-	GC_every time.Duration
+	GCEvery time.Duration
 
 	// exploitability
 	Exploiting bot.Agent
 
 	// eval
-	Eval_every time.Duration
-	PostSave   func()
+	EvalEvery time.Duration
+	PostSave  func()
 }
 
 // is prunable: iteracion (int ~ 2k), tiempo (tiempo ~ 3hs), porcentage done (float ~ 25%)
@@ -60,9 +60,9 @@ func (p *ProfileTime) Init(trainer ITrainer) {
 
 	now := time.Now()
 	p.start = now
-	p.last_save = now
-	p.last_eval = time.Now().Add(-1 * 24 * time.Hour)
-	p.last_GC = now
+	p.lastSave = now
+	p.lastEval = time.Now().Add(-1 * 24 * time.Hour)
+	p.lastGC = now
 
 	if p.IsFullySilent() {
 		return
@@ -75,16 +75,16 @@ func (p *ProfileTime) Init(trainer ITrainer) {
 	}
 
 	prunning := "[no prunning]"
-	if p.Prunning_treshold != NEVER {
-		prunning = fmt.Sprintf("[prunning @ %s]", p.Prunning_treshold.Round(time.Second))
+	if p.PrunningTreshold != NEVER {
+		prunning = fmt.Sprintf("[prunning @ %s]", p.PrunningTreshold.Round(time.Second))
 	}
 
 	log.Printf("Running %s x %s for %s [saving every %s][GC every %s] %s %s [%d threads] starting at %s\n",
 		trainer.String(),
-		trainer.Get_abs().String(),
+		trainer.GetAbs().String(),
 		p.TotalRunningTime,
-		p.Save_every,
-		p.GC_every,
+		p.SaveEvery,
+		p.GCEvery,
 		prunning,
 		mode,
 		p.Threads,
@@ -97,8 +97,8 @@ func (p ProfileTime) Continue(trainer ITrainer) bool {
 }
 
 func (p ProfileTime) IsPrunable(trainer ITrainer) bool {
-	return p.Prunning_treshold != NEVER &&
-		time.Since(p.start) >= p.Prunning_treshold
+	return p.PrunningTreshold != NEVER &&
+		time.Since(p.start) >= p.PrunningTreshold
 }
 
 func (p ProfileTime) IsMulti() bool {
@@ -128,15 +128,15 @@ func (p ProfileTime) shouldSave(trainer ITrainer) bool {
 		lastThread = trainer.AllDones()
 	}
 	// lo mismo con el last_save
-	return time.Since(p.last_save) >= p.Save_every || (lastIter && lastThread)
+	return time.Since(p.lastSave) >= p.SaveEvery || (lastIter && lastThread)
 }
 
 func (p ProfileTime) shouldEval(trainer ITrainer) bool {
-	return time.Since(p.last_eval) >= p.Eval_every
+	return time.Since(p.lastEval) >= p.EvalEvery
 }
 
 func (p ProfileTime) shouldGC(trainer ITrainer) bool {
-	return time.Since(p.last_GC) >= p.GC_every
+	return time.Since(p.lastGC) >= p.GCEvery
 }
 
 func (p ProfileTime) PercentageDone(t int) float32 {
@@ -175,15 +175,15 @@ func (p *ProfileTime) PrintProgress(trainer ITrainer) {
 			P = " [P]"
 		}
 
-		total := trainer.Count_infosets() // unsafe, pero no importa
-		inc := total - p.last_info_len
-		if p.first_info_inc == 0 {
-			p.first_info_inc = inc
+		total := trainer.CountInfosets() // unsafe, pero no importa
+		inc := total - p.lastInfoLen
+		if p.firstInfoInc == 0 {
+			p.firstInfoInc = inc
 		}
-		relative_inc := float32(inc) / float32(p.first_info_inc)
-		p.last_info_len = total
+		relative_inc := float32(inc) / float32(p.firstInfoInc)
+		p.lastInfoLen = total
 
-		AGV := trainer.Max_Avg_Game_Value()
+		AGV := trainer.MaxAvgGameValue()
 
 		log.Printf("[%3.f%%] - (%s/%s) - #iter:%d - AGV:%.4f - #infos: %d (+%d ~ %.3f) %s @%s",
 			p.PercentageDone(t),
@@ -206,10 +206,10 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 		if p.PostSave != nil {
 			p.PostSave()
 		}
-		p.last_eval = time.Now()
+		p.lastEval = time.Now()
 	}
 
-	if p.Save_every == NEVER {
+	if p.SaveEvery == NEVER {
 		return
 	}
 
@@ -229,7 +229,7 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 	// 	time.Sleep(time.Second * 10)
 	// }
 
-	p.last_save = time.Now() // <- seguro porque estoy con el Mu
+	p.lastSave = time.Now() // <- seguro porque estoy con el Mu
 
 	// iter 0 *hecha* -> t1
 	// ok, debo salvar la estrategia actual
@@ -243,14 +243,14 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 	}
 
 	filename := fmt.Sprintf("%s/%s%s_d%s_D%s_t%d_p%d_%s_%s.json",
-		p.Save_dir,
-		p.Save_prefix,
+		p.SaveDir,
+		p.SavePrefix,
 		t.String(),
 		d[:len(d)-2],
 		D[:len(D)-2],
 		iter_name,
 		prunned,
-		t.Get_abs().String(),
+		t.GetAbs().String(),
 		utils.MiniCurrentTime(),
 	)
 
@@ -262,7 +262,7 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 
 	// deprecated
 	// t.Save(filename)
-	t.Save_model(dotmodel, 1_000_000, t.String(), nil)
+	t.SaveModel(dotmodel, 1_000_000, t.String(), nil)
 
 	// report el filesave?
 	// minimo
@@ -278,7 +278,7 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 }
 
 func (p *ProfileTime) CheckGC(t ITrainer) {
-	if p.GC_every == NEVER {
+	if p.GCEvery == NEVER {
 		return
 	}
 
@@ -289,7 +289,7 @@ func (p *ProfileTime) CheckGC(t ITrainer) {
 		return
 	}
 
-	p.last_GC = time.Now() // <- seguro porque estoy con el Mu
+	p.lastGC = time.Now() // <- seguro porque estoy con el Mu
 	// log.Printf("GC...")
 	runtime.GC()
 	// log.Println(" [done]")

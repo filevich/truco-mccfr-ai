@@ -22,7 +22,7 @@ func (b *BotCFR) Initialize() {
 		if strings.HasSuffix(b.F, ".json") {
 			b.Model = Load(CFR_T, b.F)
 		} else {
-			b.Model = Load_model(b.F, true, 1_000_000)
+			b.Model = LoadModel(b.F, true, 1_000_000)
 		}
 	}
 }
@@ -57,15 +57,15 @@ func (b *BotCFR) Action(
 
 	// obtengo el infoset
 	aixs := pdt.GetA(p, active_player)
-	i := info.NewInfosetRondaBase(p, active_player, b.Model.Get_abs(), nil)
+	i := info.NewInfosetRondaBase(p, active_player, b.Model.GetAbs(), nil)
 	hash, chi_len := i.Hash(sha1.New()), i.ChiLen()
 
 	// obtengo la strategy
-	strategy := b.Model.Get_avg_strategy(hash, chi_len)
+	strategy := b.Model.GetAvgStrategy(hash, chi_len)
 	aix := utils.Sample(strategy)
 
 	// obtengo el chi
-	Chi := i.Iterable(p, active_player, aixs, b.Model.Get_abs())
+	Chi := i.Iterable(p, active_player, aixs, b.Model.GetAbs())
 
 	return Chi[aix], strategy[aix]
 }

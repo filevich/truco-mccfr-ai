@@ -10,7 +10,7 @@ func (trainer *CFR) String() string {
 	return string(CFR_T) // "CFR"
 }
 
-func (trainer *CFR) regret_update_equation(
+func (trainer *CFR) regretUpdateEquation(
 
 	t int,
 	regret float32,
@@ -24,7 +24,7 @@ func (trainer *CFR) regret_update_equation(
 
 }
 
-func (trainer *CFR) strategy_update_equation(
+func (trainer *CFR) strategyUpdateEquation(
 
 	t int,
 	reach_prob float32,
@@ -45,10 +45,10 @@ func (trainer *CFR) Train(profile IProfile) {
 		go func() {
 			// implementacion con simultaneous updates
 			for ; profile.Continue(trainer); trainer.inc_t() {
-				p := trainer.sample_partida()
-				reach_probabilities := utils.Ones(trainer.get_num_players())
-				acc := make([]float32, trainer.get_num_players())
-				new_utils := _base_non_mc_run(trainer, profile, p, reach_probabilities, acc)
+				p := trainer.samplePartida()
+				reach_probabilities := utils.Ones(trainer.getNumPlayers())
+				acc := make([]float32, trainer.getNumPlayers())
+				new_utils := _baseNonMcRun(trainer, profile, p, reach_probabilities, acc)
 				trainer.add_root_utils(new_utils)
 				profile.Check(trainer)
 			}

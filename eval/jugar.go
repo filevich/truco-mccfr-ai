@@ -103,7 +103,7 @@ func JugarRondaHastaElFinal(
 		// dumbo ?
 		dumboid := false
 		// if cfrA, isCFR := agent.(*BotCFR); isCFR {
-		// 	abs := cfrA.Model.Get_abs()
+		// 	abs := cfrA.Model.GetAbs()
 		// 	dumboid = Is_dumbo(p, m, a, abs)
 		// } else {
 		// 	// _, isAle := agent.(*BotAleatorio)

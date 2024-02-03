@@ -9,7 +9,7 @@ import (
 )
 
 // implementacion con simultaneous updates
-func _base_non_mc_run(
+func _baseNonMcRun(
 
 	trainer ITrainer,
 	profile IProfile,
@@ -27,20 +27,20 @@ func _base_non_mc_run(
 
 	// obtengo el infoset
 	aixs := pdt.GetA(p, active_player)
-	// i := MkInfoset1(p, active_player, aixs, trainer.Get_abs())
-	i := info.NewInfosetRondaBase(p, active_player, trainer.Get_abs(), nil)
+	// i := MkInfoset1(p, active_player, aixs, trainer.GetAbs())
+	i := info.NewInfosetRondaBase(p, active_player, trainer.GetAbs(), nil)
 	hash, chi_len := i.Hash(sha1.New()), i.ChiLen()
 
 	// obtengo el RNode
-	rnode := trainer.Get_rnode(hash, chi_len)
+	rnode := trainer.GetRnode(hash, chi_len)
 	// capaz que ahora ya cambio la strategy
 	trainer.Lock()
-	strategy := rnode.Get_strategy()
+	strategy := rnode.GetStrategy()
 	trainer.Unlock()
 	counterfactual_values := make([][]float32, chi_len)
 
 	// obtengo el chi
-	A := i.Iterable(p, active_player, aixs, trainer.Get_abs())
+	A := i.Iterable(p, active_player, aixs, trainer.GetAbs())
 	bs, _ := p.MarshalJSON()
 
 	for aix, j := range A {
@@ -48,7 +48,7 @@ func _base_non_mc_run(
 		// prunning
 		skip := profile.IsPrunable(trainer) && strategy[aix] < 0.01 // menor a 1% de prob
 		if skip {
-			counterfactual_values[aix] = make([]float32, trainer.get_num_players())
+			counterfactual_values[aix] = make([]float32, trainer.getNumPlayers())
 			continue
 		}
 
@@ -78,12 +78,12 @@ func _base_non_mc_run(
 				// acumulo los puntos (del envite)
 				new_pts := utils.Payoffs(p.Manojo(elMano), pts_ganados, p.Manojo(ganador))
 				new_acc := utils.SumFloat32Slices(acc, new_pts)
-				counterfactual_values[aix] = _base_non_mc_run(trainer, profile, p, new_reach_probabilities, new_acc)
+				counterfactual_values[aix] = _baseNonMcRun(trainer, profile, p, new_reach_probabilities, new_acc)
 
 			} else {
 
 				// ni hay puntos nuevos, ni termino -> paso el acc intacto
-				counterfactual_values[aix] = _base_non_mc_run(trainer, profile, p, new_reach_probabilities, acc)
+				counterfactual_values[aix] = _baseNonMcRun(trainer, profile, p, new_reach_probabilities, acc)
 
 			}
 		}
@@ -93,9 +93,9 @@ func _base_non_mc_run(
 	node_values := utils.Ndot(strategy, counterfactual_values)
 
 	trainer.Lock()
-	rnode.Reg_Updates++
-	rnode.Str_Updates++
-	t := rnode.Reg_Updates // alt: trainer.Get_t()+1
+	rnode.RegUpdates++
+	rnode.StrUpdates++
+	t := rnode.RegUpdates // alt: trainer.Get_t()+1
 	trainer.Unlock()
 
 	for aix := range A {
@@ -107,24 +107,24 @@ func _base_non_mc_run(
 		}
 
 		// actualizacion de regrets
-		cf_reach_prob := counterfactual_reach_probability(reach_probabilities, rix_mod2)
+		cf_reach_prob := counterfactualReachProbability(reach_probabilities, rix_mod2)
 		regret := counterfactual_values[aix][rix_mod2] - node_values[rix_mod2]
 
 		trainer.Lock() // abro qui, cierro en linea 127
 
-		rnode.Cumulative_regrets[aix] = trainer.regret_update_equation(
+		rnode.CumulativeRegrets[aix] = trainer.regretUpdateEquation(
 			t,
 			regret,
 			cf_reach_prob,
-			rnode.Cumulative_regrets[aix],
+			rnode.CumulativeRegrets[aix],
 		)
 
 		// acumulacion de strategy
-		rnode.Strategy_sum[aix] = trainer.strategy_update_equation(
+		rnode.StrategySum[aix] = trainer.strategyUpdateEquation(
 			t,                             // iter actual
 			reach_probabilities[rix_mod2], // reach_prob
 			strategy[aix],                 // P(a)
-			rnode.Strategy_sum[aix],       // strategy_acc
+			rnode.StrategySum[aix],        // strategy_acc
 		)
 
 		trainer.Unlock() // cierro aqui lo que abri en linea 110

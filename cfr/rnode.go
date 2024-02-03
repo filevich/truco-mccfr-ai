@@ -3,24 +3,24 @@ package cfr
 import "github.com/filevich/truco-cfr/utils"
 
 type RNode struct {
-	Cumulative_regrets []float32
-	Strategy_sum       []float32
-	Reg_Updates        int
-	Str_Updates        int
+	CumulativeRegrets []float32
+	StrategySum       []float32
+	RegUpdates        int
+	StrUpdates        int
 	// usado solo por LMCCFR - Linear (External-Sampling) Monte Carlo Counterfactual Regret Minimization
 }
 
 func NewRNode(n int) *RNode {
 	return &RNode{
-		Cumulative_regrets: make([]float32, n),
-		Strategy_sum:       make([]float32, n),
+		CumulativeRegrets: make([]float32, n),
+		StrategySum:       make([]float32, n),
 	}
 }
 
 func (i *RNode) Reset() {
-	i.Strategy_sum = make([]float32, len(i.Strategy_sum))
+	i.StrategySum = make([]float32, len(i.StrategySum))
 	// i.Reg_Updates = 0
-	i.Str_Updates = 0
+	i.StrUpdates = 0
 }
 
 func (i *RNode) normalize(xs []float32) []float32 {
@@ -42,10 +42,10 @@ func (i *RNode) normalize(xs []float32) []float32 {
 	return normalized
 }
 
-func (i *RNode) Get_strategy() []float32 {
+func (i *RNode) GetStrategy() []float32 {
 	// Return regret-matching strategy
-	r_plus := make([]float32, len(i.Cumulative_regrets))
-	for ix, r := range i.Cumulative_regrets {
+	r_plus := make([]float32, len(i.CumulativeRegrets))
+	for ix, r := range i.CumulativeRegrets {
 		r_plus[ix] = utils.Max(0, r)
 	}
 	strategy := i.normalize(r_plus)
@@ -53,5 +53,5 @@ func (i *RNode) Get_strategy() []float32 {
 }
 
 func (i *RNode) Get_average_strategy() []float32 {
-	return i.normalize(i.Strategy_sum)
+	return i.normalize(i.StrategySum)
 }

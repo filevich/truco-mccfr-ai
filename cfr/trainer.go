@@ -31,9 +31,9 @@ type Trainer struct {
 }
 
 func (trainer *Trainer) add_root_utils(new_utils []float32) {
-	root := trainer.Get_rnode("__ROOT__", 2)
+	root := trainer.GetRnode("__ROOT__", 2)
 	trainer.Lock()
-	root.Cumulative_regrets = utils.SumFloat32Slices(root.Cumulative_regrets, new_utils)
+	root.CumulativeRegrets = utils.SumFloat32Slices(root.CumulativeRegrets, new_utils)
 	trainer.Unlock()
 }
 
@@ -89,11 +89,11 @@ func (trainer *Trainer) set_T(T int) {
 	trainer.Total_Iter = T
 }
 
-func (trainer *Trainer) get_num_players() int {
+func (trainer *Trainer) getNumPlayers() int {
 	return 2 // trainer.Num_players
 }
 
-func (t *Trainer) Get_abs() abs.IAbstraction {
+func (t *Trainer) GetAbs() abs.IAbstraction {
 	return t.Abstractor
 }
 
@@ -107,7 +107,7 @@ func (t *Trainer) Reset() {
 	t.Current_Iter = 0
 }
 
-func (t *Trainer) Get_rnode(hash string, chi_len int) *RNode {
+func (t *Trainer) GetRnode(hash string, chi_len int) *RNode {
 	t.Mu.Lock()
 	defer t.Mu.Unlock()
 
@@ -117,7 +117,7 @@ func (t *Trainer) Get_rnode(hash string, chi_len int) *RNode {
 	return t.Infoset_map[hash]
 }
 
-func (t *Trainer) sample_partida() *pdt.Partida {
+func (t *Trainer) samplePartida() *pdt.Partida {
 	A := []string{"Alice", "Ariana", "Anna"}
 	B := []string{"Bob", "Ben", "Bill"}
 	n := t.Num_players / 2
@@ -127,19 +127,19 @@ func (t *Trainer) sample_partida() *pdt.Partida {
 	return p
 }
 
-func (trainer *Trainer) Count_infosets() int {
+func (trainer *Trainer) CountInfosets() int {
 	trainer.Mu.Lock()
 	defer trainer.Mu.Unlock()
 	return len(trainer.Infoset_map)
 }
 
-func (trainer *Trainer) Get_avg_strategy(hash string, chi_len int) []float32 {
-	rnode := trainer.Get_rnode(hash, chi_len)
+func (trainer *Trainer) GetAvgStrategy(hash string, chi_len int) []float32 {
+	rnode := trainer.GetRnode(hash, chi_len)
 	return rnode.Get_average_strategy()
 }
 
-func (t *Trainer) Max_Avg_Game_Value() float32 {
-	r := t.Get_rnode("__ROOT__", 0).Cumulative_regrets[0]
+func (t *Trainer) MaxAvgGameValue() float32 {
+	r := t.GetRnode("__ROOT__", 0).CumulativeRegrets[0]
 	agm := r / float32(t.Total_Iter)
 	if agm > 0 {
 		return agm
@@ -153,8 +153,8 @@ func (t *Trainer) FinalReport(profile IProfile) {
 	}
 
 	log.Println()
-	for player := 0; player < t.get_num_players(); player++ {
-		r := t.Get_rnode("__ROOT__", 0).Cumulative_regrets[player]
+	for player := 0; player < t.getNumPlayers(); player++ {
+		r := t.GetRnode("__ROOT__", 0).CumulativeRegrets[player]
 		log.Printf("Computed average game value for player %d: %.3f\n",
 			player+1,
 			r/float32(t.Total_Iter), // <-- OJO CON ESTO!!! todo: si es un perfil de tiempo el tital iters debe ser actualizado
@@ -175,7 +175,7 @@ func (t *Trainer) Save(filename string) {
 	t.Current_Iter--
 }
 
-func (t *Trainer) Save_model(filename string, report_interval int, id string, extras []string) {
+func (t *Trainer) SaveModel(filename string, report_interval int, id string, extras []string) {
 	t.Mu.Lock()
 	defer t.Mu.Unlock()
 
@@ -368,7 +368,7 @@ func lineCounter(filename string) (int, error) {
 	}
 }
 
-func Load_model(filename string, verbose bool, report_interval int) ITrainer {
+func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 
 	var t Trainer_T
 	base := &Trainer{
@@ -492,7 +492,7 @@ const (
 	// LCFR_T     Trainer_T = "lcfr" // <- DEPRECATED
 )
 
-func New_Trainer(t Trainer_T, num_players int, abs abs.IAbstraction) ITrainer {
+func NewTrainer(t Trainer_T, num_players int, abs abs.IAbstraction) ITrainer {
 	base := Trainer{
 		Current_Iter: 0,
 		Total_Iter:   0,

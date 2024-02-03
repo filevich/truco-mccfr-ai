@@ -21,7 +21,7 @@ func main() {
 	num_players := 2
 	tiny_eval := 1_000
 
-	trainer := cfr.New_Trainer(cfr.ESVMCCFR_T, num_players, &abs.A1{})
+	trainer := cfr.NewTrainer(cfr.ESVMCCFR_T, num_players, &abs.A1{})
 
 	// trainer := cfr.Load(
 	// 	cfr.CFR_T,
@@ -74,21 +74,21 @@ func main() {
 
 	trainer.Train(
 		&cfr.ProfileTime{
-			TotalRunningTime:  25 * time.Minute,
-			Prunning_treshold: cfr.NEVER,
+			TotalRunningTime: 25 * time.Minute,
+			PrunningTreshold: cfr.NEVER,
 			// multi
 			Threads: threads,
 			Mu:      &sync.Mutex{},
 			// io
-			Save_every:  2 * time.Minute,
-			Silent:      true,
-			Save_dir:    save_dir,
-			Save_prefix: "final_",
+			SaveEvery:  2 * time.Minute,
+			Silent:     true,
+			SaveDir:    save_dir,
+			SavePrefix: "final_",
 			// tiny eval
-			PostSave:   post_save,
-			Eval_every: 1 * time.Minute,
+			PostSave:  post_save,
+			EvalEvery: 1 * time.Minute,
 			// GC
-			GC_every: 100 * time.Hour,
+			GCEvery: 100 * time.Hour,
 		},
 	)
 

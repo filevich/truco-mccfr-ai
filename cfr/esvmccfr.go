@@ -17,7 +17,7 @@ func (trainer *ESVMCCFR) String() string {
 	return string(ESVMCCFR_T) // "ESVMCCFR"
 }
 
-func (trainer *ESVMCCFR) regret_update_equation(
+func (trainer *ESVMCCFR) regretUpdateEquation(
 
 	t int,
 	regret float32,
@@ -31,7 +31,7 @@ func (trainer *ESVMCCFR) regret_update_equation(
 
 }
 
-func (trainer *ESVMCCFR) strategy_update_equation(
+func (trainer *ESVMCCFR) strategyUpdateEquation(
 
 	t int,
 	reach_prob float32,
@@ -52,14 +52,14 @@ func (trainer *ESVMCCFR) Train(profile IProfile) {
 		go func() {
 			// implementacion con simultaneous updates
 			for ; profile.Continue(trainer); trainer.inc_t() {
-				p := trainer.sample_partida()
+				p := trainer.samplePartida()
 				bs, _ := json.Marshal(p)
 				for i := 0; i < 2; i++ {
 					if i > 0 {
 						p, _ = pdt.Parse(string(bs), true)
 					}
-					acc := make([]float32, trainer.get_num_players())
-					reach_probabilities := utils.Ones(trainer.get_num_players())
+					acc := make([]float32, trainer.getNumPlayers())
+					reach_probabilities := utils.Ones(trainer.getNumPlayers())
 					new_utils := trainer.run(profile, p, reach_probabilities, acc, i)
 					trainer.add_root_utils(new_utils)
 				}
@@ -92,14 +92,14 @@ func (trainer *ESVMCCFR) run(
 
 	// obtengo el infoset
 	aixs := pdt.GetA(p, active_player)
-	// i := MkInfoset1(p, active_player, aixs, trainer.Get_abs())
-	i := info.NewInfosetRondaBase(p, active_player, trainer.Get_abs(), nil)
+	// i := MkInfoset1(p, active_player, aixs, trainer.GetAbs())
+	i := info.NewInfosetRondaBase(p, active_player, trainer.GetAbs(), nil)
 	hash, chi_len := i.Hash(sha1.New()), i.ChiLen()
 
 	// obtengo el RNode
-	rnode := trainer.Get_rnode(hash, chi_len)
+	rnode := trainer.GetRnode(hash, chi_len)
 	trainer.Lock()
-	strategy := rnode.Get_strategy()
+	strategy := rnode.GetStrategy()
 	trainer.Unlock()
 	raix := utils.Sample(strategy)
 
@@ -110,7 +110,7 @@ func (trainer *ESVMCCFR) run(
 	new_reach_probabilities[rix_mod2] *= action_probability
 
 	// obtengo el chi
-	A := i.Iterable(p, active_player, aixs, trainer.Get_abs())
+	A := i.Iterable(p, active_player, aixs, trainer.GetAbs())
 	bs, _ := p.MarshalJSON()
 
 	// no es el `update_player` -> actualizo solo la estrategia
@@ -118,8 +118,8 @@ func (trainer *ESVMCCFR) run(
 
 		// acumulo la strategy (solo a raix ?)
 		trainer.Lock()
-		rnode.Str_Updates++
-		t := rnode.Str_Updates
+		rnode.StrUpdates++
+		t := rnode.StrUpdates
 
 		// acumulacion de strategy (el vector entero)
 		for aix := range A {
@@ -127,11 +127,11 @@ func (trainer *ESVMCCFR) run(
 			// reach prob.
 			reach_prob := reach_probabilities[rix_mod2]
 
-			rnode.Strategy_sum[aix] = trainer.strategy_update_equation(
-				t,                       // iter actual
-				reach_prob,              // reach_prob
-				strategy[aix],           // P(a)
-				rnode.Strategy_sum[aix], // strategy_acc
+			rnode.StrategySum[aix] = trainer.strategyUpdateEquation(
+				t,                      // iter actual
+				reach_prob,             // reach_prob
+				strategy[aix],          // P(a)
+				rnode.StrategySum[aix], // strategy_acc
 			)
 		}
 		trainer.Unlock()
@@ -177,7 +177,7 @@ func (trainer *ESVMCCFR) run(
 		// prunning
 		skip := profile.IsPrunable(trainer) && strategy[aix] < 0.01 // menor a 1% de prob
 		if skip {
-			counterfactual_values[aix] = make([]float32, trainer.get_num_players())
+			counterfactual_values[aix] = make([]float32, trainer.getNumPlayers())
 			continue
 		}
 
@@ -235,8 +235,8 @@ func (trainer *ESVMCCFR) run(
 
 	// actualizo los regrets
 	trainer.Lock()
-	rnode.Reg_Updates++
-	t := rnode.Reg_Updates // alt: trainer.Get_t()+1
+	rnode.RegUpdates++
+	t := rnode.RegUpdates // alt: trainer.Get_t()+1
 
 	for aix := range A {
 
@@ -249,11 +249,11 @@ func (trainer *ESVMCCFR) run(
 		// actualizacion de regrets
 		regret := counterfactual_values[aix][rix_mod2] - node_values[rix_mod2]
 
-		rnode.Cumulative_regrets[aix] = trainer.regret_update_equation(
+		rnode.CumulativeRegrets[aix] = trainer.regretUpdateEquation(
 			t,
 			regret,
 			new_reach_probabilities[rix_mod2],
-			rnode.Cumulative_regrets[aix],
+			rnode.CumulativeRegrets[aix],
 		)
 	}
 
