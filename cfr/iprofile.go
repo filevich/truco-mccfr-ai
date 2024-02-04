@@ -1,6 +1,6 @@
 package cfr
 
-import "github.com/filevich/truco-cfr/bot"
+import "github.com/filevich/truco-ai/bot"
 
 // silent:
 // solo los [*]

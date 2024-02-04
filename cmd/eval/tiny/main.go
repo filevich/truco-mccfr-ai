@@ -5,9 +5,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/filevich/truco-cfr/bot"
-	"github.com/filevich/truco-cfr/eval"
-	"github.com/filevich/truco-cfr/eval/dataset"
+	"github.com/filevich/truco-ai/bot"
+	"github.com/filevich/truco-ai/eval"
+	"github.com/filevich/truco-ai/eval/dataset"
 )
 
 func main() {

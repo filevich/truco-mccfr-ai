@@ -4,8 +4,8 @@ import (
 	"crypto/sha1"
 	"encoding/json"
 
-	"github.com/filevich/truco-cfr/info"
-	"github.com/filevich/truco-cfr/utils"
+	"github.com/filevich/truco-ai/info"
+	"github.com/filevich/truco-ai/utils"
 	"github.com/truquito/truco/pdt"
 )
 

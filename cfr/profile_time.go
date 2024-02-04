@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/filevich/truco-cfr/bot"
-	"github.com/filevich/truco-cfr/utils"
+	"github.com/filevich/truco-ai/bot"
+	"github.com/filevich/truco-ai/utils"
 )
 
 const (

@@ -35,9 +35,9 @@ func BenchmarkFmtSprint(b *testing.B) {
 ➜  info git:(main) ✗ go test -bench .
 goos: darwin
 goarch: arm64
-pkg: github.com/filevich/truco-cfr/info
+pkg: github.com/filevich/truco-ai/info
 BenchmarkJsonMarshal-8   	      30	  40122399 ns/op
 BenchmarkFmtSprint-8     	      10	 104271754 ns/op
 PASS
-ok  	github.com/filevich/truco-cfr/info	3.824s
+ok  	github.com/filevich/truco-ai/info	3.824s
 */

@@ -1,7 +1,7 @@
 package cfr
 
 import (
-	"github.com/filevich/truco-cfr/abs"
+	"github.com/filevich/truco-ai/abs"
 	"github.com/truquito/truco/pdt"
 )
 

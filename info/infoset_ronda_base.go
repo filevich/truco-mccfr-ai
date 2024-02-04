@@ -8,8 +8,8 @@ import (
 	"math/rand"
 	"strconv"
 
-	"github.com/filevich/truco-cfr/abs"
-	"github.com/filevich/truco-cfr/utils"
+	"github.com/filevich/truco-ai/abs"
+	"github.com/filevich/truco-ai/utils"
 	"github.com/truquito/truco/enco"
 	"github.com/truquito/truco/pdt"
 )

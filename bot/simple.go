@@ -3,8 +3,8 @@ package bot
 import (
 	"math"
 
-	"github.com/filevich/truco-cfr/abs"
-	"github.com/filevich/truco-cfr/info"
+	"github.com/filevich/truco-ai/abs"
+	"github.com/filevich/truco-ai/info"
 	"github.com/truquito/truco/enco"
 	"github.com/truquito/truco/pdt"
 )

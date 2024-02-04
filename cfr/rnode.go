@@ -1,6 +1,6 @@
 package cfr
 
-import "github.com/filevich/truco-cfr/utils"
+import "github.com/filevich/truco-ai/utils"
 
 type RNode struct {
 	CumulativeRegrets []float32
