@@ -175,6 +175,8 @@ func (t *Trainer) Save(filename string) {
 	t.CurrentIter--
 }
 
+const CURRENT_MODEL_VERSION float64 = 2.1
+
 func (t *Trainer) SaveModel(
 
 	filename string,
@@ -213,7 +215,7 @@ func (t *Trainer) SaveModel(
 
 	// agrego los campos de interes:
 	// campos extras: como el tipo, o valor de epsilon de OS-MCCFR
-	f.Write([]byte("version 2.1\n"))
+	f.Write([]byte(fmt.Sprintf("version %.1f\n", CURRENT_MODEL_VERSION)))
 	f.Write([]byte(fmt.Sprintf("trainer %s\n", id)))
 	f.Write([]byte(fmt.Sprintf("currentIter %d\n", t.CurrentIter)))
 	f.Write([]byte(fmt.Sprintf("totalIter %d\n", t.TotalIter)))
@@ -425,6 +427,15 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 			val := words[1]
 
 			switch words[0] {
+			case "version", "Prot":
+				v, err := strconv.ParseFloat(words[1], 64)
+				if err != nil {
+					panic(fmt.Sprintf("couldn't parse version: %s", err))
+				}
+				if isOldVersion := v < CURRENT_MODEL_VERSION; isOldVersion {
+					tmpl := "cannot load deprecated .model version; has:%v want:%v"
+					panic(fmt.Sprintf(tmpl, v, CURRENT_MODEL_VERSION))
+				}
 			case "trainer":
 				t = Trainer_T(words[1])
 			case "currentIter":
