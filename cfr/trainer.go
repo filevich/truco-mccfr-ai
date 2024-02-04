@@ -107,12 +107,12 @@ func (t *Trainer) Reset() {
 	t.CurrentIter = 0
 }
 
-func (t *Trainer) GetRnode(hash string, chi_len int) *RNode {
+func (t *Trainer) GetRnode(hash string, chiLen int) *RNode {
 	t.Mu.Lock()
 	defer t.Mu.Unlock()
 
 	if _, ok := t.InfosetMap[hash]; !ok {
-		t.InfosetMap[hash] = NewRNode(chi_len)
+		t.InfosetMap[hash] = NewRNode(chiLen)
 	}
 	return t.InfosetMap[hash]
 }
@@ -133,9 +133,9 @@ func (trainer *Trainer) CountInfosets() int {
 	return len(trainer.InfosetMap)
 }
 
-func (trainer *Trainer) GetAvgStrategy(hash string, chi_len int) []float32 {
-	rnode := trainer.GetRnode(hash, chi_len)
-	return rnode.Get_average_strategy()
+func (trainer *Trainer) GetAvgStrategy(hash string, chiLen int) []float32 {
+	rnode := trainer.GetRnode(hash, chiLen)
+	return rnode.GetAverageStrategy()
 }
 
 func (t *Trainer) MaxAvgGameValue() float32 {
@@ -175,7 +175,14 @@ func (t *Trainer) Save(filename string) {
 	t.CurrentIter--
 }
 
-func (t *Trainer) SaveModel(filename string, report_interval int, id string, extras []string) {
+func (t *Trainer) SaveModel(
+
+	filename string,
+	report_interval int,
+	id string,
+	extras []string,
+
+) {
 	t.Mu.Lock()
 	defer t.Mu.Unlock()
 
@@ -287,7 +294,7 @@ func (t *Trainer) Load(filename string) {
 	[bucket_1]
 	[]
 
-	sinemabrgo en tengo chi:
+	sin emabrgo en tengo chi:
 	{"t1": 3, "t2":0, "t1":0, ... , "mazo":777}
 	? como itero? tengo que poder iterar de tal forma que pueda ejecutar la accion.
 

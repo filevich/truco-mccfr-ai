@@ -52,6 +52,6 @@ func (i *RNode) GetStrategy() []float32 {
 	return strategy
 }
 
-func (i *RNode) Get_average_strategy() []float32 {
+func (i *RNode) GetAverageStrategy() []float32 {
 	return i.normalize(i.StrategySum)
 }
