@@ -68,7 +68,7 @@ func (trainer *ESLMCCFR) Train(profile IProfile) {
 					}
 					acc := make([]float32, trainer.getNumPlayers())
 					new_utils := trainer.run(profile, p, acc, i)
-					trainer.add_root_utils(new_utils)
+					trainer.addRootUtils(new_utils)
 				}
 				profile.Check(trainer)
 			}

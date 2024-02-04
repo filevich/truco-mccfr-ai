@@ -61,7 +61,7 @@ func (trainer *ESVMCCFR) Train(profile IProfile) {
 					acc := make([]float32, trainer.getNumPlayers())
 					reach_probabilities := utils.Ones(trainer.getNumPlayers())
 					new_utils := trainer.run(profile, p, reach_probabilities, acc, i)
-					trainer.add_root_utils(new_utils)
+					trainer.addRootUtils(new_utils)
 				}
 				profile.Check(trainer)
 			}

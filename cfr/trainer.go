@@ -19,18 +19,18 @@ import (
 )
 
 type Trainer struct {
-	Current_Iter int
-	Total_Iter   int
-	Infoset_map  map[string]*RNode
-	Num_players  int
-	Abstractor   abs.IAbstraction
+	CurrentIter int
+	TotalIter   int
+	InfosetMap  map[string]*RNode
+	NumPlayers  int
+	Abstractor  abs.IAbstraction
 	// multi
 	Mu      *sync.Mutex
 	Wg      *sync.WaitGroup
 	Working int
 }
 
-func (trainer *Trainer) add_root_utils(new_utils []float32) {
+func (trainer *Trainer) addRootUtils(new_utils []float32) {
 	root := trainer.GetRnode("__ROOT__", 2)
 	trainer.Lock()
 	root.CumulativeRegrets = utils.SumFloat32Slices(root.CumulativeRegrets, new_utils)
@@ -40,13 +40,13 @@ func (trainer *Trainer) add_root_utils(new_utils []float32) {
 func (trainer *Trainer) inc_t() {
 	trainer.Mu.Lock()
 	defer trainer.Mu.Unlock()
-	trainer.Current_Iter++
+	trainer.CurrentIter++
 }
 
 func (trainer *Trainer) inc_T() {
 	trainer.Mu.Lock()
 	defer trainer.Mu.Unlock()
-	trainer.Total_Iter++
+	trainer.TotalIter++
 }
 
 func (trainer *Trainer) Lock() {
@@ -78,15 +78,15 @@ func (trainer *Trainer) AllDones() bool {
 func (trainer *Trainer) Get_t() int {
 	trainer.Mu.Lock()
 	defer trainer.Mu.Unlock()
-	return trainer.Current_Iter
+	return trainer.CurrentIter
 }
 
 func (trainer *Trainer) get_T() int {
-	return trainer.Total_Iter
+	return trainer.TotalIter
 }
 
 func (trainer *Trainer) set_T(T int) {
-	trainer.Total_Iter = T
+	trainer.TotalIter = T
 }
 
 func (trainer *Trainer) getNumPlayers() int {
@@ -101,26 +101,26 @@ func (t *Trainer) Reset() {
 	t.Mu.Lock()
 	defer t.Mu.Unlock()
 
-	for _, rnode := range t.Infoset_map {
+	for _, rnode := range t.InfosetMap {
 		rnode.Reset()
 	}
-	t.Current_Iter = 0
+	t.CurrentIter = 0
 }
 
 func (t *Trainer) GetRnode(hash string, chi_len int) *RNode {
 	t.Mu.Lock()
 	defer t.Mu.Unlock()
 
-	if _, ok := t.Infoset_map[hash]; !ok {
-		t.Infoset_map[hash] = NewRNode(chi_len)
+	if _, ok := t.InfosetMap[hash]; !ok {
+		t.InfosetMap[hash] = NewRNode(chi_len)
 	}
-	return t.Infoset_map[hash]
+	return t.InfosetMap[hash]
 }
 
 func (t *Trainer) samplePartida() *pdt.Partida {
 	A := []string{"Alice", "Ariana", "Anna"}
 	B := []string{"Bob", "Ben", "Bill"}
-	n := t.Num_players / 2
+	n := t.NumPlayers / 2
 	limEnvite := 4
 	verbose := true
 	p, _ := pdt.NuevaPartida(pdt.A20, A[:n], B[:n], limEnvite, verbose)
@@ -130,7 +130,7 @@ func (t *Trainer) samplePartida() *pdt.Partida {
 func (trainer *Trainer) CountInfosets() int {
 	trainer.Mu.Lock()
 	defer trainer.Mu.Unlock()
-	return len(trainer.Infoset_map)
+	return len(trainer.InfosetMap)
 }
 
 func (trainer *Trainer) GetAvgStrategy(hash string, chi_len int) []float32 {
@@ -140,7 +140,7 @@ func (trainer *Trainer) GetAvgStrategy(hash string, chi_len int) []float32 {
 
 func (t *Trainer) MaxAvgGameValue() float32 {
 	r := t.GetRnode("__ROOT__", 0).CumulativeRegrets[0]
-	agm := r / float32(t.Total_Iter)
+	agm := r / float32(t.TotalIter)
 	if agm > 0 {
 		return agm
 	}
@@ -157,7 +157,7 @@ func (t *Trainer) FinalReport(profile IProfile) {
 		r := t.GetRnode("__ROOT__", 0).CumulativeRegrets[player]
 		log.Printf("Computed average game value for player %d: %.3f\n",
 			player+1,
-			r/float32(t.Total_Iter), // <-- OJO CON ESTO!!! todo: si es un perfil de tiempo el tital iters debe ser actualizado
+			r/float32(t.TotalIter), // <-- OJO CON ESTO!!! todo: si es un perfil de tiempo el tital iters debe ser actualizado
 		)
 	}
 	log.Println()
@@ -169,10 +169,10 @@ func (t *Trainer) Save(filename string) {
 	defer t.Mu.Unlock()
 	// esto es debido a que el save se hace alfinal del for, antes de que se de
 	// el incremento de la variable `t`
-	t.Current_Iter++
+	t.CurrentIter++
 	// falta el numero de las iteraciones
 	utils.Write(t, filename, true)
-	t.Current_Iter--
+	t.CurrentIter--
 }
 
 func (t *Trainer) SaveModel(filename string, report_interval int, id string, extras []string) {
@@ -181,7 +181,7 @@ func (t *Trainer) SaveModel(filename string, report_interval int, id string, ext
 
 	// esto es debido a que el save se hace alfinal del for, antes de que se de
 	// el incremento de la variable `t`
-	t.Current_Iter++
+	t.CurrentIter++
 
 	// falta el numero de las iteraciones
 	// utils.Write(t, filename, true)
@@ -208,9 +208,9 @@ func (t *Trainer) SaveModel(filename string, report_interval int, id string, ext
 	// campos extras: como el tipo, o valor de epsilon de OS-MCCFR
 	f.Write([]byte("Prot 1.0\n"))
 	f.Write([]byte(fmt.Sprintf("ID %s\n", id)))
-	f.Write([]byte(fmt.Sprintf("Current_Iter %d\n", t.Current_Iter)))
-	f.Write([]byte(fmt.Sprintf("Total_Iter %d\n", t.Total_Iter)))
-	f.Write([]byte(fmt.Sprintf("Num_players %d\n", t.Num_players)))
+	f.Write([]byte(fmt.Sprintf("Current_Iter %d\n", t.CurrentIter)))
+	f.Write([]byte(fmt.Sprintf("Total_Iter %d\n", t.TotalIter)))
+	f.Write([]byte(fmt.Sprintf("Num_players %d\n", t.NumPlayers)))
 	f.Write([]byte(fmt.Sprintf("Abstractor %s\n", t.Abstractor.String())))
 	for _, field := range extras {
 		f.Write([]byte(fmt.Sprintf("%s\n", field)))
@@ -221,9 +221,9 @@ func (t *Trainer) SaveModel(filename string, report_interval int, id string, ext
 
 	// agrego los inofsets/rnodes
 	i := 0
-	for hash, rnode := range t.Infoset_map {
+	for hash, rnode := range t.InfosetMap {
 		if verbose && utils.Mod(i+1, report_interval) == 0 {
-			progress := float32(i+1) / float32(len(t.Infoset_map))
+			progress := float32(i+1) / float32(len(t.InfosetMap))
 			fmt.Printf(" | %d%%", int(progress*100))
 			runtime.GC()
 		}
@@ -238,7 +238,7 @@ func (t *Trainer) SaveModel(filename string, report_interval int, id string, ext
 	}
 
 	// retorno Current_Iter a su estado orig
-	t.Current_Iter--
+	t.CurrentIter--
 }
 
 func (t *Trainer) Load(filename string) {
@@ -317,12 +317,12 @@ func Load(t Trainer_T, filename string) ITrainer {
 	}
 
 	base := Trainer{
-		Current_Iter: data.Current_Iter,
-		Total_Iter:   data.Total_Iter,
-		Infoset_map:  data.Infoset_map,
-		Num_players:  data.Num_players,
-		Mu:           &sync.Mutex{},
-		Wg:           &sync.WaitGroup{},
+		CurrentIter: data.CurrentIter,
+		TotalIter:   data.TotalIter,
+		InfosetMap:  data.InfosetMap,
+		NumPlayers:  data.NumPlayers,
+		Mu:          &sync.Mutex{},
+		Wg:          &sync.WaitGroup{},
 	}
 
 	switch data.Abstractor {
@@ -368,13 +368,13 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 
 	var t Trainer_T
 	base := &Trainer{
-		Current_Iter: 0,
-		Total_Iter:   0,
-		Infoset_map:  make(map[string]*RNode),
-		Num_players:  0,
-		Abstractor:   nil,
-		Mu:           &sync.Mutex{},
-		Wg:           &sync.WaitGroup{},
+		CurrentIter: 0,
+		TotalIter:   0,
+		InfosetMap:  make(map[string]*RNode),
+		NumPlayers:  0,
+		Abstractor:  nil,
+		Mu:          &sync.Mutex{},
+		Wg:          &sync.WaitGroup{},
 	}
 
 	file, err := os.Open(filename)
@@ -420,11 +420,11 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 			case "ID":
 				t = Trainer_T(words[1])
 			case "Current_Iter":
-				base.Current_Iter, _ = strconv.Atoi(val)
+				base.CurrentIter, _ = strconv.Atoi(val)
 			case "Total_Iter":
-				base.Total_Iter, _ = strconv.Atoi(val)
+				base.TotalIter, _ = strconv.Atoi(val)
 			case "Num_players":
-				base.Num_players, _ = strconv.Atoi(val)
+				base.NumPlayers, _ = strconv.Atoi(val)
 			case "Abstractor":
 				base.Abstractor = abs.ParseAbs(val)
 			default:
@@ -452,7 +452,7 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 			}
 
 			// lo agrego
-			base.Infoset_map[hash] = rnode
+			base.InfosetMap[hash] = rnode
 		}
 	}
 
@@ -462,8 +462,6 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 
 	return Embed(t, base)
 }
-
-// *****************************************************************************
 
 type Trainer_T string
 
@@ -481,13 +479,13 @@ const (
 
 func NewTrainer(t Trainer_T, num_players int, abs abs.IAbstraction) ITrainer {
 	base := Trainer{
-		Current_Iter: 0,
-		Total_Iter:   0,
-		Infoset_map:  make(map[string]*RNode),
-		Num_players:  num_players,
-		Abstractor:   abs,
-		Mu:           &sync.Mutex{},
-		Wg:           &sync.WaitGroup{},
+		CurrentIter: 0,
+		TotalIter:   0,
+		InfosetMap:  make(map[string]*RNode),
+		NumPlayers:  num_players,
+		Abstractor:  abs,
+		Mu:          &sync.Mutex{},
+		Wg:          &sync.WaitGroup{},
 	}
 
 	return Embed(t, &base)

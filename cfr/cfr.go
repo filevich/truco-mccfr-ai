@@ -49,7 +49,7 @@ func (trainer *CFR) Train(profile IProfile) {
 				reach_probabilities := utils.Ones(trainer.getNumPlayers())
 				acc := make([]float32, trainer.getNumPlayers())
 				new_utils := _baseNonMcRun(trainer, profile, p, reach_probabilities, acc)
-				trainer.add_root_utils(new_utils)
+				trainer.addRootUtils(new_utils)
 				profile.Check(trainer)
 			}
 			// join
