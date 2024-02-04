@@ -425,7 +425,7 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 			val := words[1]
 
 			switch words[0] {
-			case "id":
+			case "trainer":
 				t = Trainer_T(words[1])
 			case "currentIter":
 				base.CurrentIter, _ = strconv.Atoi(val)
