@@ -206,12 +206,13 @@ func (t *Trainer) SaveModel(filename string, report_interval int, id string, ext
 
 	// agrego los campos de interes:
 	// campos extras: como el tipo, o valor de epsilon de OS-MCCFR
-	f.Write([]byte("Prot 1.0\n"))
-	f.Write([]byte(fmt.Sprintf("ID %s\n", id)))
-	f.Write([]byte(fmt.Sprintf("Current_Iter %d\n", t.CurrentIter)))
-	f.Write([]byte(fmt.Sprintf("Total_Iter %d\n", t.TotalIter)))
-	f.Write([]byte(fmt.Sprintf("Num_players %d\n", t.NumPlayers)))
-	f.Write([]byte(fmt.Sprintf("Abstractor %s\n", t.Abstractor.String())))
+	f.Write([]byte("version 2.0\n"))
+	f.Write([]byte(fmt.Sprintf("id %s\n", id)))
+	f.Write([]byte(fmt.Sprintf("currentIter %d\n", t.CurrentIter)))
+	f.Write([]byte(fmt.Sprintf("totalIter %d\n", t.TotalIter)))
+	f.Write([]byte(fmt.Sprintf("numPlayers %d\n", t.NumPlayers)))
+	f.Write([]byte(fmt.Sprintf("abstractor %s\n", t.Abstractor.String())))
+
 	for _, field := range extras {
 		f.Write([]byte(fmt.Sprintf("%s\n", field)))
 	}
@@ -417,15 +418,15 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 			val := words[1]
 
 			switch words[0] {
-			case "ID":
+			case "id":
 				t = Trainer_T(words[1])
-			case "Current_Iter":
+			case "currentIter":
 				base.CurrentIter, _ = strconv.Atoi(val)
-			case "Total_Iter":
+			case "totalIter":
 				base.TotalIter, _ = strconv.Atoi(val)
-			case "Num_players":
+			case "numPlayers":
 				base.NumPlayers, _ = strconv.Atoi(val)
-			case "Abstractor":
+			case "abstractor":
 				base.Abstractor = abs.ParseAbs(val)
 			default:
 				continue
@@ -504,8 +505,8 @@ func Embed(t Trainer_T, base *Trainer) ITrainer {
 	// case DCFR_T:
 	// 	return &DCFR{base, 1.5, 0, 2}
 
-	// case ESLMCCFR_T:
-	// 	return &ESLMCCFR{base}
+	case ESLMCCFR_T:
+		return &ESLMCCFR{base}
 
 	case ESVMCCFR_T:
 		return &ESVMCCFR{base}
