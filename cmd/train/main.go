@@ -17,7 +17,7 @@ import (
 var (
 	modelPtr      = flag.String("model", "", "Filepath to .model file to continue training from")
 	numPlayersPtr = flag.Int("p", 2, "Number of players")
-	trainerPtr    = flag.String("trainer", "es-vmccfr", "CFR variant")
+	trainerPtr    = flag.String("trainer", "esvmccfr", "CFR variant")
 	absPtr        = flag.String("abs", "a1", "Abstraction")
 	threadsPtr    = flag.Int("threads", 1, "Threads")
 	saveDirPtr    = flag.String("dir", "/tmp", "Save directory")
