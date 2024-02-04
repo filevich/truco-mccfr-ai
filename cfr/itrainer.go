@@ -48,10 +48,6 @@ type ITrainer interface {
 	// eval
 	GetAvgStrategy(hash string, chi_len int) []float32
 
-	// io
-	Save(filename string)
-	Load(filename string)
-
 	// new io
 	SaveModel(filename string, report_interval int, id string, extras []string)
 }

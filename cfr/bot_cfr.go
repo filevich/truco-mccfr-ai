@@ -2,7 +2,6 @@ package cfr
 
 import (
 	"crypto/sha1"
-	"strings"
 
 	"github.com/filevich/truco-ai/info"
 	"github.com/filevich/truco-ai/utils"
@@ -19,11 +18,7 @@ type BotCFR struct {
 func (b *BotCFR) Initialize() {
 	// lo cargo SOLO si no fue cargado aun
 	if b.Model == nil {
-		if strings.HasSuffix(b.F, ".json") {
-			b.Model = Load(CFR_T, b.F)
-		} else {
-			b.Model = LoadModel(b.F, true, 1_000_000)
-		}
+		b.Model = LoadModel(b.F, true, 1_000_000)
 	}
 }
 
