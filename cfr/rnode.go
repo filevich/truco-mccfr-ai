@@ -3,11 +3,10 @@ package cfr
 import "github.com/filevich/truco-ai/utils"
 
 type RNode struct {
-	CumulativeRegrets []float32
-	StrategySum       []float32
-	RegUpdates        int
-	StrUpdates        int
-	// usado solo por LMCCFR - Linear (External-Sampling) Monte Carlo Counterfactual Regret Minimization
+	CumulativeRegrets []float32 `json:"cumulativeRegrets"`
+	StrategySum       []float32 `json:"strategySum"`
+	RegUpdates        int       `json:"regUpdates"`
+	StrUpdates        int       `json:"strUpdates"`
 }
 
 func NewRNode(n int) *RNode {
