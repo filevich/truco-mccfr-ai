@@ -470,14 +470,13 @@ type Trainer_T string
 const (
 	// vanilla
 	CFR_T      Trainer_T = "cfr"
-	CFRP_T     Trainer_T = "cfr+"
+	CFRP_T     Trainer_T = "cfrp"
 	DCFR_T     Trainer_T = "dcfr"
-	ESLMCCFR_T Trainer_T = "es-lmccfr"
-	ESVMCCFR_T Trainer_T = "es-vmccfr"
-	OSMCCFR_T  Trainer_T = "os-lmccfr"
+	ESLMCCFR_T Trainer_T = "eslmccfr"
+	ESVMCCFR_T Trainer_T = "esvmccfr"
+	OSMCCFR_T  Trainer_T = "oslmccfr"
 	// exploit
-	BR_T Trainer_T = "best-response"
-	// LCFR_T     Trainer_T = "lcfr" // <- DEPRECATED
+	BR_T Trainer_T = "bestresponse"
 )
 
 func NewTrainer(t Trainer_T, num_players int, abs abs.IAbstraction) ITrainer {
