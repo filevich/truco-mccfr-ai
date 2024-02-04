@@ -10,23 +10,28 @@ data = {
 # plot data info
 info = {
     "train_esvmccfr_a2_2p.3280483.out": {
-        "label": "a2",
+        "label": "esv-a2",
     },
     "train_esvmccfr_null_2p.3280538.out": {
-        "label": "null",
+        "label": "esv-null",
     },
     "train_esvmccfr_a1_2p.3280505.out": {
-        "label": "a1",
+        "label": "esv-a1",
     },
     "train_esvmccfr_a3_2p.3280535.out": {
-        "label": "a3",
+        "label": "esv-a3",
     },
+    "train_eslmccfr_null_2p.3282695.out": {
+        "label": "esl-null",
+    }
 }
 
-# fetch the data
+# fetch the data with:
 # `rsync -avz -e 'ssh -p 10022' 'juan.filevich@cluster.uy:~/batches/out/train_*.out' /tmp/train`
-# parse it
+
+# parse it with:
 # `python cmd/train/plot/parse_wr.py -d /tmp/train`
+
 # read it
 with open('/tmp/train/result.json', 'r') as f:
     import json
@@ -44,7 +49,7 @@ import matplotlib.pyplot as plt
 # wr
 
 fig, axs = plt.subplots(1, 2, figsize=(14, 5))
-fig.suptitle("Train ESVMCCFR 2p 72hs")
+fig.suptitle("Train 2p 72hs")
 
 axs[0].set_title("WR vs Random bot")
 for file,d in data.items():
@@ -74,7 +79,7 @@ plt.show()
 # di
 
 fig, axs = plt.subplots(1, 2, figsize=(14, 5))
-fig.suptitle("Train ESVMCCFR 2p 72hs")
+fig.suptitle("Train 2p 72hs")
 
 axs[0].set_title("Dumbo Index vs Random bot")
 for file,d in data.items():

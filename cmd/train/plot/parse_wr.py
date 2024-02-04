@@ -8,11 +8,13 @@ sys.path.append('cmd/_com')
 import parse_utils
 
 parser = argparse.ArgumentParser(description='List all .out files in a directory')
-parser.add_argument('-d', '--directory', type=str, required=True, help='Directory to search for .out files')
+parser.add_argument('-d', '--directory', type=str, required=False, help='Directory to search for .out files')
 parser.add_argument('-o', '--output', type=str, default=None, help='Path to output JSON file')
 args = parser.parse_args()
 
 data = {}
+
+args.directory = "/tmp/train"
 
 for root, dirs, files in os.walk(args.directory):
     for file in files:
@@ -25,10 +27,15 @@ for root, dirs, files in os.walk(args.directory):
                 start = None
                 for line in lines:
                     
-                    if "done loading t1k22" in line:
+                    if "done loading t1k22" in line.lower():
                         start = parse_utils.parse_date(line[:19])
 
-                    match_wr =re.search(r'ale=([\d\.]+) .([\d\.]+)\.\.([\d\.]+).+?di=(\d+).+?det=([\d\.]+) .([\d\.]+)\.\.([\d\.]+).+?di=(\d+)', line)
+                    # v1
+                    match_wr = re.search(r'ale=([\d\.]+) .([\d\.]+)\.\.([\d\.]+).+?di=(\d+).+?det=([\d\.]+) .([\d\.]+)\.\.([\d\.]+).+?di=(\d+)', line)
+                    if not match_wr:
+                        # v2
+                        match_wr = re.search(r'Random=([\d\.]+) .([\d\.]+), ([\d\.]+).+?di=(\d+).+?Simple=([\d\.]+) .([\d\.]+), ([\d\.]+).+?di=(\d+)', line)
+
                     if match_wr:
                         timestamp = line[:19]
                         d = (parse_utils.parse_date(timestamp) - start).total_seconds()
@@ -48,6 +55,7 @@ for root, dirs, files in os.walk(args.directory):
                             "t": timestamp,
                             "delta": d,
                         })
+
                 data[file] = {
                     "ale": ale,
                     "simple": simple,
