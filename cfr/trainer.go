@@ -537,6 +537,6 @@ func Embed(t Trainer_T, base *Trainer) ITrainer {
 	// 	return &BestResponse{base}
 
 	default:
-		panic("tainer unknown")
+		panic("trainer unknown")
 	}
 }
