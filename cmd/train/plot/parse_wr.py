@@ -38,7 +38,11 @@ for root, dirs, files in os.walk(args.directory):
 
                     if match_wr:
                         timestamp = line[:19]
-                        d = (parse_utils.parse_date(timestamp) - start).total_seconds()
+                        try:
+                            d = (parse_utils.parse_date(timestamp) - start).total_seconds()
+                        except:
+                            continue
+
                         ale.append({
                             "wr": float(match_wr.group(1)),
                             "l": float(match_wr.group(2)),
