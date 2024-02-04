@@ -37,7 +37,7 @@ func init() {
 		log.Println("model", *modelPtr)
 	} else {
 		log.Println("numPlayers", *numPlayersPtr)
-		log.Println("algo", *trainerPtr)
+		log.Println("trainer", *trainerPtr)
 		log.Println("abs", *absPtr)
 	}
 	log.Println("threads", *threadsPtr)
@@ -57,7 +57,7 @@ func main() {
 		saveDir          = *saveDirPtr
 		threads          = *threadsPtr
 		numPlayers       = *numPlayersPtr
-		algo             = *trainerPtr
+		trainerID        = *trainerPtr
 		tinyEval         = *tinyEvalPtr
 		model            = *modelPtr
 		abstraction      = abs.ParseAbs(*absPtr)
@@ -95,7 +95,7 @@ func main() {
 
 	if len(model) == 0 {
 		trainer = cfr.NewTrainer(
-			cfr.Trainer_T(algo),
+			cfr.Trainer_T(trainerID),
 			numPlayers,
 			abstraction)
 	} else {

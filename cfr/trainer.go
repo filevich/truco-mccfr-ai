@@ -213,8 +213,8 @@ func (t *Trainer) SaveModel(
 
 	// agrego los campos de interes:
 	// campos extras: como el tipo, o valor de epsilon de OS-MCCFR
-	f.Write([]byte("version 2.0\n"))
-	f.Write([]byte(fmt.Sprintf("id %s\n", id)))
+	f.Write([]byte("version 2.1\n"))
+	f.Write([]byte(fmt.Sprintf("trainer %s\n", id)))
 	f.Write([]byte(fmt.Sprintf("currentIter %d\n", t.CurrentIter)))
 	f.Write([]byte(fmt.Sprintf("totalIter %d\n", t.TotalIter)))
 	f.Write([]byte(fmt.Sprintf("numPlayers %d\n", t.NumPlayers)))
