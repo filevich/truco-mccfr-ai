@@ -12,6 +12,7 @@ require (
 
 require (
 	github.com/filevich/canvas v0.0.0 // indirect
+	github.com/filevich/combinatronics v0.0.0-20220316214652-26aa6db09482
 	github.com/jedib0t/go-pretty/v6 v6.5.4
 )
 
