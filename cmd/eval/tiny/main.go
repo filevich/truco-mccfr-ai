@@ -21,31 +21,34 @@ func main() {
 	var ds dataset.Dataset = dataset.LoadDataset("t1k22.json")
 	log.Println("done loading t1k22")
 
-	agents := []bot.Agent{
+	testThese := []bot.Agent{
+		&bot.Random{},
+	}
+
+	againstThese := []bot.Agent{
 		&bot.Random{},
 		&bot.Simple{},
-
 		// &bot.BotCFR{
 		// 	N: "final_es-lmccfr_d25h0m_D48h0m_t24878_p0_a1_2208092259",
 		// 	F: b + "/final_es-lmccfr_d25h0m_D48h0m_t24878_p0_a1_2208092259.model",
 		// },
 	}
 
-	for i, agent := range agents {
+	for i, agent := range testThese {
 		var (
-			rr                  = eval.PlayMultipleDoubleGames(agent, agents, num_players, ds)
+			rr                  = eval.PlayMultipleDoubleGames(agent, againstThese, num_players, ds)
 			s                   = ""
 			delta time.Duration = 0
 		)
 
 		for i, r := range rr {
-			s += fmt.Sprintf("%s=%s - ", agents[i].UID(), r)
+			s += fmt.Sprintf("%s=%s - ", againstThese[i].UID(), r)
 			delta += r.Delta
 		}
 
 		log.Printf("[%2d/%2d] %s: %s %s\n",
 			i+1,
-			len(agents),
+			len(testThese),
 			agent.UID(),
 			s,
 			delta.Round(time.Second))
