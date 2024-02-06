@@ -1,4 +1,10 @@
+import argparse
+import json
 import datetime
+
+parser = argparse.ArgumentParser(description='Plot cfr train')
+parser.add_argument('-i', '--input', type=str, default='/tmp/train/result.json', required=False, help='.json input file')
+args = parser.parse_args()
 
 # example expected data structure
 data = {
@@ -36,8 +42,7 @@ info = {
 # `python cmd/train/plot/parse_wr.py -d /tmp/train`
 
 # read it
-with open('/tmp/train/result.json', 'r') as f:
-    import json
+with open(args.input, 'r') as f:
     data = json.loads(f.read())
 
 # show only

@@ -8,13 +8,11 @@ sys.path.append('cmd/_com')
 import parse_utils
 
 parser = argparse.ArgumentParser(description='List all .out files in a directory')
-parser.add_argument('-d', '--directory', type=str, required=False, help='Directory to search for .out files')
+parser.add_argument('-d', '--directory', type=str, default="/tmp/train", required=False, help='Directory to search for .out files')
 parser.add_argument('-o', '--output', type=str, default=None, help='Path to output JSON file')
 args = parser.parse_args()
 
 data = {}
-
-args.directory = "/tmp/train"
 
 for root, dirs, files in os.walk(args.directory):
     for file in files:
