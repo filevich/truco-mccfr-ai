@@ -177,6 +177,13 @@ func (t *Trainer) Save(filename string) {
 
 const CURRENT_MODEL_VERSION float64 = 2.1
 
+// changes from v2.0 to v2.1:
+//   - field `id` is now `trainer`
+//   - no use of hyphens in trainers. eg, `es-vmccfr` is now `esvmccfr`
+// changes from v1.0 to v2.0
+//   - field `Prot` is now `version`
+//   - everything else is lowerCamelCased
+
 func (t *Trainer) SaveModel(
 
 	filename string,
