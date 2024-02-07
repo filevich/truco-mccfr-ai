@@ -6,15 +6,16 @@ import (
 	"time"
 
 	"github.com/filevich/truco-ai/bot"
+	"github.com/filevich/truco-ai/cfr"
 	"github.com/filevich/truco-ai/eval"
 	"github.com/filevich/truco-ai/eval/dataset"
 )
 
 func main() {
 	const (
-		tiny_eval   = 1_000
-		num_players = 2
-		b           = "/media/jp/6e5bdfb0-c84b-4144-8d6d-4688934f1afe/models/6p/48np-multi6/a1"
+		tinyEval   = 1_000
+		numPlayers = 2
+		b          = "/Users/jp/Downloads/cluster/train-cfr/models/2p/a2"
 	)
 
 	log.Println("loading t1k22")
@@ -22,21 +23,24 @@ func main() {
 	log.Println("done loading t1k22")
 
 	testThese := []bot.Agent{
-		&bot.Random{},
+		&cfr.BotCFR{
+			N: "esvmccfra2",
+			F: b + "/final_es-vmccfr_d70h0m_D70h0m_t7077536_p0_a2_2402052107.model",
+		},
 	}
 
 	againstThese := []bot.Agent{
 		&bot.Random{},
 		&bot.Simple{},
-		// &bot.BotCFR{
-		// 	N: "final_es-lmccfr_d25h0m_D48h0m_t24878_p0_a1_2208092259",
-		// 	F: b + "/final_es-lmccfr_d25h0m_D48h0m_t24878_p0_a1_2208092259.model",
-		// },
 	}
 
 	for i, agent := range testThese {
 		var (
-			rr                  = eval.PlayMultipleDoubleGames(agent, againstThese, num_players, ds)
+			rr = eval.PlayMultipleDoubleGames(
+				agent,
+				againstThese,
+				numPlayers,
+				ds[:tinyEval])
 			s                   = ""
 			delta time.Duration = 0
 		)
