@@ -17,7 +17,7 @@ def count_lines_using_sum(file_path):
     return lines
 
 def update_header(line) -> str:
-    CURRENT_MODEL_VERSION = 2.1
+    CURRENT_MODEL_VERSION = 2.2
     data = line.split(" ")
     field, values = data[0], data[1:]
     tail = " ".join(values)
@@ -28,7 +28,7 @@ def update_header(line) -> str:
     elif "version" in field: return f"version {CURRENT_MODEL_VERSION}"
     # version <=2.0
     elif "id" in field: return f"trainer {tail.replace('-', '')}"
-    else: return f"{to_lower_camel_case(field)} {tail}"
+    else: return f"{field.lower()} {tail}"
 
 def update_line(line) -> str:
     if line == "": return ""

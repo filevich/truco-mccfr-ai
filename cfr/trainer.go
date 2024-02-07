@@ -175,7 +175,7 @@ func (t *Trainer) Save(filename string) {
 	t.CurrentIter--
 }
 
-const CURRENT_MODEL_VERSION float64 = 2.1
+const CURRENT_MODEL_VERSION float64 = 2.2
 
 // changes from v2.0 to v2.1:
 //   - field `id` is now `trainer`
@@ -224,9 +224,9 @@ func (t *Trainer) SaveModel(
 	// campos extras: como el tipo, o valor de epsilon de OS-MCCFR
 	f.Write([]byte(fmt.Sprintf("version %.1f\n", CURRENT_MODEL_VERSION)))
 	f.Write([]byte(fmt.Sprintf("trainer %s\n", id)))
-	f.Write([]byte(fmt.Sprintf("currentIter %d\n", t.CurrentIter)))
-	f.Write([]byte(fmt.Sprintf("totalIter %d\n", t.TotalIter)))
-	f.Write([]byte(fmt.Sprintf("numPlayers %d\n", t.NumPlayers)))
+	f.Write([]byte(fmt.Sprintf("currentiter %d\n", t.CurrentIter)))
+	f.Write([]byte(fmt.Sprintf("totaliter %d\n", t.TotalIter)))
+	f.Write([]byte(fmt.Sprintf("numplayers %d\n", t.NumPlayers)))
 	f.Write([]byte(fmt.Sprintf("abstractor %s\n", t.Abstractor.String())))
 
 	for _, field := range extras {
@@ -349,11 +349,11 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 				}
 			case "trainer":
 				t = Trainer_T(words[1])
-			case "currentIter":
+			case "currentiter":
 				base.CurrentIter, _ = strconv.Atoi(val)
-			case "totalIter":
+			case "totaliter":
 				base.TotalIter, _ = strconv.Atoi(val)
-			case "numPlayers":
+			case "numplayers":
 				base.NumPlayers, _ = strconv.Atoi(val)
 			case "abstractor":
 				base.Abstractor = abs.ParseAbs(val)
