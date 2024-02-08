@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"sort"
 
-	"github.com/filevich/truco-ai/abs"
 	"github.com/filevich/truco-ai/info"
 	"github.com/truquito/truco/enco"
 	"github.com/truquito/truco/pdt"
@@ -165,7 +164,7 @@ func (b *Pro) cartas(p *pdt.Partida) (min, max *pdt.Carta) {
 
 func (b *Pro) jugarCarta(p *pdt.Partida) pdt.IJugada {
 	m := p.Manojo(b.inGameID)
-	_, maxOp, vamos := info.Vamos(p, m, &abs.Null{})
+	_, maxOpCarta, vamos := info.Vamos(p, m)
 
 	switch vamos {
 	case "ganando":
@@ -200,7 +199,7 @@ func (b *Pro) jugarCarta(p *pdt.Partida) pdt.IJugada {
 		// si no la tengo yo -> entonces tiro la de menor poder
 
 		// empezando por mi, me fijo de mi equipo quién tiene la carta más baja
-		// que le gane a la `maxOp`
+		// que le gane a la `maxOpCarta`
 
 		minPoderCartaSuperior := math.MaxInt
 		esMia := false
@@ -219,6 +218,10 @@ func (b *Pro) jugarCarta(p *pdt.Partida) pdt.IJugada {
 				// no ha sido tirada.
 				// es superior?
 				poder := c.CalcPoder(p.Ronda.Muestra)
+				maxOp := -1
+				if maxOpCarta != nil {
+					maxOp = maxOpCarta.CalcPoder(p.Ronda.Muestra)
+				}
 				if esSuperior := poder > maxOp; esSuperior {
 					// ok, es menor de la mejor encontrada hasta ahora?
 					if esMasEconomica := poder < minPoderCartaSuperior; esMasEconomica {
