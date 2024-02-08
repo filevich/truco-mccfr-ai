@@ -187,7 +187,7 @@ func (b *Pro) jugarCarta(p *pdt.Partida) pdt.IJugada {
 		ok := false
 		alpha, beta, gamma, k := b.Alphas[0], b.Betas[0], b.Gammas[0], b.Ks[0]
 		stop = b.powerDist.probDareTanh(cPower, alpha, beta, gamma, k+0.1) < rand.Float32()
-		_, ok = pdt.GritarReTruco{JID: b.inGameID}.Ok(p)
+		_, ok = pdt.IrseAlMazo{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.IrseAlMazo{
 				JID: b.inGameID,
