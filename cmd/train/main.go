@@ -11,6 +11,7 @@ import (
 	"github.com/filevich/truco-ai/cfr"
 	"github.com/filevich/truco-ai/eval"
 	"github.com/filevich/truco-ai/eval/dataset"
+	"github.com/filevich/truco-ai/utils"
 )
 
 // flags
@@ -122,7 +123,8 @@ func main() {
 			Model: trainer,
 		}
 		rr := eval.PlayMultipleDoubleGames(agent, agents, numPlayers, ds[:tinyEval])
-		log.Println(eval.Fmt(rr, agents))
+		mem := utils.GetMemUsage()
+		log.Println(eval.Fmt(rr, agents), mem)
 	}
 
 	if *resetPtr {
