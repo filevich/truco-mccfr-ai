@@ -188,7 +188,7 @@ func (b *Pro) jugarCarta(p *pdt.Partida) pdt.IJugada {
 		alpha, beta, gamma, k := b.Alphas[0], b.Betas[0], b.Gammas[0], b.Ks[0]
 		stop = b.powerDist.probDareTanh(cPower, alpha, beta, gamma, k+0.1) < rand.Float32()
 		_, ok = pdt.IrseAlMazo{JID: b.inGameID}.Ok(p)
-		if stop || !ok {
+		if stop && ok {
 			return &pdt.IrseAlMazo{
 				JID: b.inGameID,
 			}
@@ -546,7 +546,7 @@ func (b *Pro) responderElTruco(p *pdt.Partida) pdt.IJugada {
 			stop = b.powerDist.probDareTanh(cPower, alpha, beta, gamma, k) < rand.Float32()
 			_, ok = pdt.ResponderQuiero{JID: b.inGameID}.Ok(p)
 			if stop || !ok {
-				return &pdt.IrseAlMazo{
+				return &pdt.ResponderNoQuiero{
 					JID: b.inGameID,
 				}
 			} else {
@@ -569,7 +569,7 @@ func (b *Pro) responderElTruco(p *pdt.Partida) pdt.IJugada {
 			stop = b.powerDist.probDareTanh(cPower, alpha, beta, gamma, k) < rand.Float32()
 			_, ok = pdt.ResponderQuiero{JID: b.inGameID}.Ok(p)
 			if stop || !ok {
-				return &pdt.IrseAlMazo{
+				return &pdt.ResponderNoQuiero{
 					JID: b.inGameID,
 				}
 			} else {

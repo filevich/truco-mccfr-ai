@@ -166,9 +166,9 @@ func (b *Lineal) jugarCarta(p *pdt.Partida) pdt.IJugada {
 		cPower := b.getMax3ManojoSumPower(p, p.Manojo(b.inGameID))
 		stop := false
 		ok := false
-		stop = b.powerDist.probDareLineal(cPower, b.LowerBoundDare) < rand.Float32()
-		_, ok = pdt.GritarReTruco{JID: b.inGameID}.Ok(p)
-		if stop || !ok {
+		stop = b.powerDist.probDareLineal(cPower, b.LowerBounds[23]) < rand.Float32()
+		_, ok = pdt.IrseAlMazo{JID: b.inGameID}.Ok(p)
+		if stop && ok {
 			return &pdt.IrseAlMazo{
 				JID: b.inGameID,
 			}
@@ -491,7 +491,7 @@ func (b *Lineal) responderElTruco(p *pdt.Partida) pdt.IJugada {
 			stop = b.powerDist.probDareLineal(cPower, b.LowerBounds[16]) < rand.Float32()
 			_, ok = pdt.ResponderQuiero{JID: b.inGameID}.Ok(p)
 			if stop || !ok {
-				return &pdt.IrseAlMazo{
+				return &pdt.ResponderNoQuiero{
 					JID: b.inGameID,
 				}
 			} else {
@@ -512,7 +512,7 @@ func (b *Lineal) responderElTruco(p *pdt.Partida) pdt.IJugada {
 			stop = b.powerDist.probDareLineal(cPower, b.LowerBounds[18]) < rand.Float32()
 			_, ok = pdt.ResponderQuiero{JID: b.inGameID}.Ok(p)
 			if stop || !ok {
-				return &pdt.IrseAlMazo{
+				return &pdt.ResponderNoQuiero{
 					JID: b.inGameID,
 				}
 			} else {
