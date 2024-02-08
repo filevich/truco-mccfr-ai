@@ -37,15 +37,20 @@ func hayMenorYSigueGanando(
 	p *pdt.Partida,
 	m *pdt.Manojo,
 	tc pdt.TirarCarta,
-	abs abs.IAbstraction,
+	a abs.IAbstraction,
 
 ) bool {
+
+	// fix null abs
+	if a.String() == string(abs.NULL_ID) {
+		a = &abs.A3{}
+	}
 
 	var (
 		maxTiradas                 = maxTiradas(p)
 		mejor_ellos                = maxTiradas[m.Jugador.GetEquipoContrario()]
-		bucket_la_que_pienso_tirar = abs.Abstract(&tc.Carta, &p.Ronda.Muestra)
-		bucket_la_mejor_de_ellos   = abs.Abstract(&mejor_ellos.Carta, &p.Ronda.Muestra)
+		bucket_la_que_pienso_tirar = a.Abstract(&tc.Carta, &p.Ronda.Muestra)
+		bucket_la_mejor_de_ellos   = a.Abstract(&mejor_ellos.Carta, &p.Ronda.Muestra)
 	)
 
 	// tengo alguna de MENOR bucket que aun asi le gana a la mejor tirada?
@@ -53,7 +58,7 @@ func hayMenorYSigueGanando(
 	for cix, tirada := range m.Tiradas {
 		if !tirada {
 			c := m.Cartas[cix]
-			bucket := abs.Abstract(c, &p.Ronda.Muestra)
+			bucket := a.Abstract(c, &p.Ronda.Muestra)
 			es_menor := bucket < bucket_la_que_pienso_tirar
 			le_gana := bucket_la_mejor_de_ellos < bucket
 			if es_menor && le_gana {
