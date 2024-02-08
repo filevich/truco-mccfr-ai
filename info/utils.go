@@ -20,14 +20,11 @@ func Vamos(
 
 	p *pdt.Partida,
 	manojo *pdt.Manojo,
-	abs abs.IAbstraction,
 
-) (maxWeAbstracto, maxOpAbstracto int, vamosExacto string) {
+) (ourMax, opMax *pdt.Carta, vamosEnum string) {
 
 	// retornos
-	maxWeAbstracto = -1
-	maxOpAbstracto = -1
-	vamosExacto = ""
+	vamosEnum = ""
 
 	// determino el qué carta y qué poder tienen las cartas más poderosas tiradas
 	// por mi equipo y el equipo de op.
@@ -46,29 +43,30 @@ func Vamos(
 	weEquipo := manojo.Jugador.Equipo
 	opEquipo := manojo.Jugador.GetEquipoContrario()
 
-	// seteo los valores máximos
-	// estos valores tienen como dominio el rango de los buckets de la abstraccion
-	if maxCarta[weEquipo] != nil {
-		maxWeAbstracto = abs.Abstract(&maxCarta[weEquipo].Carta, &p.Ronda.Muestra)
-	}
-	if maxCarta[opEquipo] != nil {
-		maxOpAbstracto = abs.Abstract(&maxCarta[opEquipo].Carta, &p.Ronda.Muestra)
-	}
-
 	// finalmente comparo los PODERES exactos y determino si vamos ganando o no
 	if maxCarta[weEquipo] == nil || maxCarta[opEquipo] == nil {
-		vamosExacto = "?"
+		vamosEnum = "?"
 	} else {
 		if maxPoder[weEquipo] < maxPoder[opEquipo] {
-			vamosExacto = "perdiendo"
+			vamosEnum = "perdiendo"
 		} else if maxPoder[weEquipo] == maxPoder[opEquipo] {
-			vamosExacto = "empatados"
+			vamosEnum = "empatados"
 		} else {
-			vamosExacto = "ganando"
+			vamosEnum = "ganando"
 		}
 	}
 
-	return maxWeAbstracto, maxOpAbstracto, vamosExacto
+	var cWe, cOp *pdt.Carta = nil, nil
+
+	if maxCarta[weEquipo] != nil {
+		cWe = &maxCarta[weEquipo].Carta
+	}
+
+	if maxCarta[opEquipo] != nil {
+		cOp = &maxCarta[opEquipo].Carta
+	}
+
+	return cWe, cOp, vamosEnum
 }
 
 // índice *relativo AL MANO* de un jugador dado

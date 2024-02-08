@@ -3,7 +3,6 @@ package bot
 import (
 	"math"
 
-	"github.com/filevich/truco-ai/abs"
 	"github.com/filevich/truco-ai/info"
 	"github.com/truquito/truco/enco"
 	"github.com/truquito/truco/pdt"
@@ -51,7 +50,7 @@ func (b *Simple) cartas(p *pdt.Partida) (min, max *pdt.Carta) {
 
 func (b *Simple) jugar_carta(p *pdt.Partida) *pdt.TirarCarta {
 	m := p.Manojo(b.inGameID)
-	_, max_op, vamos := info.Vamos(p, m, &abs.Null{})
+	_, maxOpCarta, vamos := info.Vamos(p, m)
 
 	switch vamos {
 	case "ganando":
@@ -71,7 +70,7 @@ func (b *Simple) jugar_carta(p *pdt.Partida) *pdt.TirarCarta {
 		// en caso afirmativo, la tiro
 		// en caso negativo, no vale la pena
 		minC, maxC := b.cartas(p)
-		if maxC.CalcPoder(p.Ronda.Muestra) > max_op {
+		if maxC.CalcPoder(p.Ronda.Muestra) > maxOpCarta.CalcPoder(p.Ronda.Muestra) {
 			return &pdt.TirarCarta{
 				JID:   m.Jugador.ID,
 				Carta: *maxC,
