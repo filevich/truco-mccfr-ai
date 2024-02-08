@@ -15,12 +15,13 @@ func run(ds dataset.Dataset, proAgent bot.Agent) {
 	const (
 		numPlayers = 2
 		b          = "/Users/jp/Downloads/cluster/train-cfr/models/2p"
+		f          = "/a2/final_es-vmccfr_d70h0m_D70h0m_t7077536_p0_a2_2402052107.model"
+		// f = "/a3/final_es-vmccfr_d70h0m_D70h0m_t3468734_p0_a3_2402052116.model"
 	)
 
 	agent := &cfr.BotCFR{
-		N: "esvmccfra2",
-		F: b + "/a2/final_es-vmccfr_d70h0m_D70h0m_t7077536_p0_a2_2402052107.model",
-		// F: b + "/a3/final_es-vmccfr_d70h0m_D70h0m_t3468734_p0_a3_2402052116.model",
+		N: "agent",
+		F: b + f,
 	}
 
 	againstThese := []bot.Agent{
@@ -59,10 +60,10 @@ func main() {
 	run(
 		ds,
 		&bot.Pro{
-			Alphas: []float32{2.9, 2.9, 2.9},
-			Betas:  []float32{-0.9, -0.9, -0.9},
+			Alphas: []float32{6, 4, 6},
+			Betas:  []float32{-1, 0, -0.9},
 			Gammas: []float32{2, 2, 2},
-			Ks:     []float32{0.01, 0.01, 0.01},
+			Ks:     []float32{0, 0, 0},
 		},
 	)
 
