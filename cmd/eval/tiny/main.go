@@ -36,11 +36,46 @@ func main() {
 	againstThese := []bot.Agent{
 		&bot.Random{},
 		&bot.Simple{},
-		&bot.Pro{
-			Alphas: []float32{6, 4, 6},
-			Betas:  []float32{-1, 0, -0.9},
-			Gammas: []float32{2, 2, 2},
-			Ks:     []float32{0, 0, 0},
+		// &bot.Pro{
+		// 	Alphas: []float32{6, 4, 6},
+		// 	Betas:  []float32{-1, 0, -0.9},
+		// 	Gammas: []float32{2, 2, 2},
+		// 	Ks:     []float32{0, 0, 0},
+		// },
+		&bot.Lineal{
+			LowerBounds: []float32{
+				0.99, // 0 flor/noquiero
+				0.99, // 1 contraflor/flor
+				0.99, // 2 contrafloralrest/contraflor
+				0.99, // 3 quiero_contraflor/noquiero_contraflor
+				0.99, // 4 contraflor_alrest/quiero
+				0.99, // 5 quiero_contrafloralresto/noquiero_contrafloralrest
+
+				0.99, // 6 envido/noquiero_envido
+				0.99, // 7 realenvido/envido
+				0.99, // 8 faltaenvido/realenvido
+
+				0.99, // 9 quiero_envido/noquiero_envido
+				0.99, // 10 real_envido/quiero_envido
+				0.99, // 11 falta_envid/real_envido
+
+				0.99, // 12 quiero_realenvido/noquiero_realenvido
+				0.99, // 13 faltaenvido/quiero_realevnido
+
+				0.99, // 14 quiero_faltaenvid/noquiero_faltaenvido
+
+				0.99, // 15 retruco/ (
+				0.99, // 16 quiero_truco/noquiero_truco)
+				0.99, // 17 vale4/ (
+				0.99, // 18 quiero_retruco/noquiero_retruco)
+				0.99, // 19 quiero_vale4/noquiero_vale4
+
+				0.99, // 20 truco/nada
+				0.99, // 21 retruco/nada
+				0.99, // 22 vale4/nada
+
+				0.99, // 23 mazo/seguir
+			},
 		},
 	}
 

@@ -10,6 +10,40 @@ import (
 	"github.com/truquito/truco/pdt"
 )
 
+/*
+
+0 flor/noquiero
+1 contraflor/flor
+2 contrafloralrest/contraflor
+3 quiero_contraflor/noquiero_contraflor
+4 contraflor_alrest/quiero
+5 quiero_contrafloralresto/noquiero_contrafloralrest
+
+6 envido/noquiero_envido
+7 realenvido/envido
+8 faltaenvido/realenvido
+
+9 quiero_envido/noquiero_envido
+10 real_envido/quiero_envido
+11 falta_envid/real_envido
+
+12 quiero_realenvido/noquiero_realenvido
+13 faltaenvido/quiero_realevnido
+
+14 quiero_faltaenvid/noquiero_faltaenvido
+
+15 retruco/ (16 quiero_truco/noquiero_truco)
+17 vale4/ (18 quiero_retruco/noquiero_retruco)
+19 quiero_vale4/noquiero_vale4
+
+20 truco/nada
+21 retruco/nada
+22 vale4/nada
+
+23 mazo/seguir
+
+*/
+
 type Lineal struct {
 	inGameID string
 	// dists
@@ -17,7 +51,7 @@ type Lineal struct {
 	florDist   *dist
 	powerDist  *dist
 	// lower
-	LowerBoundDare float32
+	LowerBounds []float32
 }
 
 func (b *Lineal) Initialize() {
@@ -285,21 +319,21 @@ func (b *Lineal) jugarFlor(p *pdt.Partida) pdt.IJugada {
 
 	switch p.Ronda.Envite.Estado {
 	case pdt.FLOR:
-		stop = b.powerDist.probDareLineal(maxFlor, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxFlor, b.LowerBounds[0]) < rand.Float32()
 		_, ok = pdt.CantarFlor{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.ResponderNoQuiero{
 				JID: b.inGameID,
 			}
 		}
-		stop = b.powerDist.probDareLineal(maxFlor, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxFlor, b.LowerBounds[1]) < rand.Float32()
 		_, ok = pdt.CantarContraFlor{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.CantarFlor{
 				JID: b.inGameID,
 			}
 		}
-		stop = b.powerDist.probDareLineal(maxFlor, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxFlor, b.LowerBounds[2]) < rand.Float32()
 		_, ok = pdt.CantarContraFlorAlResto{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.CantarContraFlor{
@@ -311,13 +345,13 @@ func (b *Lineal) jugarFlor(p *pdt.Partida) pdt.IJugada {
 		}
 
 	case pdt.CONTRAFLOR:
-		stop = b.powerDist.probDareLineal(maxFlor, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxFlor, b.LowerBounds[3]) < rand.Float32()
 		if stop {
 			return &pdt.ResponderNoQuiero{
 				JID: b.inGameID,
 			}
 		}
-		stop = b.powerDist.probDareLineal(maxFlor, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxFlor, b.LowerBounds[4]) < rand.Float32()
 		_, ok = pdt.CantarContraFlorAlResto{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.ResponderQuiero{
@@ -329,7 +363,7 @@ func (b *Lineal) jugarFlor(p *pdt.Partida) pdt.IJugada {
 		}
 
 	case pdt.CONTRAFLORALRESTO:
-		stop = b.powerDist.probDareLineal(maxFlor, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxFlor, b.LowerBounds[5]) < rand.Float32()
 		_, ok = pdt.ResponderQuiero{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.ResponderNoQuiero{
@@ -354,21 +388,21 @@ func (b *Lineal) jugarEnvido(p *pdt.Partida) pdt.IJugada {
 
 	switch p.Ronda.Envite.Estado {
 	case pdt.NOCANTADOAUN:
-		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBounds[6]) < rand.Float32()
 		_, ok = pdt.TocarEnvido{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.ResponderNoQuiero{
 				JID: b.inGameID,
 			}
 		}
-		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBounds[7]) < rand.Float32()
 		_, ok = pdt.TocarRealEnvido{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.TocarEnvido{
 				JID: b.inGameID,
 			}
 		}
-		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBounds[8]) < rand.Float32()
 		_, ok = pdt.TocarFaltaEnvido{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.TocarRealEnvido{
@@ -380,21 +414,21 @@ func (b *Lineal) jugarEnvido(p *pdt.Partida) pdt.IJugada {
 		}
 
 	case pdt.ENVIDO:
-		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBounds[9]) < rand.Float32()
 		_, ok = pdt.ResponderQuiero{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.ResponderNoQuiero{
 				JID: b.inGameID,
 			}
 		}
-		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBounds[10]) < rand.Float32()
 		_, ok = pdt.TocarRealEnvido{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.ResponderQuiero{
 				JID: b.inGameID,
 			}
 		}
-		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBounds[11]) < rand.Float32()
 		_, ok = pdt.TocarFaltaEnvido{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.TocarRealEnvido{
@@ -406,14 +440,14 @@ func (b *Lineal) jugarEnvido(p *pdt.Partida) pdt.IJugada {
 		}
 
 	case pdt.REALENVIDO:
-		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBounds[12]) < rand.Float32()
 		_, ok = pdt.ResponderQuiero{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.ResponderNoQuiero{
 				JID: b.inGameID,
 			}
 		}
-		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBounds[13]) < rand.Float32()
 		_, ok = pdt.TocarFaltaEnvido{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.ResponderQuiero{
@@ -425,7 +459,7 @@ func (b *Lineal) jugarEnvido(p *pdt.Partida) pdt.IJugada {
 		}
 
 	case pdt.FALTAENVIDO:
-		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(maxEnvido, b.LowerBounds[14]) < rand.Float32()
 		_, ok = pdt.ResponderQuiero{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.ResponderNoQuiero{
@@ -450,11 +484,11 @@ func (b *Lineal) responderElTruco(p *pdt.Partida) pdt.IJugada {
 
 	switch p.Ronda.Truco.Estado {
 	case pdt.TRUCO:
-		stop = b.powerDist.probDareLineal(cPower, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(cPower, b.LowerBounds[15]) < rand.Float32()
 		_, ok = pdt.GritarReTruco{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			// ok, ahora bajo el nivel y decido entre mazo o truco-querido
-			stop = b.powerDist.probDareLineal(cPower, b.LowerBoundDare) < rand.Float32()
+			stop = b.powerDist.probDareLineal(cPower, b.LowerBounds[16]) < rand.Float32()
 			_, ok = pdt.ResponderQuiero{JID: b.inGameID}.Ok(p)
 			if stop || !ok {
 				return &pdt.IrseAlMazo{
@@ -471,11 +505,11 @@ func (b *Lineal) responderElTruco(p *pdt.Partida) pdt.IJugada {
 		}
 
 	case pdt.RETRUCO:
-		stop = b.powerDist.probDareLineal(cPower, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(cPower, b.LowerBounds[17]) < rand.Float32()
 		_, ok = pdt.GritarVale4{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			// ok, ahora bajo el nivel y decido entre mazo o truco-querido
-			stop = b.powerDist.probDareLineal(cPower, b.LowerBoundDare) < rand.Float32()
+			stop = b.powerDist.probDareLineal(cPower, b.LowerBounds[18]) < rand.Float32()
 			_, ok = pdt.ResponderQuiero{JID: b.inGameID}.Ok(p)
 			if stop || !ok {
 				return &pdt.IrseAlMazo{
@@ -492,7 +526,7 @@ func (b *Lineal) responderElTruco(p *pdt.Partida) pdt.IJugada {
 		}
 
 	case pdt.VALE4:
-		stop = b.powerDist.probDareLineal(cPower, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(cPower, b.LowerBounds[19]) < rand.Float32()
 		_, ok = pdt.ResponderQuiero{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return &pdt.ResponderNoQuiero{
@@ -524,7 +558,7 @@ func (b *Lineal) testearElTruco(p *pdt.Partida) pdt.IJugada {
 
 	switch p.Ronda.Truco.Estado {
 	case pdt.NOGRITADOAUN:
-		stop = b.powerDist.probDareLineal(cPower, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(cPower, b.LowerBounds[20]) < rand.Float32()
 		_, ok = pdt.GritarTruco{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return nil
@@ -534,7 +568,7 @@ func (b *Lineal) testearElTruco(p *pdt.Partida) pdt.IJugada {
 		}
 
 	case pdt.TRUCOQUERIDO:
-		stop = b.powerDist.probDareLineal(cPower, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(cPower, b.LowerBounds[21]) < rand.Float32()
 		_, ok = pdt.GritarReTruco{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return nil
@@ -544,7 +578,7 @@ func (b *Lineal) testearElTruco(p *pdt.Partida) pdt.IJugada {
 		}
 
 	case pdt.RETRUCOQUERIDO:
-		stop = b.powerDist.probDareLineal(cPower, b.LowerBoundDare) < rand.Float32()
+		stop = b.powerDist.probDareLineal(cPower, b.LowerBounds[22]) < rand.Float32()
 		_, ok = pdt.GritarVale4{JID: b.inGameID}.Ok(p)
 		if stop || !ok {
 			return nil
