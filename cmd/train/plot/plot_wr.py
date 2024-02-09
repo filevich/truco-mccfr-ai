@@ -1,6 +1,7 @@
 import argparse
 import json
 import datetime
+import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description='Plot cfr train')
 parser.add_argument('-i', '--input', type=str, default='/tmp/train/result.json', required=False, help='.json input file')
@@ -32,7 +33,26 @@ info = {
     },
     "train_eslmccfr_null_2p.3283325.out": {
         "label": "esl-null-4t",
-    }
+    },
+    # resume
+    "resume_eslmccfr_null_2p_2t.3294059.out": {
+        "label": "esl-null",
+        "resumes": "train_eslmccfr_null_2p.3282695.out",
+        "kwargs": {
+        }
+    },
+    "resume_esvmccfr_a3_2p_2t.3293685.out": {
+        "label": "esv-a3",
+        "resumes": "train_esvmccfr_a3_2p.3280535.out",
+        "kwargs": {
+        }
+    },
+    "resume_esvmccfr_null_2p_2t.3293687.out": {
+        "label": "esv-null",
+        "resumes": "train_esvmccfr_null_2p.3280538.out",
+        "kwargs": {
+        }
+    },
 }
 
 # fetch the data with:
@@ -47,69 +67,110 @@ with open(args.input, 'r') as f:
 
 # show only
 show_only = [
-    # "train_esvmccfr_a2_2p.3280483.out",
+    # "train_esvmccfr_a3_2p.3280535.out",
+    # "resume_esvmccfr_a3_2p_2t.3293685.out",
+    # "resume_esvmccfr_null_2p_2t.3293687.out",
+    # "train_esvmccfr_null_2p.3280538.out"
 ]
 
-if len(show_only): data = {k:v for k,v in data.items() if k in show_only}
+# skip
+not_show = [
+    "train_eslmccfr_null_2p.3283325.out",
+]
 
-import matplotlib.pyplot as plt
+if len(show_only): info = {k:v for k,v in info.items() if k in show_only}
+if len(not_show): info = {k:v for k,v in info.items() if k not in not_show}
+
+# order
+is_resume = lambda v: "resumes" in v
+order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.items() if is_resume(v)]
 
 # wr
 
-fig, axs = plt.subplots(1, 2, figsize=(14, 5))
+fig, axs = plt.subplots(2, 1, figsize=(10, 8))
 fig.suptitle("Train 2p 72hs")
 
-axs[0].set_title("WR vs Random bot")
-for file,d in data.items():
+colors_used = {}
+
+axs[0].set_title("(a) WR vs Random bot")
+
+for file in order:
+    d = data[file]
     xs = [t["delta"] for t in d["ale"]]
-    xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
+    
+    kwargs = {}
+
+    if "resumes" in info[file]:
+        xs = [x + data[info[file]["resumes"]]["ale"][-1]["delta"] - xs[0] for x in xs]
+        kwargs["color"] = colors_used[info[file]["resumes"]]
+
+    if "kwargs" in info[file]: kwargs = {**kwargs, **info[file]["kwargs"]}
+
+    xs_secs = [datetime.timedelta(seconds=x).total_seconds() for x in xs]
     ys = [t["wr"] for t in d["ale"]]
-    l = info[file]['label']
-    axs[0].plot(range(len(ys)), ys, label=l)
-    axs[0].set_xticks(range(len(ys)), labels=xs_hours, rotation=40)
-    axs[0].locator_params(axis='x', nbins=12)
-axs[0].legend()
+    m = max(ys)
+    l = f"{info[file]['label']} ({round(m*100,2)})"
+    kwargs["label"] = l
 
-axs[1].set_title("WR vs Simple bot")
-for file,d in data.items():
+    p = axs[0].plot(xs_secs, ys, linewidth=0.8, **kwargs)
+
+    colors_used[file] = p[0].get_color()
+
+# x axis
+xs = set()
+for file in order:
+    d = data[file]
+    ts = [t["delta"] for t in d["ale"]]
+    if "resumes" in info[file]:
+        ts = [t + data[info[file]["resumes"]]["ale"][-1]["delta"] - ts[0] for t in ts]
+    xs = xs.union(ts)
+xs = sorted(xs)
+xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
+axs[0].set_xticks(xs, labels=xs_hours, rotation=40)
+axs[0].locator_params(axis='x', nbins=12)
+
+# legend
+axs[0].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
+
+axs[1].set_title("(b) WR vs Simple bot")
+
+for file in order:
+    d = data[file]
     xs = [t["delta"] for t in d["simple"]]
-    xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
+    
+    kwargs = {}
+
+    if "resumes" in info[file]:
+        xs = [x + data[info[file]["resumes"]]["simple"][-1]["delta"] - xs[0] for x in xs]
+        kwargs["color"] = colors_used[info[file]["resumes"]]
+
+    if "kwargs" in info[file]: kwargs = {**kwargs, **info[file]["kwargs"]}
+
+    xs_secs = [datetime.timedelta(seconds=x).total_seconds() for x in xs]
     ys = [t["wr"] for t in d["simple"]]
-    l = info[file]['label']
-    axs[1].plot(range(len(ys)), ys, label=l)
-    axs[1].set_xticks(range(len(ys)), labels=xs_hours, rotation=40)
-    axs[1].locator_params(axis='x', nbins=12)
-axs[1].legend()
+    m = max(ys)
+    l = f"{info[file]['label']} ({round(m*100,2)})"
+    kwargs["label"] = l
 
-plt.tight_layout()
-plt.show()
+    p = axs[1].plot(xs_secs, ys, linewidth=0.8, **kwargs)
 
-# di
+    colors_used[file] = p[0].get_color()
 
-fig, axs = plt.subplots(1, 2, figsize=(14, 5))
-fig.suptitle("Train 2p 72hs")
+# x axis
+xs = set()
+for file in order:
+    d = data[file]
+    ts = [t["delta"] for t in d["simple"]]
+    if "resumes" in info[file]:
+        ts = [t + data[info[file]["resumes"]]["simple"][-1]["delta"] - ts[0] for t in ts]
+    xs = xs.union(ts)
+xs = sorted(xs)
+xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
+axs[1].set_xticks(xs, labels=xs_hours, rotation=40)
+axs[1].locator_params(axis='x', nbins=12)
 
-axs[0].set_title("Dumbo Index vs Random bot")
-for file,d in data.items():
-    xs = [t["delta"] for t in d["ale"]]
-    xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
-    ys = [t["di"] for t in d["ale"]]
-    l = info[file]['label']
-    axs[0].plot(range(len(ys)), ys, label=l)
-    axs[0].set_xticks(range(len(ys)), labels=xs_hours, rotation=40)
-    axs[0].locator_params(axis='x', nbins=12)
-axs[0].legend()
-
-axs[1].set_title("Dumbo Index vs Simple bot")
-for file,d in data.items():
-    xs = [t["delta"] for t in d["simple"]]
-    xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
-    ys = [t["di"] for t in d["simple"]]
-    l = info[file]['label']
-    axs[1].plot(range(len(ys)), ys, label=l)
-    axs[1].set_xticks(range(len(ys)), labels=xs_hours, rotation=40)
-    axs[1].locator_params(axis='x', nbins=12)
-axs[1].legend()
+# legend
+axs[1].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
 
 plt.tight_layout()
 plt.show()
