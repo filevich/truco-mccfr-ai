@@ -355,7 +355,17 @@ func (info *InfosetRondaBase) setRonda(
 	// 		- c2 carta oponente mas alta (string vacio si no)
 	// 		- x = 0 si vamos perdiendo, 1 empatados o 2 ganando
 
-	maxWe, maxOp, vamos := Vamos(p, manojo, abs)
+	maxWeCarta, maxOpCarta, vamos := Vamos(p, manojo)
+
+	maxWe, maxOp := -1, -1
+
+	if maxWeCarta != nil {
+		maxWe = abs.Abstract(maxWeCarta, &p.Ronda.Muestra)
+	}
+
+	if maxOpCarta != nil {
+		maxOp = abs.Abstract(maxOpCarta, &p.Ronda.Muestra)
+	}
 
 	estadoRonda := struct {
 		Max_us int

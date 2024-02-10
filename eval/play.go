@@ -8,6 +8,7 @@ import (
 
 	"github.com/filevich/truco-ai/abs"
 	"github.com/filevich/truco-ai/bot"
+	"github.com/filevich/truco-ai/cfr"
 	"github.com/filevich/truco-ai/eval/dataset"
 	"github.com/filevich/truco-ai/eval/dumbo"
 	"github.com/filevich/truco-ai/utils"
@@ -209,20 +210,20 @@ func PlayRound(
 		prob *= prob_a
 
 		// dumbo ?
-		dumboid := false
-		// if cfrA, isCFR := agent.(*BotCFR); isCFR {
-		// 	abs := cfrA.Model.GetAbs()
-		// 	dumboid = Is_dumbo(p, m, a, abs)
-		// } else {
-		// 	// _, isAle := agent.(*BotAleatorio)
-		// 	// _, isDet := agent.(*BotDeterminista)
-		// 	// _, isDet2 := agent.(*BotDeterministaMax)
-		// 	// if isAle || isDet || isDet2 {
-		// 	// 	dumboid = is_dumbo(p, m, a, cfr.Z0{})
-		// 	// }
-		// 	dumboid = Is_dumbo(p, m, a, cfr.Z0{})
+		var dumboid = false
+		if cfrBot, isBotCFR := agent.(*cfr.BotCFR); isBotCFR {
+			abs := cfrBot.Model.GetAbs()
+			dumboid = dumbo.IsDumbo(p, m, a, abs)
+		} else {
+			dumboid = dumbo.IsDumbo(p, m, a, &abs.A3{})
+		}
+
+		// debug:
+		// if dumboid && agent.UID() == "Pro" {
+		// 	fmt.Println(p)
+		// 	a2, _ := agent.Action(p, m.Jugador.ID)
+		// 	dumbo.IsDumbo(p, m, a2, &abs.Null{})
 		// }
-		dumboid = dumbo.IsDumbo(p, m, a, &abs.Null{})
 
 		if dumboid {
 			if m.Jugador.Equipo == pdt.Azul {
