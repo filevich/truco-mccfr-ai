@@ -79,7 +79,7 @@ func (tournament *Tournament) PrintWrTable(tabla Table) {
 		append(
 			table.Row{"A\\B"},
 			append(
-				tournament.Registered("WP    ADP"),
+				tournament.Registered("WR    ADP"),
 				"B/A",
 			)...,
 		),
