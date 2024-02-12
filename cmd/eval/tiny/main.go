@@ -15,7 +15,7 @@ func main() {
 	const (
 		tinyEval   = 1_000
 		numPlayers = 2
-		b          = "/Users/jp/Downloads/cluster/train-cfr/models/2p/a2"
+		b          = "/Users/jp/Downloads/cluster/train-cfr/models"
 	)
 
 	log.Println("loading t1k22")
@@ -24,14 +24,19 @@ func main() {
 
 	testThese := []bot.Agent{
 		&cfr.BotCFR{
-			N: "esvmccfra2",
-			F: b + "/final_es-vmccfr_d70h0m_D70h0m_t7077536_p0_a2_2402052107.model",
+			N: "esva2",
+			F: b + "/2p/a2/final_es-vmccfr_d70h0m_D70h0m_t7077536_p0_a2_2402052107.model",
+		},
+		&cfr.BotCFR{
+			N: "esva3",
+			F: b + "/2p/a3/final_es-vmccfr_d70h0m_D70h0m_t3468734_p0_a3_2402052116.model",
 		},
 	}
 
 	againstThese := []bot.Agent{
 		&bot.Random{},
 		&bot.Simple{},
+		&bot.SimpleX{},
 	}
 
 	for i, agent := range testThese {
