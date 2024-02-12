@@ -1,7 +1,9 @@
 package eval
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"runtime"
 	"strconv"
 	"time"
@@ -235,12 +237,13 @@ func PlayRound(
 
 		_, ok := a.Ok(p)
 		if !ok {
-			aa, _ := agent.Action(p, m.Jugador.ID)
-			// bs, _ := json.Marshal(p)
-			// log.Println(string(bs))
-			// log.Println("-------------")
-			// log.Println(a)
-			aa.Ok(p)
+			log.Println(p)
+			bs, _ := json.Marshal(p)
+			log.Println(string(bs))
+			log.Println(a)
+			a2, _ := agent.Action(p, m.Jugador.ID)
+			a2.Ok(p)
+			a.Ok(p)
 			panic("LA ACCION NO ES VALIDA")
 		}
 

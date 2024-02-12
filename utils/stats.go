@@ -19,3 +19,26 @@ func Sample(dist []float32) int {
 
 	return ix
 }
+
+type DictDist struct {
+	data  map[int]int
+	total float32
+}
+
+func NewDictDist(total float32, data map[int]int) *DictDist {
+	return &DictDist{
+		data:  data,
+		total: total,
+	}
+}
+
+// cummulative density function
+func (d *DictDist) CDF(key int) float32 {
+	s := 0
+	for i := 0; i <= key; i++ {
+		if v, ok := d.data[i]; ok {
+			s += v
+		}
+	}
+	return float32(s) / d.total
+}
