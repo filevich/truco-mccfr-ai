@@ -175,7 +175,7 @@ order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.ite
 # wr
 
 fig, axs = plt.subplots(2, 1, figsize=(10, 8))
-fig.suptitle("Train 2p 72hs")
+fig.suptitle("Train ES-MCCFR for 2p")
 
 # 
 # (a)
@@ -213,18 +213,18 @@ for file in order:
     colors_used[file] = p[0].get_color()
 
 # x axis
-xs = set()
-for file in order:
-    d = data[file]
-    ts = [t["delta"] for t in d["ale"]]
-    if "resumes" in info[file]:
-        offset = get_offset(file, "ale")
-        ts = [t + offset - ts[0] for t in ts]
-    xs = xs.union(ts)
-xs = sorted(xs)
-xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
-axs[0].set_xticks(xs, labels=xs_hours, rotation=40)
-axs[0].locator_params(axis='x', nbins=12)
+# xs = set()
+# for file in order:
+#     d = data[file]
+#     ts = [t["delta"] for t in d["ale"]]
+#     if "resumes" in info[file]:
+#         offset = get_offset(file, "ale")
+#         ts = [t + offset - ts[0] for t in ts]
+#     xs = xs.union(ts)
+# xs = sorted(xs)
+# xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
+# axs[0].set_xticks(xs, labels=xs_hours, rotation=40)
+# axs[0].locator_params(axis='x', nbins=12)
 
 # legend
 axs[0].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
@@ -264,18 +264,18 @@ for file in order:
     colors_used[file] = p[0].get_color()
 
 # x axis
-xs = set()
-for file in order:
-    d = data[file]
-    ts = [t["delta"] for t in d["simple"]]
-    if "resumes" in info[file]:
-        offset = get_offset(file, "simple")
-        ts = [t + offset - ts[0] for t in ts]
-    xs = xs.union(ts)
-xs = sorted(xs)
-xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
-axs[1].set_xticks(xs, labels=xs_hours, rotation=40)
-axs[1].locator_params(axis='x', nbins=12)
+# xs = set()
+# for file in order:
+#     d = data[file]
+#     ts = [t["delta"] for t in d["simple"]]
+#     if "resumes" in info[file]:
+#         offset = get_offset(file, "simple")
+#         ts = [t + offset - ts[0] for t in ts]
+#     xs = xs.union(ts)
+# xs = sorted(xs)
+# xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
+# axs[1].set_xticks(xs, labels=xs_hours, rotation=40)
+# axs[1].locator_params(axis='x', nbins=12)
 
 # legend
 axs[1].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
