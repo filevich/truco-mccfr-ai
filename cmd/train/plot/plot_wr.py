@@ -174,9 +174,14 @@ order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.ite
 fig, axs = plt.subplots(2, 1, figsize=(10, 8))
 fig.suptitle("Train 2p 72hs")
 
-colors_used = {}
+# 
+# (a)
+# 
 
 axs[0].set_title("(a) WR vs Random bot")
+
+colors_used = {}
+record = max([ max([e["wr"] for e in d["ale"]]) for d in data.values()])
 
 for file in order:
     d = data[file]
@@ -193,8 +198,11 @@ for file in order:
 
     xs_secs = [datetime.timedelta(seconds=x).total_seconds() for x in xs]
     ys = [t["wr"] for t in d["ale"]]
+
+    # label
     m = max(ys)
     l = f"{info[file]['label']} ({round(m*100,2)})"
+    if m == record: l = "$\\bf{" + l + "}$"
     kwargs["label"] = l
 
     p = axs[0].plot(xs_secs, ys, linewidth=0.8, **kwargs)
@@ -218,7 +226,12 @@ axs[0].locator_params(axis='x', nbins=12)
 # legend
 axs[0].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
 
+# 
+# (b)
+# 
+
 axs[1].set_title("(b) WR vs Simple bot")
+record = max([ max([e["wr"] for e in d["simple"]]) for d in data.values()])
 
 for file in order:
     d = data[file]
@@ -235,8 +248,12 @@ for file in order:
 
     xs_secs = [datetime.timedelta(seconds=x).total_seconds() for x in xs]
     ys = [t["wr"] for t in d["simple"]]
+
+
+    # label
     m = max(ys)
     l = f"{info[file]['label']} ({round(m*100,2)})"
+    if m == record: l = "$\\bf{" + l + "}$"
     kwargs["label"] = l
 
     p = axs[1].plot(xs_secs, ys, linewidth=0.8, **kwargs)
