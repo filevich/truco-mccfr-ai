@@ -3,6 +3,9 @@ import json
 import datetime
 import matplotlib.pyplot as plt
 
+plt.rcParams['savefig.dpi'] = 224
+# plt.rcParams["figure.dpi"] = 224
+
 parser = argparse.ArgumentParser(description='Plot cfr train')
 parser.add_argument('-i', '--input', type=str, default='/tmp/train/result.json', required=False, help='.json input file')
 args = parser.parse_args()
