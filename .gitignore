@@ -2,3 +2,4 @@ t1k22.json
 go.sum
 .vscode
 __pycache__
+.DS_Store
