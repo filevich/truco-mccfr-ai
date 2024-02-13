@@ -14,8 +14,14 @@ data = {
         "simple": {"wr": 5, "u": 6, "l": 7, "di": 8, "t": -2},
     },
 }
+
 # plot data info
 info = {
+
+    # 
+    # train
+    # 
+
     "train_esvmccfr_a2_2p.3280483.out": {
         "label": "esv-a2",
     },
@@ -34,16 +40,20 @@ info = {
     "train_eslmccfr_null_2p.3283325.out": {
         "label": "esl-null-4t",
     },
+
+    # 
     # resume
-    "resume_eslmccfr_null_2p_2t.3294059.out": {
-        "label": "esl-null",
-        "resumes": "train_eslmccfr_null_2p.3282695.out",
-        "kwargs": {
-        }
-    },
+    # 
+
     "resume_esvmccfr_a3_2p_2t.3293685.out": {
         "label": "esv-a3",
         "resumes": "train_esvmccfr_a3_2p.3280535.out",
+        "kwargs": {
+        }
+    },
+    "resume_eslmccfr_null_2p_2t.3294059.out": {
+        "label": "esl-null",
+        "resumes": "train_eslmccfr_null_2p.3282695.out",
         "kwargs": {
         }
     },
@@ -53,7 +63,78 @@ info = {
         "kwargs": {
         }
     },
+
+    # 
+    # pruned
+    # 
+
+    "pruned_esvmccfr_a1_2p_1t.3325490.out": {
+        "resumes": "train_esvmccfr_a1_2p.3280505.out",
+        "label": "p-esv-a1",
+        "kwargs": {
+            "color": "darkgreen",
+        }
+    },
+    
+    "pruned_esvmccfr_a2_2p_1t.3325556.out": {
+        "resumes": "train_esvmccfr_a2_2p.3280483.out",
+        "label": "p-esv-a2",
+        "kwargs": {
+            "color": "darkblue",
+        }
+    },
+    
+    "pruned_esvmccfr_a3_2p_1t.3325559.out": {
+        # "model": "final_es-vmccfr_d10h0m_D70h0m_t385690_p0_a3_2402030916.model",
+        "resumes": "train_esvmccfr_a3_2p.3280535.out",
+        "at": 10/70,
+        "label": "p-esv-a3-10h",
+        "kwargs": {
+            "color": "darkred",
+        }
+    },
+    
+    "pruned_esvmccfr_a3_2p_1t.3325561.out": {
+        # "model": "final_es-vmccfr_d70h0m_D70h0m_t3468734_p0_a3_2402052116.model",
+        "resumes": "train_esvmccfr_a3_2p.3280535.out",
+        "at": 70/70,
+        "label": "p-esv-a3-70h",
+        "kwargs": {
+            "color": "darkred",
+        }
+    },
+    
+    "pruned_esvmccfr_a3_2p_1t.3325562.out": {
+        # "model": "final_es-vmccfr_d40h0m_D70h0m_t1812899_p0_a3_2402041516.model",
+        "resumes": "train_esvmccfr_a3_2p.3280535.out",
+        "at": 40/70,
+        "label": "p-esv-a3-40h",
+        "kwargs": {
+            "color": "darkred",
+        }
+    },
+
+    "pruned_esvmccfr_a3_2p_1t.3325567.out": {
+        "resumes": "resume_esvmccfr_a3_2p_2t.3293685.out",
+        "label": "p-esv-a3-140h",
+        "kwargs": {
+            "color": "darkred",
+            # "linestyle": "--"
+        }
+    },
+
 }
+
+def get_offset(file, op):
+    total_offset = 0
+    if "resumes" in info[file]:
+        resumes = info[file]["resumes"]
+        offset = data[resumes][op][-1]["delta"]
+        if "at" in info[file]:
+            offset *= info[file]["at"]
+        total_offset += offset
+        total_offset += get_offset(resumes, op)
+    return total_offset
 
 # fetch the data with:
 # `rsync -avz -e 'ssh -p 10022' 'juan.filevich@cluster.uy:~/batches/out/train_*.out' /tmp/train`
@@ -76,6 +157,9 @@ show_only = [
 # skip
 not_show = [
     "train_eslmccfr_null_2p.3283325.out",
+    # "pruned_esvmccfr_a3_2p_1t.3325559.out",
+    # "pruned_esvmccfr_a3_2p_1t.3325561.out",
+    # "pruned_esvmccfr_a3_2p_1t.3325562.out",
 ]
 
 if len(show_only): info = {k:v for k,v in info.items() if k in show_only}
@@ -101,7 +185,8 @@ for file in order:
     kwargs = {}
 
     if "resumes" in info[file]:
-        xs = [x + data[info[file]["resumes"]]["ale"][-1]["delta"] - xs[0] for x in xs]
+        offset = get_offset(file, "ale")
+        xs = [x + offset - xs[0] for x in xs]
         kwargs["color"] = colors_used[info[file]["resumes"]]
 
     if "kwargs" in info[file]: kwargs = {**kwargs, **info[file]["kwargs"]}
@@ -122,7 +207,8 @@ for file in order:
     d = data[file]
     ts = [t["delta"] for t in d["ale"]]
     if "resumes" in info[file]:
-        ts = [t + data[info[file]["resumes"]]["ale"][-1]["delta"] - ts[0] for t in ts]
+        offset = get_offset(file, "ale")
+        ts = [t + offset - ts[0] for t in ts]
     xs = xs.union(ts)
 xs = sorted(xs)
 xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
@@ -141,7 +227,8 @@ for file in order:
     kwargs = {}
 
     if "resumes" in info[file]:
-        xs = [x + data[info[file]["resumes"]]["simple"][-1]["delta"] - xs[0] for x in xs]
+        offset = get_offset(file, "simple")
+        xs = [x + offset - xs[0] for x in xs]
         kwargs["color"] = colors_used[info[file]["resumes"]]
 
     if "kwargs" in info[file]: kwargs = {**kwargs, **info[file]["kwargs"]}
@@ -162,7 +249,8 @@ for file in order:
     d = data[file]
     ts = [t["delta"] for t in d["simple"]]
     if "resumes" in info[file]:
-        ts = [t + data[info[file]["resumes"]]["simple"][-1]["delta"] - ts[0] for t in ts]
+        offset = get_offset(file, "simple")
+        ts = [t + offset - ts[0] for t in ts]
     xs = xs.union(ts)
 xs = sorted(xs)
 xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
