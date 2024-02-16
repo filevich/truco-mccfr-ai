@@ -27,21 +27,33 @@ info = {
 
     "train_esvmccfr_a2_2p.3280483.out": {
         "label": "esv-a2",
-    },
-    "train_esvmccfr_null_2p.3280538.out": {
-        "label": "esv-null",
+        "kwargs": {
+            "color": "cornflowerblue",
+        }
     },
     "train_esvmccfr_a1_2p.3280505.out": {
         "label": "esv-a1",
+        "kwargs": {
+            "color": "darkseagreen",
+        }
     },
     "train_esvmccfr_a3_2p.3280535.out": {
         "label": "esv-a3",
+        "kwargs": {
+            "color": "lightcoral",
+        }
+    },
+    "train_esvmccfr_null_2p.3280538.out": {
+        "label": "esv-null",
+        "kwargs": {
+            "color": "orange",
+        }
     },
     "train_eslmccfr_null_2p.3282695.out": {
         "label": "esl-null",
-    },
-    "train_eslmccfr_null_2p.3283325.out": {
-        "label": "esl-null-4t",
+        "kwargs": {
+            "color": "mediumpurple",
+        }
     },
 
     # 
@@ -58,12 +70,14 @@ info = {
         "label": "esl-null",
         "resumes": "train_eslmccfr_null_2p.3282695.out",
         "kwargs": {
+            "color": "mediumpurple",
         }
     },
     "resume_esvmccfr_null_2p_2t.3293687.out": {
         "label": "esv-null",
         "resumes": "train_esvmccfr_null_2p.3280538.out",
         "kwargs": {
+            "color": "orange",
         }
     },
 
@@ -83,7 +97,7 @@ info = {
         "resumes": "train_esvmccfr_a2_2p.3280483.out",
         "label": "p-esv-a2",
         "kwargs": {
-            "color": "darkblue",
+            "color": "royalblue",
         }
     },
     
@@ -93,7 +107,7 @@ info = {
         "at": 10/70,
         "label": "p-esv-a3-10h",
         "kwargs": {
-            "color": "darkred",
+            "color": "firebrick",
         }
     },
     
@@ -103,7 +117,7 @@ info = {
         "at": 70/70,
         "label": "p-esv-a3-70h",
         "kwargs": {
-            "color": "darkred",
+            "color": "firebrick",
         }
     },
     
@@ -113,7 +127,7 @@ info = {
         "at": 40/70,
         "label": "p-esv-a3-40h",
         "kwargs": {
-            "color": "darkred",
+            "color": "firebrick",
         }
     },
 
@@ -121,8 +135,65 @@ info = {
         "resumes": "resume_esvmccfr_a3_2p_2t.3293685.out",
         "label": "p-esv-a3-140h",
         "kwargs": {
-            "color": "darkred",
-            # "linestyle": "--"
+            "color": "firebrick",
+        }
+    },
+
+    "pruned_esv_null_2p_1t_f10.3325610.out": {
+        # "model": "final_es-vmccfr_d10h0m_D70h0m_t445443_p0_null_2402030918.model",
+        "resumes": "train_esvmccfr_null_2p.3280538.out",
+        "at": 10/70,
+        "label": "p-esv-null-10h",
+        "kwargs": {
+            "color": "orangered",
+        }
+    },
+
+    "pruned_esv_null_2p_1t_f40.3325615.out": {
+        # "model": "final_es-vmccfr_d40h0m_D70h0m_t1403826_p0_null_2402041519.model",
+        "resumes": "train_esvmccfr_null_2p.3280538.out",
+        "at": 40/70,
+        "label": "p-esv-null-40h",
+        "kwargs": {
+            "color": "orangered",
+        }
+    },
+    
+    "pruned_esv_null_2p_1t_f70.3325617.out": {
+        # "model": "final_es-vmccfr_d70h0m_D70h0m_t2151893_p0_null_2402052118.model",
+        "resumes": "train_esvmccfr_null_2p.3280538.out",
+        "label": "p-esv-null-70h",
+        "kwargs": {
+            "color": "orangered",
+        }
+    },
+
+     "pruned_esl_null_2p_1t_f60.3325612.out": {
+        # "model": "final_eslmccfr_d60h1m_D70h0m_t1695315_p0_null_2402061320.model",
+        "resumes": "train_eslmccfr_null_2p.3282695.out",
+        "at": 60/70,
+        "label": "p-esl-null-60h",
+        "kwargs": {
+            "color": "rebeccapurple",
+        }
+    },
+
+    "pruned_esl_null_2p_1t_r60.3325616.out": {
+        # "model": "resume_eslmccfr_d60h1m_D70h0m_t2633514_p0_null_2402100446.model",
+        "resumes": "resume_eslmccfr_null_2p_2t.3294059.out",
+        "at": 60/70,
+        "label": "p-esl-null-120h",
+        "kwargs": {
+            "color": "rebeccapurple",
+        }
+    },
+
+    "pruned_esv_null_2p_1t_r70.3325620.out": {
+        # "model": "resume_esvmccfr_d70h0m_D70h0m_t3305210_p0_null_2402101309.model",
+        "resumes": "resume_esvmccfr_null_2p_2t.3293687.out",
+        "label": "p-esv-null-140h",
+        "kwargs": {
+            "color": "orangered",
         }
     },
 
