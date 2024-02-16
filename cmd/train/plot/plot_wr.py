@@ -1,7 +1,12 @@
 import argparse
 import json
 import datetime
+from typing import List
 import matplotlib.pyplot as plt
+
+import sys
+sys.path.append('cmd/_com')
+import plot_utils
 
 plt.rcParams['savefig.dpi'] = 224
 # plt.rcParams["figure.dpi"] = 224
@@ -279,9 +284,23 @@ for file in order:
     if m == record: l = "$\\bf{" + l + "}$"
     kwargs["label"] = l
 
-    p = axs[0].plot(xs_secs, ys, linewidth=0.8, **kwargs)
+    p = axs[0].plot(
+        xs_secs,
+        ys,
+        linewidth=0.8,
+        alpha=0.3,
+        **kwargs)
 
     colors_used[file] = p[0].get_color()
+
+    # smooth
+    axs[0].plot(
+        xs_secs,
+        plot_utils.smooth(ys, .95),
+        color=colors_used[file],
+        alpha=1 if "pruned" in file else 0.6,
+        linewidth=0.8)
+
 
 # x axis
 # xs = set()
@@ -330,9 +349,22 @@ for file in order:
     if m == record: l = "$\\bf{" + l + "}$"
     kwargs["label"] = l
 
-    p = axs[1].plot(xs_secs, ys, linewidth=0.8, **kwargs)
+    p = axs[1].plot(
+        xs_secs,
+        ys,
+        linewidth=0.8,
+        alpha=0.3,
+        **kwargs)
 
     colors_used[file] = p[0].get_color()
+
+    # smooth
+    axs[1].plot(
+        xs_secs,
+        plot_utils.smooth(ys, .95),
+        color=colors_used[file],
+        alpha=1 if "pruned" in file else 0.6,
+        linewidth=1)
 
 # x axis
 # xs = set()
