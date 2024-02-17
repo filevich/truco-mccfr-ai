@@ -10,6 +10,7 @@ import plot_utils
 
 plt.rcParams['savefig.dpi'] = 224
 # plt.rcParams["figure.dpi"] = 224
+plt.rcParams['grid.color'] = 'gainsboro'
 
 parser = argparse.ArgumentParser(description='Plot cfr train')
 parser.add_argument('-i', '--input', type=str, default='/tmp/train/result.json', required=False, help='.json input file')
@@ -318,6 +319,7 @@ for file in order:
 
 # legend
 axs[0].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
+axs[0].grid()
 
 # 
 # (b)
@@ -382,6 +384,7 @@ for file in order:
 
 # legend
 axs[1].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
+axs[1].grid()
 
 plt.tight_layout()
 plt.show()
