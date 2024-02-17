@@ -33,31 +33,31 @@ info = {
     "train_esvmccfr_a2_2p.3280483.out": {
         "label": "esv-a2",
         "kwargs": {
-            "color": "cornflowerblue",
+            "color": "mediumpurple",
         }
     },
     "train_esvmccfr_a1_2p.3280505.out": {
         "label": "esv-a1",
         "kwargs": {
-            "color": "darkseagreen",
+            "color": "wheat",
         }
     },
     "train_esvmccfr_a3_2p.3280535.out": {
         "label": "esv-a3",
         "kwargs": {
-            "color": "lightcoral",
+            "color": "cornflowerblue",
         }
     },
     "train_esvmccfr_null_2p.3280538.out": {
         "label": "esv-null",
         "kwargs": {
-            "color": "orange",
+            "color": "darkseagreen",
         }
     },
     "train_eslmccfr_null_2p.3282695.out": {
         "label": "esl-null",
         "kwargs": {
-            "color": "mediumpurple",
+            "color": "lightcoral",
         }
     },
 
@@ -75,14 +75,14 @@ info = {
         "label": "esl-null",
         "resumes": "train_eslmccfr_null_2p.3282695.out",
         "kwargs": {
-            "color": "mediumpurple",
+            "color": "lightcoral",
         }
     },
     "resume_esvmccfr_null_2p_2t.3293687.out": {
         "label": "esv-null",
         "resumes": "train_esvmccfr_null_2p.3280538.out",
         "kwargs": {
-            "color": "orange",
+            "color": "darkseagreen",
         }
     },
 
@@ -94,7 +94,7 @@ info = {
         "resumes": "train_esvmccfr_a1_2p.3280505.out",
         "label": "p-esv-a1",
         "kwargs": {
-            "color": "darkgreen",
+            "color": "gold",
         }
     },
     
@@ -102,7 +102,7 @@ info = {
         "resumes": "train_esvmccfr_a2_2p.3280483.out",
         "label": "p-esv-a2",
         "kwargs": {
-            "color": "royalblue",
+            "color": "rebeccapurple",
         }
     },
     
@@ -112,7 +112,7 @@ info = {
         "at": 10/70,
         "label": "p-esv-a3-10h",
         "kwargs": {
-            "color": "firebrick",
+            "color": "royalblue",
         }
     },
     
@@ -122,7 +122,7 @@ info = {
         "at": 70/70,
         "label": "p-esv-a3-70h",
         "kwargs": {
-            "color": "firebrick",
+            "color": "royalblue",
         }
     },
     
@@ -132,7 +132,7 @@ info = {
         "at": 40/70,
         "label": "p-esv-a3-40h",
         "kwargs": {
-            "color": "firebrick",
+            "color": "royalblue",
         }
     },
 
@@ -140,7 +140,7 @@ info = {
         "resumes": "resume_esvmccfr_a3_2p_2t.3293685.out",
         "label": "p-esv-a3-140h",
         "kwargs": {
-            "color": "firebrick",
+            "color": "royalblue",
         }
     },
 
@@ -150,7 +150,7 @@ info = {
         "at": 10/70,
         "label": "p-esv-null-10h",
         "kwargs": {
-            "color": "orangered",
+            "color": "darkgreen",
         }
     },
 
@@ -160,7 +160,7 @@ info = {
         "at": 40/70,
         "label": "p-esv-null-40h",
         "kwargs": {
-            "color": "orangered",
+            "color": "darkgreen",
         }
     },
     
@@ -169,7 +169,7 @@ info = {
         "resumes": "train_esvmccfr_null_2p.3280538.out",
         "label": "p-esv-null-70h",
         "kwargs": {
-            "color": "orangered",
+            "color": "darkgreen",
         }
     },
 
@@ -179,7 +179,7 @@ info = {
         "at": 60/70,
         "label": "p-esl-null-60h",
         "kwargs": {
-            "color": "rebeccapurple",
+            "color": "firebrick",
         }
     },
 
@@ -189,7 +189,7 @@ info = {
         "at": 60/70,
         "label": "p-esl-null-120h",
         "kwargs": {
-            "color": "rebeccapurple",
+            "color": "firebrick",
         }
     },
 
@@ -198,7 +198,7 @@ info = {
         "resumes": "resume_esvmccfr_null_2p_2t.3293687.out",
         "label": "p-esv-null-140h",
         "kwargs": {
-            "color": "orangered",
+            "color": "darkgreen",
         }
     },
 
