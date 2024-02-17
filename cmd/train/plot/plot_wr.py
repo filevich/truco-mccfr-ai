@@ -251,14 +251,14 @@ order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.ite
 
 # wr
 
-fig, axs = plt.subplots(2, 1, figsize=(10, 8))
+fig, axs = plt.subplots(1, 1, figsize=(12, 6))
 fig.suptitle("Train ES-MCCFR for 2p")
 
 # 
 # (a)
 # 
 
-axs[0].set_title("(a) WR vs Random bot")
+axs.set_title("(a) WR vs Random bot")
 
 colors_used = {}
 record = max([ max([e["wr"] for e in d["ale"]]) for d in data.values()])
@@ -285,7 +285,7 @@ for file in order:
     if m == record: l = "$\\bf{" + l + "}$"
     kwargs["label"] = l
 
-    p = axs[0].plot(
+    p = axs.plot(
         xs_secs,
         ys,
         linewidth=0.8,
@@ -295,7 +295,7 @@ for file in order:
     colors_used[file] = p[0].get_color()
 
     # smooth
-    axs[0].plot(
+    axs.plot(
         xs_secs,
         plot_utils.smooth(ys, .95),
         color=colors_used[file],
@@ -314,18 +314,23 @@ for file in order:
 #     xs = xs.union(ts)
 # xs = sorted(xs)
 # xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
-# axs[0].set_xticks(xs, labels=xs_hours, rotation=40)
-# axs[0].locator_params(axis='x', nbins=12)
+# axs.set_xticks(xs, labels=xs_hours, rotation=40)
+# axs.locator_params(axis='x', nbins=12)
 
 # legend
-axs[0].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
-axs[0].grid()
+axs.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
+axs.grid()
+
+plt.tight_layout()
+plt.show()
 
 # 
 # (b)
 # 
 
-axs[1].set_title("(b) WR vs Simple bot")
+fig, axs = plt.subplots(1, 1, figsize=(12, 6))
+
+axs.set_title("(b) WR vs Simple bot")
 record = max([ max([e["wr"] for e in d["simple"]]) for d in data.values()])
 
 for file in order:
@@ -351,7 +356,7 @@ for file in order:
     if m == record: l = "$\\bf{" + l + "}$"
     kwargs["label"] = l
 
-    p = axs[1].plot(
+    p = axs.plot(
         xs_secs,
         ys,
         linewidth=0.8,
@@ -361,7 +366,7 @@ for file in order:
     colors_used[file] = p[0].get_color()
 
     # smooth
-    axs[1].plot(
+    axs.plot(
         xs_secs,
         plot_utils.smooth(ys, .95),
         color=colors_used[file],
@@ -379,12 +384,12 @@ for file in order:
 #     xs = xs.union(ts)
 # xs = sorted(xs)
 # xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
-# axs[1].set_xticks(xs, labels=xs_hours, rotation=40)
-# axs[1].locator_params(axis='x', nbins=12)
+# axs.set_xticks(xs, labels=xs_hours, rotation=40)
+# axs.locator_params(axis='x', nbins=12)
 
 # legend
-axs[1].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
-axs[1].grid()
+axs.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
+axs.grid()
 
 plt.tight_layout()
 plt.show()
