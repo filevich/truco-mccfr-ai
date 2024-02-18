@@ -16,20 +16,21 @@ import (
 
 // flags
 var (
-	modelPtr      = flag.String("model", "", "Filepath to .model file to continue training from")
-	numPlayersPtr = flag.Int("p", 2, "Number of players")
-	trainerPtr    = flag.String("trainer", "esvmccfr", "CFR variant")
-	absPtr        = flag.String("abs", "a1", "Abstraction")
-	threadsPtr    = flag.Int("threads", 1, "Threads")
-	saveDirPtr    = flag.String("dir", "/tmp", "Save directory")
-	tinyEvalPtr   = flag.Int("eval", 1_000, "Progress eval length")
-	runPtr        = flag.String("run", "30m", "Total run time")
-	prunningPtr   = flag.String("prunning", "", "Start prunning after")
-	saveEveryPtr  = flag.String("saveEvery", "10m", "Saving interval")
-	evalEveryPtr  = flag.String("evalEvery", "1m", "Eval interval")
-	silentPtr     = flag.Bool("silent", true, "Silent model")
-	prefixPtr     = flag.String("prefix", "final_", "Model prefix")
-	resetPtr      = flag.Bool("reset", false, "Reset strategy sum")
+	modelPtr        = flag.String("model", "", "Filepath to .model file to continue training from")
+	numPlayersPtr   = flag.Int("p", 2, "Number of players")
+	trainerPtr      = flag.String("trainer", "esvmccfr", "CFR variant")
+	absPtr          = flag.String("abs", "a1", "Abstraction")
+	threadsPtr      = flag.Int("threads", 1, "Threads")
+	saveDirPtr      = flag.String("dir", "/tmp", "Save directory")
+	tinyEvalPtr     = flag.Int("eval", 1_000, "Progress eval length")
+	runPtr          = flag.String("run", "30m", "Total run time")
+	prunningPtr     = flag.String("prunning", "", "Start prunning after")
+	prunningProbPtr = flag.Float64("prunningProb", 0.01, "Pruning prob")
+	saveEveryPtr    = flag.String("saveEvery", "10m", "Saving interval")
+	evalEveryPtr    = flag.String("evalEvery", "1m", "Eval interval")
+	silentPtr       = flag.Bool("silent", true, "Silent model")
+	prefixPtr       = flag.String("prefix", "final_", "Model prefix")
+	resetPtr        = flag.Bool("reset", false, "Reset strategy sum")
 )
 
 func init() {
@@ -79,6 +80,7 @@ func main() {
 	} else {
 		prunningTreshold, err = time.ParseDuration(*prunningPtr)
 		log.Println("prunning", prunningTreshold)
+		log.Println("prunningProb", *prunningProbPtr)
 		if err != nil {
 			panic(err)
 		}
@@ -135,7 +137,9 @@ func main() {
 	trainer.Train(
 		&cfr.ProfileTime{
 			TotalRunningTime: totalRunningTime,
+			// pruning
 			PrunningTreshold: prunningTreshold,
+			PrunningProb:     float32(*prunningProbPtr),
 			// multi
 			Threads: threads,
 			Mu:      &sync.Mutex{},

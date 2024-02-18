@@ -19,7 +19,9 @@ const (
 type ProfileTime struct {
 	//
 	TotalRunningTime time.Duration
+	// pruning
 	PrunningTreshold time.Duration
+	PrunningProb     float32
 
 	// privadas
 	start    time.Time
@@ -96,9 +98,10 @@ func (p ProfileTime) Continue(trainer ITrainer) bool {
 	return time.Since(p.start) < p.TotalRunningTime
 }
 
-func (p ProfileTime) IsPrunable(trainer ITrainer) bool {
+func (p ProfileTime) IsPrunable(trainer ITrainer, actionProb float32) bool {
 	return p.PrunningTreshold != NEVER &&
-		time.Since(p.start) >= p.PrunningTreshold
+		time.Since(p.start) >= p.PrunningTreshold &&
+		actionProb <= p.PrunningProb
 }
 
 func (p ProfileTime) IsMulti() bool {
@@ -171,7 +174,7 @@ func (p *ProfileTime) PrintProgress(trainer ITrainer) {
 	if p.shouldSave(trainer) || verbose {
 
 		P := ""
-		if p.IsPrunable(trainer) {
+		if p.IsPrunable(trainer, 0) {
 			P = " [P]"
 		}
 
@@ -229,7 +232,7 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 	D := p.TotalRunningTime.Round(time.Minute).String()
 
 	prunned := 0
-	if p.IsPrunable(t) {
+	if p.IsPrunable(t, 0) {
 		prunned = 1
 	}
 

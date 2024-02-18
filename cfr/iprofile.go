@@ -15,7 +15,7 @@ type IProfile interface {
 	IsMulti() bool
 	GetThreads() int
 	// algoritmo
-	IsPrunable(trainer ITrainer) bool
+	IsPrunable(trainer ITrainer, actionProb float32) bool
 	// reporte
 	IsSilent() bool
 	IsFullySilent() bool
