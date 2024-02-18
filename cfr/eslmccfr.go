@@ -173,7 +173,7 @@ func (trainer *ESLMCCFR) run(
 	for aix, j := range A {
 
 		// prunning
-		skip := profile.IsPrunable(trainer) && strategy[aix] < 0.01 // menor a 1% de prob
+		skip := profile.IsPrunable(trainer, strategy[aix])
 		if skip {
 			counterfactual_values[aix] = make([]float32, trainer.getNumPlayers())
 			continue
@@ -235,7 +235,7 @@ func (trainer *ESLMCCFR) run(
 	for aix := range A {
 
 		// prunning
-		prunning := profile.IsPrunable(trainer) && strategy[aix] < 0.01 // menor a 1% de prob
+		prunning := profile.IsPrunable(trainer, strategy[aix])
 		if prunning {
 			continue
 		}
