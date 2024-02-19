@@ -18,7 +18,8 @@ func TestInfosetRondaBase(t *testing.T) {
 	p, _ := pdt.Parse(`{"puntuacion":20,"puntajes":{"azul":0,"rojo":0},"ronda":{"manoEnJuego":0,"cantJugadoresEnJuego":{"azul":2,"rojo":2},"elMano":0,"turno":0,"envite":{"estado":"noCantadoAun","puntaje":0,"cantadoPor":"","sinCantar":["Ben"]},"truco":{"cantadoPor":"","estado":"noGritadoAun"},"manojos":[{"seFueAlMazo":false,"cartas":[{"palo":"espada","valor":5},{"palo":"basto","valor":1},{"palo":"oro","valor":7}],"tiradas":[false,false,false],"ultimaTirada":-1,"jugador":{"id":"Alice","equipo":"azul"}},{"seFueAlMazo":false,"cartas":[{"palo":"espada","valor":1},{"palo":"oro","valor":10},{"palo":"copa","valor":10}],"tiradas":[false,false,false],"ultimaTirada":-1,"jugador":{"id":"Bob","equipo":"rojo"}},{"seFueAlMazo":false,"cartas":[{"palo":"basto","valor":10},{"palo":"basto","valor":7},{"palo":"copa","valor":7}],"tiradas":[false,false,false],"ultimaTirada":-1,"jugador":{"id":"Anna","equipo":"azul"}},{"seFueAlMazo":false,"cartas":[{"palo":"copa","valor":6},{"palo":"copa","valor":3},{"palo":"copa","valor":12}],"tiradas":[false,false,false],"ultimaTirada":-1,"jugador":{"id":"Ben","equipo":"rojo"}}],"mixs":{"Alice":0,"Anna":2,"Ben":3,"Bob":1},"muestra":{"palo":"espada","valor":6},"manos":[{"resultado":"indeterminado","ganador":"","cartasTiradas":[]},{"resultado":"indeterminado","ganador":"","cartasTiradas":[]},{"resultado":"indeterminado","ganador":"","cartasTiradas":[]}]},"limiteEnvido":1}`, verbose)
 	t.Log(p)
 	a := abs.A1{}
-	i := NewInfosetRondaBase(p, p.Manojo("Anna"), a, nil)
+	infobuilder := infosetRondaBaseFactory(a)
+	i := infobuilder(p, p.Manojo("Anna"), nil)
 	t.Log(i.Dump(false))
 }
 
@@ -41,7 +42,9 @@ func TestInfosetRondaLarge1NullAbs(t *testing.T) {
 
 	// para Anna
 	{
-		i := NewInfosetRondaLarge(p, p.Manojo("Anna"), a, nil)
+		infobuilder := infosetRondaBaseFactory(a)
+		i := infobuilder(p, p.Manojo("Anna"), nil)
+
 		// t.Log(i.Dump(true))
 
 		irl, _ := i.(*InfosetRondaLarge)
@@ -135,7 +138,8 @@ func TestInfosetRondaLarge1NullAbs(t *testing.T) {
 
 	// para Alice
 	{
-		i := NewInfosetRondaLarge(p, p.Manojo("Alice"), a, nil)
+		infobuilder := infosetRondaBaseFactory(a)
+		i := infobuilder(p, p.Manojo("Alice"), nil)
 		irl, _ := i.(*InfosetRondaLarge)
 
 		// 3. `rixMe` ~ RIX: who?
@@ -151,7 +155,8 @@ func TestInfosetRondaLarge1NullAbs(t *testing.T) {
 
 	// para Bob
 	{
-		i := NewInfosetRondaLarge(p, p.Manojo("Bob"), a, nil)
+		infobuilder := infosetRondaBaseFactory(a)
+		i := infobuilder(p, p.Manojo("Bob"), nil)
 		// t.Log(i.Dump(true))
 
 		irl, _ := i.(*InfosetRondaLarge)
@@ -244,7 +249,8 @@ func TestInfosetRondaLarge1NullAbs(t *testing.T) {
 
 	// para Ben
 	{
-		i := NewInfosetRondaLarge(p, p.Manojo("Ben"), a, nil)
+		infobuilder := infosetRondaBaseFactory(a)
+		i := infobuilder(p, p.Manojo("Ben"), nil)
 		// t.Log(i.Dump(true))
 
 		irl, _ := i.(*InfosetRondaLarge)
@@ -283,7 +289,8 @@ func TestInfosetRondaLarge1A1Abs(t *testing.T) {
 
 	// para Anna
 	{
-		i := NewInfosetRondaLarge(p, p.Manojo("Anna"), a, nil)
+		infobuilder := infosetRondaBaseFactory(a)
+		i := infobuilder(p, p.Manojo("Anna"), nil)
 		// t.Log(i.Dump(true))
 
 		irl, _ := i.(*InfosetRondaLarge)
@@ -317,7 +324,8 @@ func TestInfosetRondaLarge1A1Abs(t *testing.T) {
 
 	// para Alice
 	{
-		i := NewInfosetRondaLarge(p, p.Manojo("Alice"), a, nil)
+		infobuilder := infosetRondaBaseFactory(a)
+		i := infobuilder(p, p.Manojo("Alice"), nil)
 		irl, _ := i.(*InfosetRondaLarge)
 
 		// 9. chi: 2C + E|RE|FE + T + M = 7
@@ -329,7 +337,8 @@ func TestInfosetRondaLarge1A1Abs(t *testing.T) {
 
 	// para Bob
 	{
-		i := NewInfosetRondaLarge(p, p.Manojo("Bob"), a, nil)
+		infobuilder := infosetRondaBaseFactory(a)
+		i := infobuilder(p, p.Manojo("Bob"), nil)
 		// t.Log(i.Dump(true))
 
 		irl, _ := i.(*InfosetRondaLarge)
@@ -352,7 +361,8 @@ func TestInfosetRondaLarge1A1Abs(t *testing.T) {
 
 	// para Ben
 	{
-		i := NewInfosetRondaLarge(p, p.Manojo("Ben"), a, nil)
+		infobuilder := infosetRondaBaseFactory(a)
+		i := infobuilder(p, p.Manojo("Ben"), nil)
 		// t.Log(i.Dump(true))
 
 		irl, _ := i.(*InfosetRondaLarge)

@@ -1,9 +1,6 @@
 package cfr
 
 import (
-	"crypto/sha1"
-
-	"github.com/filevich/truco-ai/info"
 	"github.com/filevich/truco-ai/utils"
 	"github.com/truquito/truco/enco"
 	"github.com/truquito/truco/pdt"
@@ -52,8 +49,9 @@ func (b *BotCFR) Action(
 
 	// obtengo el infoset
 	aixs := pdt.GetA(p, active_player)
-	i := info.NewInfosetRondaBase(p, active_player, b.Model.GetAbs(), nil)
-	hash, chi_len := i.Hash(sha1.New()), i.ChiLen()
+	// i := info.NewInfosetRondaBase(p, active_player, b.Model.GetAbs(), nil)
+	i := b.Model.GetBuilder().Info(p, active_player, nil)
+	hash, chi_len := i.Hash(b.Model.GetBuilder().Hash), i.ChiLen()
 
 	// obtengo la strategy
 	strategy := b.Model.GetAvgStrategy(hash, chi_len)

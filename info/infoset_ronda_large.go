@@ -28,11 +28,10 @@ import (
 
 type InfosetRondaLarge struct {
 	// 1. `muestra`
-	// la almacena de forma pura; sin abstracción.
-	// no es posible abstraer la muestra porque la función de abstraer depende
-	// de la muestra misma.
-	// notar que almacenar solor el valor de la muestra (i.e., el número)
-	// también es un tipo de abstracción.
+	// hay 3 maneras de almacenar la muestra:
+	//  - no almacenarla -> InfosetRondaLarge
+	//  - almacenar solo su valor numerico -> InfosetRondaXLarge
+	//  - almacenar su UID (pura, sin abstracción) -> InfosetRondaXXLarge
 	muestra int
 
 	// 2. `num_mano_actual`: int
@@ -86,7 +85,12 @@ type InfosetRondaLarge struct {
 }
 
 func (info *InfosetRondaLarge) setMuestra(p *pdt.Partida) {
-	info.muestra = int(p.Ronda.Muestra.ID())
+	// InfosetRondaLarge
+	info.muestra = 0
+	// InfosetRondaXLarge
+	// info.muestra = p.Ronda.Muestra.Valor
+	// InfosetRondaXXLarge
+	// info.muestra = int(p.Ronda.Muestra.ID())
 }
 
 func (info *InfosetRondaLarge) setNumMano(p *pdt.Partida) {
@@ -362,6 +366,7 @@ func (info *InfosetRondaLarge) Dump(_ bool) string {
 }
 
 func (info *InfosetRondaLarge) HashBytes(h hash.Hash) []byte {
+	h.Reset()
 	hsep := []byte(sep)
 
 	// 1. muestra int
@@ -471,26 +476,30 @@ func (info *InfosetRondaLarge) Iterable(
 	return info.chi
 }
 
-func NewInfosetRondaLarge(
+func infosetRondaLargeFactory(
 
-	p *pdt.Partida,
-	m *pdt.Manojo,
 	a abs.IAbstraction,
-	msgs []enco.IMessage,
 
-) Infoset {
+) InfosetBuilder {
 
-	info := &InfosetRondaLarge{}
+	return func(
 
-	info.setMuestra(p)
-	info.setNumMano(p)
-	info.setRixMe(p, m)
-	info.setRixTurno(p)
-	info.setManojosEnJuego(p)
-	info.setNuestrasCartas(p, m, a)
-	info.setTiradas(p, a)
-	info.setHistory(p, msgs)
-	info.setChi(p, m, a)
+		p *pdt.Partida,
+		m *pdt.Manojo,
+		msgs []enco.IMessage,
 
-	return info
+	) Infoset {
+		info := &InfosetRondaLarge{}
+		info.setMuestra(p)
+		info.setNumMano(p)
+		info.setRixMe(p, m)
+		info.setRixTurno(p)
+		info.setManojosEnJuego(p)
+		info.setNuestrasCartas(p, m, a)
+		info.setTiradas(p, a)
+		info.setHistory(p, msgs)
+		info.setChi(p, m, a)
+		return info
+	}
+
 }

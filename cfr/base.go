@@ -1,9 +1,6 @@
 package cfr
 
 import (
-	"crypto/sha1"
-
-	"github.com/filevich/truco-ai/info"
 	"github.com/filevich/truco-ai/utils"
 	"github.com/truquito/truco/pdt"
 )
@@ -28,8 +25,8 @@ func _baseNonMcRun(
 	// obtengo el infoset
 	aixs := pdt.GetA(p, active_player)
 	// i := MkInfoset1(p, active_player, aixs, trainer.GetAbs())
-	i := info.NewInfosetRondaBase(p, active_player, trainer.GetAbs(), nil)
-	hash, chi_len := i.Hash(sha1.New()), i.ChiLen()
+	i := trainer.GetBuilder().Info(p, active_player, nil)
+	hash, chi_len := i.Hash(trainer.GetBuilder().Hash), i.ChiLen()
 
 	// obtengo el RNode
 	rnode := trainer.GetRnode(hash, chi_len)

@@ -6,7 +6,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/filevich/truco-ai/abs"
 	"github.com/filevich/truco-ai/bot"
 	"github.com/filevich/truco-ai/cfr"
 	"github.com/filevich/truco-ai/eval"
@@ -19,7 +18,9 @@ var (
 	modelPtr        = flag.String("model", "", "Filepath to .model file to continue training from")
 	numPlayersPtr   = flag.Int("p", 2, "Number of players")
 	trainerPtr      = flag.String("trainer", "esvmccfr", "CFR variant")
-	absPtr          = flag.String("abs", "a1", "Abstraction")
+	hashPtr         = flag.String("hash", "sha160", "Hash fn")                // builder
+	infoPtr         = flag.String("info", "InfosetRondaBase", "Infoset Impl") // builder
+	absPtr          = flag.String("abs", "a1", "Abstraction")                 // builder
 	threadsPtr      = flag.Int("threads", 1, "Threads")
 	saveDirPtr      = flag.String("dir", "/tmp", "Save directory")
 	tinyEvalPtr     = flag.Int("eval", 1_000, "Progress eval length")
@@ -40,6 +41,8 @@ func init() {
 	} else {
 		log.Println("numPlayers", *numPlayersPtr)
 		log.Println("trainer", *trainerPtr)
+		log.Println("hash", *hashPtr)
+		log.Println("info", *infoPtr)
 		log.Println("abs", *absPtr)
 	}
 	log.Println("threads", *threadsPtr)
@@ -62,7 +65,6 @@ func main() {
 		trainerID        = *trainerPtr
 		tinyEval         = *tinyEvalPtr
 		model            = *modelPtr
-		abstraction      = abs.ParseAbs(*absPtr)
 		totalRunningTime time.Duration
 		prunningTreshold time.Duration
 		saveEvery        time.Duration
@@ -100,7 +102,9 @@ func main() {
 		trainer = cfr.NewTrainer(
 			cfr.Trainer_T(trainerID),
 			numPlayers,
-			abstraction)
+			*hashPtr,
+			*infoPtr,
+			*absPtr)
 	} else {
 		trainer = cfr.LoadModel(model, true, 1_000_000)
 	}

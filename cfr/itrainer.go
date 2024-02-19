@@ -2,6 +2,7 @@ package cfr
 
 import (
 	"github.com/filevich/truco-ai/abs"
+	"github.com/filevich/truco-ai/info"
 	"github.com/truquito/truco/pdt"
 )
 
@@ -19,6 +20,7 @@ type ITrainer interface {
 
 	CountInfosets() int
 	getNumPlayers() int
+	GetBuilder() *info.Builder
 	GetAbs() abs.IAbstraction
 	GetRnode(hash string, chi_len int) *RNode
 	samplePartida() *pdt.Partida

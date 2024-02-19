@@ -14,16 +14,18 @@ import (
 	"sync"
 
 	"github.com/filevich/truco-ai/abs"
+	"github.com/filevich/truco-ai/info"
 	"github.com/filevich/truco-ai/utils"
 	"github.com/truquito/truco/pdt"
 )
 
 type Trainer struct {
+	Builder *info.Builder
+
 	CurrentIter int
 	TotalIter   int
 	InfosetMap  map[string]*RNode
 	NumPlayers  int
-	Abstractor  abs.IAbstraction
 	// multi
 	Mu      *sync.Mutex
 	Wg      *sync.WaitGroup
@@ -94,7 +96,7 @@ func (trainer *Trainer) getNumPlayers() int {
 }
 
 func (t *Trainer) GetAbs() abs.IAbstraction {
-	return t.Abstractor
+	return t.Builder.Abs
 }
 
 func (t *Trainer) Reset() {
@@ -175,8 +177,13 @@ func (t *Trainer) Save(filename string) {
 	t.CurrentIter--
 }
 
-const CURRENT_MODEL_VERSION float64 = 2.2
+const CURRENT_MODEL_VERSION float64 = 3.0
 
+// changes from v2.2 to v3.0:
+//   - add `hash`, `info` and `abs` fields
+//   - rm `abstractor` field
+// changes from v2.1 to v2.2:
+//   - ?
 // changes from v2.0 to v2.1:
 //   - field `id` is now `trainer`
 //   - no use of hyphens in trainers. eg, `es-vmccfr` is now `esvmccfr`
@@ -224,10 +231,14 @@ func (t *Trainer) SaveModel(
 	// campos extras: como el tipo, o valor de epsilon de OS-MCCFR
 	f.Write([]byte(fmt.Sprintf("version %.1f\n", CURRENT_MODEL_VERSION)))
 	f.Write([]byte(fmt.Sprintf("trainer %s\n", id)))
+
+	f.Write([]byte(fmt.Sprintf("hash %s\n", t.Builder.Data.Hash)))   // sha1, sha256, sha512
+	f.Write([]byte(fmt.Sprintf("info %s\n", t.Builder.Data.Info)))   // InfosetRondaBase
+	f.Write([]byte(fmt.Sprintf("abs %s\n", t.Builder.Abs.String()))) // a1, a2, a3...
+
 	f.Write([]byte(fmt.Sprintf("currentiter %d\n", t.CurrentIter)))
 	f.Write([]byte(fmt.Sprintf("totaliter %d\n", t.TotalIter)))
 	f.Write([]byte(fmt.Sprintf("numplayers %d\n", t.NumPlayers)))
-	f.Write([]byte(fmt.Sprintf("abstractor %s\n", t.Abstractor.String())))
 
 	for _, field := range extras {
 		f.Write([]byte(fmt.Sprintf("%s\n", field)))
@@ -256,6 +267,10 @@ func (t *Trainer) SaveModel(
 
 	// retorno Current_Iter a su estado orig
 	t.CurrentIter--
+}
+
+func (t *Trainer) GetBuilder() *info.Builder {
+	return t.Builder
 }
 
 func lineCounter(filename string) (int, error) {
@@ -293,7 +308,7 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 		TotalIter:   0,
 		InfosetMap:  make(map[string]*RNode),
 		NumPlayers:  0,
-		Abstractor:  nil,
+		Builder:     nil,
 		Mu:          &sync.Mutex{},
 		Wg:          &sync.WaitGroup{},
 	}
@@ -323,6 +338,10 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 	return_counter := 0
 	i := 0
 
+	_hash := ""
+	_info := ""
+	_abs := ""
+
 	for scanner.Scan() {
 		line := scanner.Text()
 
@@ -338,7 +357,7 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 			val := words[1]
 
 			switch words[0] {
-			case "version", "Prot":
+			case "version":
 				v, err := strconv.ParseFloat(words[1], 64)
 				if err != nil {
 					panic(fmt.Sprintf("couldn't parse version: %s", err))
@@ -355,8 +374,12 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 				base.TotalIter, _ = strconv.Atoi(val)
 			case "numplayers":
 				base.NumPlayers, _ = strconv.Atoi(val)
-			case "abstractor":
-				base.Abstractor = abs.ParseAbs(val)
+			case "hash":
+				_hash = val
+			case "info":
+				_info = val
+			case "abs":
+				_abs = val
 			default:
 				continue
 			}
@@ -386,6 +409,12 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 		}
 	}
 
+	if ok := len(_hash)*len(_info)*len(_abs) > 0; !ok {
+		panic("either `hash`, `info` or `abs` field is missing")
+	}
+
+	base.Builder = info.BuilderFactory(_hash, _info, _abs)
+
 	if verbose {
 		log.Println()
 	}
@@ -407,13 +436,22 @@ const (
 	BR_T Trainer_T = "bestresponse"
 )
 
-func NewTrainer(t Trainer_T, num_players int, abs abs.IAbstraction) ITrainer {
+func NewTrainer(
+
+	t Trainer_T,
+	numPlayers int,
+	_hash string,
+	_info string,
+	_abs string,
+
+) ITrainer {
+
 	base := Trainer{
+		Builder:     info.BuilderFactory(_hash, _info, _abs),
 		CurrentIter: 0,
 		TotalIter:   0,
 		InfosetMap:  make(map[string]*RNode),
-		NumPlayers:  num_players,
-		Abstractor:  abs,
+		NumPlayers:  numPlayers,
 		Mu:          &sync.Mutex{},
 		Wg:          &sync.WaitGroup{},
 	}

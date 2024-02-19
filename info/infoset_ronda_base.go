@@ -381,7 +381,7 @@ func (info *InfosetRondaBase) setRonda(
 }
 
 func (info *InfosetRondaBase) HashBytes(h hash.Hash) []byte {
-	// h := sha1.New()
+	h.Reset()
 	hsep := []byte(sep)
 
 	// 1
@@ -448,29 +448,32 @@ func (info *InfosetRondaBase) Dump(indent bool) string {
 	return string(bs)
 }
 
-func NewInfosetRondaBase(
+func infosetRondaBaseFactory(
 
-	p *pdt.Partida,
-	m *pdt.Manojo,
 	a abs.IAbstraction,
-	msgs []enco.IMessage,
 
-) Infoset {
+) InfosetBuilder {
 
-	info := &InfosetRondaBase{
-		Vision: m.Jugador.ID, // <- tiene motivos solo depurativos
+	return func(
+
+		p *pdt.Partida,
+		m *pdt.Manojo,
+		msgs []enco.IMessage,
+
+	) Infoset {
+		info := &InfosetRondaBase{
+			Vision: m.Jugador.ID, // <- tiene motivos solo depurativos
+		}
+		chi_i := pdt.GetA(p, m)
+		info.setMuestra(p)
+		info.setNuestras_Cartas(p, m, a)
+		info.setManojos_en_juego(p, m)
+		info.setEnvido(p)
+		info.setTruco(p)
+		info.setChi(p, m, chi_i, a)
+		info.setResultadoManos(p, m)
+		info.setRonda(p, m, a)
+		return info
 	}
 
-	chi_i := pdt.GetA(p, m)
-
-	info.setMuestra(p)
-	info.setNuestras_Cartas(p, m, a)
-	info.setManojos_en_juego(p, m)
-	info.setEnvido(p)
-	info.setTruco(p)
-	info.setChi(p, m, chi_i, a)
-	info.setResultadoManos(p, m)
-	info.setRonda(p, m, a)
-
-	return info
 }
