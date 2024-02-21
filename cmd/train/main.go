@@ -18,7 +18,7 @@ var (
 	modelPtr        = flag.String("model", "", "Filepath to .model file to continue training from")
 	numPlayersPtr   = flag.Int("p", 2, "Number of players")
 	trainerPtr      = flag.String("trainer", "esvmccfr", "CFR variant")
-	hashPtr         = flag.String("hash", "sha160", "Hash fn")                // builder
+	hashPtr         = flag.String("h", "sha160", "Hash fn")                   // builder
 	infoPtr         = flag.String("info", "InfosetRondaBase", "Infoset Impl") // builder
 	absPtr          = flag.String("abs", "a1", "Abstraction")                 // builder
 	threadsPtr      = flag.Int("threads", 1, "Threads")
