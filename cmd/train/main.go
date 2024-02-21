@@ -18,7 +18,7 @@ var (
 	modelPtr        = flag.String("model", "", "Filepath to .model file to continue training from")
 	numPlayersPtr   = flag.Int("p", 2, "Number of players")
 	trainerPtr      = flag.String("trainer", "esvmccfr", "CFR variant")
-	hashPtr         = flag.String("h", "sha160", "Hash fn")                   // builder
+	hashPtr         = flag.String("hash", "sha160", "Hash fn")                // builder
 	infoPtr         = flag.String("info", "InfosetRondaBase", "Infoset Impl") // builder
 	absPtr          = flag.String("abs", "a1", "Abstraction")                 // builder
 	threadsPtr      = flag.Int("threads", 1, "Threads")
@@ -26,9 +26,9 @@ var (
 	tinyEvalPtr     = flag.Int("eval", 1_000, "Progress eval length")
 	runPtr          = flag.String("run", "30m", "Total run time")
 	prunningPtr     = flag.String("prunning", "", "Start prunning after")
-	prunningProbPtr = flag.Float64("prunningProb", 0.01, "Pruning prob")
-	saveEveryPtr    = flag.String("saveEvery", "10m", "Saving interval")
-	evalEveryPtr    = flag.String("evalEvery", "1m", "Eval interval")
+	prunningProbPtr = flag.Float64("prunning_prob", 0.01, "Pruning prob")
+	saveEveryPtr    = flag.String("save_every", "10m", "Saving interval")
+	evalEveryPtr    = flag.String("eval_every", "1m", "Eval interval")
 	silentPtr       = flag.Bool("silent", true, "Silent model")
 	prefixPtr       = flag.String("prefix", "final_", "Model prefix")
 	resetPtr        = flag.Bool("reset", false, "Reset strategy sum")
