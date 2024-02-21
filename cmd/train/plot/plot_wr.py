@@ -203,6 +203,29 @@ info = {
         }
     },
 
+    # InfosetRondaLarge
+    "train_esv_a3_2p_1t_irl.3356924.out": {
+        "label": "esv-a3-irl",
+         "kwargs": {
+            "color": "black",
+        }
+    },
+
+    "train_esv_a3_2p_1t_irxl.3356927.out": {
+        "label": "esv-a3-irxl",
+         "kwargs": {
+            "color": "darkslategrey",
+        }
+    },
+
+    "train_esv_a3_2p_1t_irxxl.3356929.out": {
+        "label": "esv-a3-irxxl",
+         "kwargs": {
+            "color": "indigo",
+        }
+    },
+
+
 }
 
 def get_offset(file, op):
@@ -237,9 +260,16 @@ show_only = [
 # skip
 not_show = [
     "train_eslmccfr_null_2p.3283325.out",
-    # "pruned_esvmccfr_a3_2p_1t.3325559.out",
-    # "pruned_esvmccfr_a3_2p_1t.3325561.out",
-    # "pruned_esvmccfr_a3_2p_1t.3325562.out",
+
+    "pruned_esvmccfr_a3_2p_1t.3325561.out",
+    "pruned_esvmccfr_a3_2p_1t.3325562.out",
+
+    "pruned_esvmccfr_a3_2p_1t.3325562.out",
+    "pruned_esl_null_2p_1t_f60.3325612.out",
+
+    "pruned_esv_null_2p_1t_f10.3325610.out",
+    "pruned_esv_null_2p_1t_f40.3325615.out",
+    "pruned_esv_null_2p_1t_f70.3325617.out",
 ]
 
 if len(show_only): info = {k:v for k,v in info.items() if k in show_only}
