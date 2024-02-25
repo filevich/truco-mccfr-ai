@@ -225,6 +225,14 @@ info = {
         }
     },
 
+    # InfosetRondaLarge 2nd run
+    "train_esl_a3_2p_1t_irxl_f70.3373018.out": {
+        "resumes": "train_esv_a3_2p_1t_irl.3356924.out",
+        "label": "p-esv-a3-irl",
+         "kwargs": {
+            "color": "black",
+        }
+    },
 
 }
 
