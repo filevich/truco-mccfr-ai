@@ -22,12 +22,20 @@ def get_offset(file, op, info, data):
         total_offset += get_offset(resumes, op, info, data)
     return total_offset
 
+def has_continuity(file, info) -> bool:
+    return any([
+        True
+        for f, info_data in info.items()
+        if "resumes" in info_data and info_data["resumes"] == file
+    ])
+
 def plot_these(
         axs,
         order, # list[str]
         data, # dict
         info, # dict
         metric,
+        label_last_run_only=False,
 ):
     colors_used = {}
     record = max([ max([e["wr"] for e in d[metric]]) for d in data.values()])
@@ -50,10 +58,12 @@ def plot_these(
 
 
         # label
-        m = max(ys)
-        l = f"{info[file]['label']} ({round(m*100,2)})"
-        if m == record: l = "$\\bf{" + l + "}$"
-        kwargs["label"] = l
+        should_skip_label = has_continuity(file, info) and label_last_run_only
+        if not should_skip_label:
+            m = max(ys)
+            l = f"{info[file]['label']} ({round(m*100,2)})"
+            if m == record: l = "$\\bf{" + l + "}$"
+            kwargs["label"] = l
 
         p = axs.plot(
             xs_secs,
