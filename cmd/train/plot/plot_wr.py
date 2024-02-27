@@ -57,7 +57,7 @@ info_base = {
             "color": "lightcoral",
         }
     },
-    "train_eslmccfr_null_2p.3283325.out": {
+    "train_eslmccfr_null_2p.3283325.out": { # <- rename
         "label": "esl-null-4t",
         "kwargs": {
             "color": "royalblue",
@@ -209,7 +209,7 @@ info_base = {
 
     # InfosetRondaLarge
     "train_esl_a3_2p_1t_irl.3356924.out": {
-        "label": "esv-a3-irl",
+        "label": "esl-a3-irl",
          "kwargs": {
             "color": "black",
         }
@@ -270,6 +270,37 @@ is_resume = lambda v: "resumes" in v
 order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.items() if is_resume(v)]
 # plot
 plot_utils.plot_these(axs, order, data, info, metric="simple")
+# legend
+axs.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
+axs.grid()
+# display
+plt.tight_layout()
+plt.show()
+
+#
+#
+#
+    
+fig, axs = plt.subplots(1, 1, figsize=(12, 6))
+fig.suptitle("ESV vs ESL @ 2p null")
+# show only
+show_only = [
+    "pruned_esl_null_2p_1t_r60.3325616.out",
+    "resume_eslmccfr_null_2p_2t.3294059.out",
+    "train_eslmccfr_null_2p.3282695.out",
+    "pruned_esv_null_2p_1t_r70.3325620.out",
+    "resume_esvmccfr_null_2p_2t.3293687.out",
+    "train_esvmccfr_null_2p.3280538.out",
+]
+not_show = []
+info = info_base
+if len(show_only): info = {k:v for k,v in info.items() if k in show_only}
+if len(not_show): info = {k:v for k,v in info.items() if k not in not_show}
+# order
+is_resume = lambda v: "resumes" in v
+order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.items() if is_resume(v)]
+# plot
+plot_utils.plot_these(axs, order, data, info, metric="simple", label_last_run_only=True)
 # legend
 axs.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
 axs.grid()
