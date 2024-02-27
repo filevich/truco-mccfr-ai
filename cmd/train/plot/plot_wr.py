@@ -9,7 +9,6 @@ sys.path.append('cmd/_com')
 import plot_utils
 
 plt.rcParams['savefig.dpi'] = 224
-# plt.rcParams["figure.dpi"] = 224
 plt.rcParams['grid.color'] = 'gainsboro'
 
 parser = argparse.ArgumentParser(description='Plot cfr train')
@@ -25,7 +24,7 @@ data = {
 }
 
 # plot data info
-info = {
+info_base = {
 
     # 
     # train
@@ -61,6 +60,14 @@ info = {
             "color": "lightcoral",
         }
     },
+    "train_eslmccfr_null_2p.3283325.out": {
+        "label": "esl-null-4t",
+        "kwargs": {
+            "color": "royalblue",
+        }
+    },
+
+
 
     # 
     # resume
@@ -257,15 +264,44 @@ def get_offset(file, op):
 with open(args.input, 'r') as f:
     data = json.loads(f.read())
 
+
+#
+#
+#
+    
+fig, axs = plt.subplots(1, 1, figsize=(12, 6))
+fig.suptitle("1 thread vs 4 threads @ esl 2p null")
 # show only
 show_only = [
-    # "train_esvmccfr_a3_2p.3280535.out",
-    # "resume_esvmccfr_a3_2p_2t.3293685.out",
-    # "resume_esvmccfr_null_2p_2t.3293687.out",
-    # "train_esvmccfr_null_2p.3280538.out"
+    "train_eslmccfr_null_2p.3282695.out",
+    "train_eslmccfr_null_2p.3283325.out"
 ]
+not_show = []
+info = info_base
+if len(show_only): info = {k:v for k,v in info.items() if k in show_only}
+if len(not_show): info = {k:v for k,v in info.items() if k not in not_show}
+# order
+is_resume = lambda v: "resumes" in v
+order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.items() if is_resume(v)]
+# plot
+plot_utils.plot_these(axs, order, data, info, metric="simple")
+# legend
+axs.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
+axs.grid()
+# display
+plt.tight_layout()
+plt.show()
 
-# skip
+
+#
+#
+#
+
+fig, axs = plt.subplots(1, 1, figsize=(12, 6))
+fig.suptitle("WR mccfr 2p vs Random")
+# show only
+show_only = []
+# not show
 not_show = [
     "train_eslmccfr_null_2p.3283325.out",
 
@@ -279,156 +315,54 @@ not_show = [
     "pruned_esv_null_2p_1t_f40.3325615.out",
     "pruned_esv_null_2p_1t_f70.3325617.out",
 ]
-
+info = info_base
 if len(show_only): info = {k:v for k,v in info.items() if k in show_only}
 if len(not_show): info = {k:v for k,v in info.items() if k not in not_show}
-
 # order
 is_resume = lambda v: "resumes" in v
 order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.items() if is_resume(v)]
-
-# wr
-
-fig, axs = plt.subplots(1, 1, figsize=(12, 6))
-fig.suptitle("Train ES-MCCFR for 2p")
-
-# 
-# (a)
-# 
-
-axs.set_title("(a) WR vs Random bot")
-
-colors_used = {}
-record = max([ max([e["wr"] for e in d["random"]]) for d in data.values()])
-
-for file in order:
-    d = data[file]
-    xs = [t["delta"] for t in d["random"]]
-    
-    kwargs = {}
-
-    if "resumes" in info[file]:
-        offset = get_offset(file, "random")
-        xs = [x + offset - xs[0] for x in xs]
-        kwargs["color"] = colors_used[info[file]["resumes"]]
-
-    if "kwargs" in info[file]: kwargs = {**kwargs, **info[file]["kwargs"]}
-
-    xs_secs = [datetime.timedelta(seconds=x).total_seconds() for x in xs]
-    ys = [t["wr"] for t in d["random"]]
-
-    # label
-    m = max(ys)
-    l = f"{info[file]['label']} ({round(m*100,2)})"
-    if m == record: l = "$\\bf{" + l + "}$"
-    kwargs["label"] = l
-
-    p = axs.plot(
-        xs_secs,
-        ys,
-        linewidth=0.8,
-        alpha=0.3,
-        **kwargs)
-
-    colors_used[file] = p[0].get_color()
-
-    # smooth
-    axs.plot(
-        xs_secs,
-        plot_utils.smooth(ys, .95),
-        color=colors_used[file],
-        alpha=1 if "pruned" in file else 0.6,
-        linewidth=0.8)
-
-
-# x axis
-# xs = set()
-# for file in order:
-#     d = data[file]
-#     ts = [t["delta"] for t in d["random"]]
-#     if "resumes" in info[file]:
-#         offset = get_offset(file, "random")
-#         ts = [t + offset - ts[0] for t in ts]
-#     xs = xs.union(ts)
-# xs = sorted(xs)
-# xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
-# axs.set_xticks(xs, labels=xs_hours, rotation=40)
-# axs.locator_params(axis='x', nbins=12)
-
+# plot
+plot_utils.plot_these(axs, order, data, info, metric="random")
 # legend
 axs.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
 axs.grid()
-
+# display
 plt.tight_layout()
 plt.show()
 
-# 
-# (b)
-# 
+#
+#
+#
 
 fig, axs = plt.subplots(1, 1, figsize=(12, 6))
+fig.suptitle("WR mccfr 2p vs Simple")
+# show only
+show_only = []
+# not show
+not_show = [
+    "train_eslmccfr_null_2p.3283325.out",
 
-axs.set_title("(b) WR vs Simple bot")
-record = max([ max([e["wr"] for e in d["simple"]]) for d in data.values()])
+    "pruned_esvmccfr_a3_2p_1t.3325561.out",
+    "pruned_esvmccfr_a3_2p_1t.3325562.out",
 
-for file in order:
-    d = data[file]
-    xs = [t["delta"] for t in d["simple"]]
-    
-    kwargs = {}
+    "pruned_esvmccfr_a3_2p_1t.3325562.out",
+    "pruned_esl_null_2p_1t_f60.3325612.out",
 
-    if "resumes" in info[file]:
-        offset = get_offset(file, "simple")
-        xs = [x + offset - xs[0] for x in xs]
-        kwargs["color"] = colors_used[info[file]["resumes"]]
-
-    if "kwargs" in info[file]: kwargs = {**kwargs, **info[file]["kwargs"]}
-
-    xs_secs = [datetime.timedelta(seconds=x).total_seconds() for x in xs]
-    ys = [t["wr"] for t in d["simple"]]
-
-
-    # label
-    m = max(ys)
-    l = f"{info[file]['label']} ({round(m*100,2)})"
-    if m == record: l = "$\\bf{" + l + "}$"
-    kwargs["label"] = l
-
-    p = axs.plot(
-        xs_secs,
-        ys,
-        linewidth=0.8,
-        alpha=0.3,
-        **kwargs)
-
-    colors_used[file] = p[0].get_color()
-
-    # smooth
-    axs.plot(
-        xs_secs,
-        plot_utils.smooth(ys, .95),
-        color=colors_used[file],
-        alpha=1 if "pruned" in file else 0.6,
-        linewidth=1)
-
-# x axis
-# xs = set()
-# for file in order:
-#     d = data[file]
-#     ts = [t["delta"] for t in d["simple"]]
-#     if "resumes" in info[file]:
-#         offset = get_offset(file, "simple")
-#         ts = [t + offset - ts[0] for t in ts]
-#     xs = xs.union(ts)
-# xs = sorted(xs)
-# xs_hours = [str(datetime.timedelta(seconds=x)) for x in xs]
-# axs.set_xticks(xs, labels=xs_hours, rotation=40)
-# axs.locator_params(axis='x', nbins=12)
-
+    "pruned_esv_null_2p_1t_f10.3325610.out",
+    "pruned_esv_null_2p_1t_f40.3325615.out",
+    "pruned_esv_null_2p_1t_f70.3325617.out",
+]
+info = info_base
+if len(show_only): info = {k:v for k,v in info.items() if k in show_only}
+if len(not_show): info = {k:v for k,v in info.items() if k not in not_show}
+# order
+is_resume = lambda v: "resumes" in v
+order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.items() if is_resume(v)]
+# plot
+plot_utils.plot_these(axs, order, data, info, metric="simple")
 # legend
 axs.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
 axs.grid()
-
+# display
 plt.tight_layout()
 plt.show()
-
