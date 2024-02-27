@@ -19,7 +19,7 @@ args = parser.parse_args()
 # example expected data structure
 data = {
     "train_esvmccfr_a2_2p.3280483.out": {
-        "ale": {"wr": 1, "u": 2, "l": 3, "di": 4, "t": -1},
+        "random": {"wr": 1, "u": 2, "l": 3, "di": 4, "t": -1},
         "simple": {"wr": 5, "u": 6, "l": 7, "di": 8, "t": -2},
     },
 }
@@ -299,23 +299,23 @@ fig.suptitle("Train ES-MCCFR for 2p")
 axs.set_title("(a) WR vs Random bot")
 
 colors_used = {}
-record = max([ max([e["wr"] for e in d["ale"]]) for d in data.values()])
+record = max([ max([e["wr"] for e in d["random"]]) for d in data.values()])
 
 for file in order:
     d = data[file]
-    xs = [t["delta"] for t in d["ale"]]
+    xs = [t["delta"] for t in d["random"]]
     
     kwargs = {}
 
     if "resumes" in info[file]:
-        offset = get_offset(file, "ale")
+        offset = get_offset(file, "random")
         xs = [x + offset - xs[0] for x in xs]
         kwargs["color"] = colors_used[info[file]["resumes"]]
 
     if "kwargs" in info[file]: kwargs = {**kwargs, **info[file]["kwargs"]}
 
     xs_secs = [datetime.timedelta(seconds=x).total_seconds() for x in xs]
-    ys = [t["wr"] for t in d["ale"]]
+    ys = [t["wr"] for t in d["random"]]
 
     # label
     m = max(ys)
@@ -345,9 +345,9 @@ for file in order:
 # xs = set()
 # for file in order:
 #     d = data[file]
-#     ts = [t["delta"] for t in d["ale"]]
+#     ts = [t["delta"] for t in d["random"]]
 #     if "resumes" in info[file]:
-#         offset = get_offset(file, "ale")
+#         offset = get_offset(file, "random")
 #         ts = [t + offset - ts[0] for t in ts]
 #     xs = xs.union(ts)
 # xs = sorted(xs)

@@ -20,7 +20,7 @@ for root, dirs, files in os.walk(args.directory):
             file_path = os.path.join(root, file)
             with open(file_path, 'r') as f:
                 lines = f.readlines()
-                ale = []
+                rand = []
                 simple = []
                 start = None
                 for line in lines:
@@ -41,7 +41,7 @@ for root, dirs, files in os.walk(args.directory):
                         except:
                             continue
 
-                        ale.append({
+                        rand.append({
                             "wr": float(match_wr.group(1)),
                             "l": float(match_wr.group(2)),
                             "u": float(match_wr.group(3)),
@@ -59,7 +59,7 @@ for root, dirs, files in os.walk(args.directory):
                         })
 
                 data[file] = {
-                    "ale": ale,
+                    "random": rand,
                     "simple": simple,
                 }
 
