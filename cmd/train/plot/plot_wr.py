@@ -204,30 +204,30 @@ info = {
     },
 
     # InfosetRondaLarge
-    "train_esv_a3_2p_1t_irl.3356924.out": {
+    "train_esl_a3_2p_1t_irl.3356924.out": {
         "label": "esv-a3-irl",
          "kwargs": {
             "color": "black",
         }
     },
 
-    "train_esv_a3_2p_1t_irxl.3356927.out": {
-        "label": "esv-a3-irxl",
+    "train_esl_a3_2p_1t_irxl.3383571.out": {
+        "label": "esl-a3-irxl",
          "kwargs": {
             "color": "darkslategrey",
         }
     },
 
-    "train_esv_a3_2p_1t_irxxl.3356929.out": {
-        "label": "esv-a3-irxxl",
+    "train_esl_a3_2p_1t_irxxl.3384958.out": {
+        "label": "esl-a3-irxxl",
          "kwargs": {
             "color": "indigo",
         }
     },
 
     # InfosetRondaLarge 2nd run
-    "train_esl_a3_2p_1t_irxl_f70.3373018.out": {
-        "resumes": "train_esv_a3_2p_1t_irl.3356924.out",
+    "train_esl_a3_2p_1t_irxl_f70.3373018.out": { # <- renombrar a pruned_esl_a3_2p_1t_irl_f70.3373018.out
+        "resumes": "train_esl_a3_2p_1t_irl.3356924.out",
         "label": "p-esv-a3-irl",
          "kwargs": {
             "color": "black",
