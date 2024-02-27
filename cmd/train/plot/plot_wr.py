@@ -1,18 +1,15 @@
 import argparse
 import json
-import datetime
-from typing import List
 import matplotlib.pyplot as plt
-
-import sys
-sys.path.append('cmd/_com')
+import sys; sys.path.append('cmd/_com')
 import plot_utils
 
 plt.rcParams['savefig.dpi'] = 224
 plt.rcParams['grid.color'] = 'gainsboro'
 
 parser = argparse.ArgumentParser(description='Plot cfr train')
-parser.add_argument('-i', '--input', type=str, default='/tmp/train/result.json', required=False, help='.json input file')
+parser.add_argument('-i', '--input', type=str, default='/tmp/train/result.json',
+                    required=False, help='.json input file')
 args = parser.parse_args()
 
 # example expected data structure
@@ -243,17 +240,6 @@ info_base = {
 
 }
 
-def get_offset(file, op):
-    total_offset = 0
-    if "resumes" in info[file]:
-        resumes = info[file]["resumes"]
-        offset = data[resumes][op][-1]["delta"]
-        if "at" in info[file]:
-            offset *= info[file]["at"]
-        total_offset += offset
-        total_offset += get_offset(resumes, op)
-    return total_offset
-
 # fetch the data with:
 # `rsync -avz -e 'ssh -p 10022' 'juan.filevich@cluster.uy:~/batches/out/train_*.out' /tmp/train`
 
@@ -263,7 +249,6 @@ def get_offset(file, op):
 # read it
 with open(args.input, 'r') as f:
     data = json.loads(f.read())
-
 
 #
 #
@@ -291,7 +276,6 @@ axs.grid()
 # display
 plt.tight_layout()
 plt.show()
-
 
 #
 #
