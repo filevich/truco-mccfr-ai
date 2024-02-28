@@ -1,6 +1,5 @@
 import datetime
 from typing import List
-import plot_utils
 
 def smooth(scalars: List[float], weight: float) -> List[float]:  # Weight between 0 and 1
     last = scalars[0]  # First value in the plot (first timestep)
@@ -36,6 +35,8 @@ def plot_these(
         info, # dict
         metric,
         label_last_run_only=False,
+        plot_real=True,
+        plot_smoothed=True,
 ):
     colors_used = {}
     record = max([ max([e["wr"] for e in d[metric]]) for d in data.values()])
@@ -63,20 +64,24 @@ def plot_these(
         if m == record: l = "$\\bf{" + l + "}$"
         should_skip_label = has_continuity(file, info) and label_last_run_only
 
-        p = axs.plot(
-            xs_secs,
-            ys,
-            linewidth=0.8,
-            alpha=0.3,
-            **kwargs)
+        if plot_real:
+            p = axs.plot(
+                xs_secs,
+                ys,
+                linewidth=0.8,
+                alpha=0.3,
+                **kwargs)
 
-        colors_used[file] = p[0].get_color()
+            colors_used[file] = p[0].get_color()
 
         # smooth
-        axs.plot(
-            xs_secs,
-            plot_utils.smooth(ys, .95),
-            color=colors_used[file],
-            label=None if should_skip_label else l,
-            alpha=1 if "pruned" in file else 0.5,
-            linewidth=1)
+        if plot_smoothed:
+            p = axs.plot(
+                xs_secs,
+                smooth(ys, .95),
+                color=colors_used[file] if file in colors_used else info[file]["kwargs"]["color"],
+                label=None if should_skip_label else l,
+                alpha=1 if "pruned" in file else 0.5,
+                linewidth=1)
+            
+            colors_used[file] = p[0].get_color()
