@@ -58,12 +58,10 @@ def plot_these(
 
 
         # label
+        m = max(ys)
+        l = f"{info[file]['label']} ({round(m*100,2)})"
+        if m == record: l = "$\\bf{" + l + "}$"
         should_skip_label = has_continuity(file, info) and label_last_run_only
-        if not should_skip_label:
-            m = max(ys)
-            l = f"{info[file]['label']} ({round(m*100,2)})"
-            if m == record: l = "$\\bf{" + l + "}$"
-            kwargs["label"] = l
 
         p = axs.plot(
             xs_secs,
@@ -79,5 +77,6 @@ def plot_these(
             xs_secs,
             plot_utils.smooth(ys, .95),
             color=colors_used[file],
-            alpha=1 if "pruned" in file else 0.6,
+            label=None if should_skip_label else l,
+            alpha=1 if "pruned" in file else 0.5,
             linewidth=1)

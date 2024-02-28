@@ -211,7 +211,7 @@ info_base = {
     "train_esl_a3_2p_1t_irl.3356924.out": {
         "label": "esl-a3-irl",
          "kwargs": {
-            "color": "black",
+            "color": "darkorange",
         }
     },
 
@@ -230,11 +230,11 @@ info_base = {
     },
 
     # InfosetRondaLarge 2nd run
-    "train_esl_a3_2p_1t_irxl_f70.3373018.out": { # <- renombrar a pruned_esl_a3_2p_1t_irl_f70.3373018.out
+    "pruned_esl_a3_2p_1t_irl_f70.3373018.out": {
         "resumes": "train_esl_a3_2p_1t_irl.3356924.out",
         "label": "p-esv-a3-irl",
          "kwargs": {
-            "color": "black",
+            "color": "darkorange",
         }
     },
 
@@ -291,6 +291,43 @@ show_only = [
     "pruned_esv_null_2p_1t_r70.3325620.out",
     "resume_esvmccfr_null_2p_2t.3293687.out",
     "train_esvmccfr_null_2p.3280538.out",
+]
+not_show = []
+info = info_base
+if len(show_only): info = {k:v for k,v in info.items() if k in show_only}
+if len(not_show): info = {k:v for k,v in info.items() if k not in not_show}
+# order
+is_resume = lambda v: "resumes" in v
+order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.items() if is_resume(v)]
+# plot
+plot_utils.plot_these(axs, order, data, info, metric="simple", label_last_run_only=True)
+# legend
+axs.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
+axs.grid()
+# display
+plt.tight_layout()
+plt.show()
+
+#
+#
+#
+
+fig, axs = plt.subplots(1, 1, figsize=(12, 6))
+fig.suptitle("InfosetRondaBase vs InfosetRondaLarge @ 2p")
+# show only
+show_only = [
+    # InfosetRondaLarge a3
+    "train_esl_a3_2p_1t_irl.3356924.out",
+    "pruned_esl_a3_2p_1t_irl_f70.3373018.out",
+    # InfosetRondaXLarge a3
+    "train_esl_a3_2p_1t_irxl.3383571.out",
+    # InfosetRondaXXLarge a3
+    "train_esl_a3_2p_1t_irxxl.3384958.out",
+
+    # InfosetRondaBase a3
+    "train_esvmccfr_a3_2p.3280535.out",
+    "resume_esvmccfr_a3_2p_2t.3293685.out",
+    "pruned_esvmccfr_a3_2p_1t.3325567.out",
 ]
 not_show = []
 info = info_base
