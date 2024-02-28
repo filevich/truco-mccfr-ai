@@ -399,21 +399,35 @@ plt.show()
 fig, axs = plt.subplots(1, 1, figsize=(12, 6))
 fig.suptitle("WR mccfr 2p vs Random")
 # show only
-show_only = []
-# not show
-not_show = [
-    "train_eslmccfr_null_2p.3283325.out",
-
-    "pruned_esvmccfr_a3_2p_1t.3325561.out",
-    "pruned_esvmccfr_a3_2p_1t.3325562.out",
-
-    "pruned_esvmccfr_a3_2p_1t.3325562.out",
-    "pruned_esl_null_2p_1t_f60.3325612.out",
-
-    "pruned_esv_null_2p_1t_f10.3325610.out",
-    "pruned_esv_null_2p_1t_f40.3325615.out",
-    "pruned_esv_null_2p_1t_f70.3325617.out",
+show_only = [
+    "train_esvmccfr_a2_2p.3280483.out",
+    "train_esvmccfr_a1_2p.3280505.out",
+    "train_esvmccfr_a3_2p.3280535.out",
+    # "train_esvmccfr_null_2p.3280538.out",
+    "train_eslmccfr_null_2p.3282695.out",
+    # "train_eslmccfr_null_2p.3283325.out",
+    "resume_esvmccfr_a3_2p_2t.3293685.out",
+    "resume_eslmccfr_null_2p_2t.3294059.out",
+    # "resume_esvmccfr_null_2p_2t.3293687.out",
+    "pruned_esvmccfr_a1_2p_1t.3325490.out",
+    "pruned_esvmccfr_a2_2p_1t.3325556.out",
+    # "pruned_esvmccfr_a3_2p_1t.3325559.out",
+    # "pruned_esvmccfr_a3_2p_1t.3325561.out",
+    # "pruned_esvmccfr_a3_2p_1t.3325562.out",
+    "pruned_esvmccfr_a3_2p_1t.3325567.out",
+    # "pruned_esv_null_2p_1t_f10.3325610.out",
+    # "pruned_esv_null_2p_1t_f40.3325615.out",
+    # "pruned_esv_null_2p_1t_f70.3325617.out",
+    # "pruned_esl_null_2p_1t_f60.3325612.out",
+    "pruned_esl_null_2p_1t_r60.3325616.out",
+    # "pruned_esv_null_2p_1t_r70.3325620.out",
+    "train_esl_a3_2p_1t_irl.3356924.out",
+    "train_esl_a3_2p_1t_irxl.3383571.out",
+    "train_esl_a3_2p_1t_irxxl.3384958.out",
+    "pruned_esl_a3_2p_1t_irl_f70.3373018.out",
 ]
+# not show
+not_show = []
 info = info_base
 if len(show_only): info = {k:v for k,v in info.items() if k in show_only}
 if len(not_show): info = {k:v for k,v in info.items() if k not in not_show}
@@ -421,7 +435,7 @@ if len(not_show): info = {k:v for k,v in info.items() if k not in not_show}
 is_resume = lambda v: "resumes" in v
 order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.items() if is_resume(v)]
 # plot
-plot_utils.plot_these(axs, order, data, info, metric="random")
+plot_utils.plot_these(axs, order, data, info, metric="random", plot_real=False, label_last_run_only=True)
 # legend
 axs.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
 axs.grid()
@@ -436,21 +450,35 @@ plt.show()
 fig, axs = plt.subplots(1, 1, figsize=(12, 6))
 fig.suptitle("WR mccfr 2p vs Simple")
 # show only
-show_only = []
-# not show
-not_show = [
-    "train_eslmccfr_null_2p.3283325.out",
-
-    "pruned_esvmccfr_a3_2p_1t.3325561.out",
-    "pruned_esvmccfr_a3_2p_1t.3325562.out",
-
-    "pruned_esvmccfr_a3_2p_1t.3325562.out",
-    "pruned_esl_null_2p_1t_f60.3325612.out",
-
-    "pruned_esv_null_2p_1t_f10.3325610.out",
-    "pruned_esv_null_2p_1t_f40.3325615.out",
-    "pruned_esv_null_2p_1t_f70.3325617.out",
+show_only = [
+    "train_esvmccfr_a2_2p.3280483.out",
+    "train_esvmccfr_a1_2p.3280505.out",
+    "train_esvmccfr_a3_2p.3280535.out",
+    # "train_esvmccfr_null_2p.3280538.out",
+    "train_eslmccfr_null_2p.3282695.out",
+    # "train_eslmccfr_null_2p.3283325.out",
+    "resume_esvmccfr_a3_2p_2t.3293685.out",
+    "resume_eslmccfr_null_2p_2t.3294059.out",
+    # "resume_esvmccfr_null_2p_2t.3293687.out",
+    "pruned_esvmccfr_a1_2p_1t.3325490.out",
+    "pruned_esvmccfr_a2_2p_1t.3325556.out",
+    # "pruned_esvmccfr_a3_2p_1t.3325559.out",
+    # "pruned_esvmccfr_a3_2p_1t.3325561.out",
+    # "pruned_esvmccfr_a3_2p_1t.3325562.out",
+    "pruned_esvmccfr_a3_2p_1t.3325567.out",
+    # "pruned_esv_null_2p_1t_f10.3325610.out",
+    # "pruned_esv_null_2p_1t_f40.3325615.out",
+    # "pruned_esv_null_2p_1t_f70.3325617.out",
+    # "pruned_esl_null_2p_1t_f60.3325612.out",
+    "pruned_esl_null_2p_1t_r60.3325616.out",
+    # "pruned_esv_null_2p_1t_r70.3325620.out",
+    "train_esl_a3_2p_1t_irl.3356924.out",
+    "train_esl_a3_2p_1t_irxl.3383571.out",
+    "train_esl_a3_2p_1t_irxxl.3384958.out",
+    "pruned_esl_a3_2p_1t_irl_f70.3373018.out",
 ]
+# not show
+not_show = []
 info = info_base
 if len(show_only): info = {k:v for k,v in info.items() if k in show_only}
 if len(not_show): info = {k:v for k,v in info.items() if k not in not_show}
@@ -458,7 +486,7 @@ if len(not_show): info = {k:v for k,v in info.items() if k not in not_show}
 is_resume = lambda v: "resumes" in v
 order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.items() if is_resume(v)]
 # plot
-plot_utils.plot_these(axs, order, data, info, metric="simple")
+plot_utils.plot_these(axs, order, data, info, metric="simple", plot_real=False, label_last_run_only=True)
 # legend
 axs.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
 axs.grid()
