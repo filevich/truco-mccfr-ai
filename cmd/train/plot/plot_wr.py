@@ -74,6 +74,7 @@ info_base = {
         "label": "esv-a3",
         "resumes": "train_esvmccfr_a3_2p.3280535.out",
         "kwargs": {
+            "color": "royalblue",
         }
     },
     "resume_eslmccfr_null_2p_2t.3294059.out": {
@@ -301,6 +302,52 @@ is_resume = lambda v: "resumes" in v
 order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.items() if is_resume(v)]
 # plot
 plot_utils.plot_these(axs, order, data, info, metric="simple", label_last_run_only=True)
+# legend
+axs.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
+axs.grid()
+# display
+plt.tight_layout()
+plt.show()
+
+#
+#
+#
+
+fig, axs = plt.subplots(1, 1, figsize=(12, 6))
+fig.suptitle("Different pruning start time comparison (prob=1%)")
+# show only
+show_only = [
+    # esv-irb-a3
+    "train_esvmccfr_a3_2p.3280535.out",
+    "resume_esvmccfr_a3_2p_2t.3293685.out",
+    "pruned_esvmccfr_a3_2p_1t.3325559.out",
+    "pruned_esvmccfr_a3_2p_1t.3325561.out",
+    "pruned_esvmccfr_a3_2p_1t.3325562.out",
+    "pruned_esvmccfr_a3_2p_1t.3325567.out",
+
+    # esv-irb-null
+    "train_esvmccfr_null_2p.3280538.out",
+    "resume_esvmccfr_null_2p_2t.3293687.out",
+    "pruned_esv_null_2p_1t_f10.3325610.out",
+    "pruned_esv_null_2p_1t_f40.3325615.out",
+    "pruned_esv_null_2p_1t_f70.3325617.out",
+    "pruned_esv_null_2p_1t_r70.3325620.out",
+
+    # esv-irb-null
+    "train_eslmccfr_null_2p.3282695.out",
+    "resume_eslmccfr_null_2p_2t.3294059.out",
+    "pruned_esl_null_2p_1t_f60.3325612.out",
+    "pruned_esl_null_2p_1t_r60.3325616.out",
+]
+not_show = []
+info = info_base
+if len(show_only): info = {k:v for k,v in info.items() if k in show_only}
+if len(not_show): info = {k:v for k,v in info.items() if k not in not_show}
+# order
+is_resume = lambda v: "resumes" in v
+order = [k for k,v in info.items() if not is_resume(v)] + [k for k,v in info.items() if is_resume(v)]
+# plot
+plot_utils.plot_these(axs, order, data, info, metric="simple", label_last_run_only=True, plot_real=False)
 # legend
 axs.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize="8")
 axs.grid()
