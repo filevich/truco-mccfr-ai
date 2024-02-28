@@ -113,7 +113,6 @@ info_base = {
     },
     
     "pruned_esvmccfr_a3_2p_1t.3325559.out": {
-        # "model": "final_es-vmccfr_d10h0m_D70h0m_t385690_p0_a3_2402030916.model",
         "resumes": "train_esvmccfr_a3_2p.3280535.out",
         "at": 10/70,
         "label": "p-esv-a3-10h",
@@ -123,7 +122,6 @@ info_base = {
     },
     
     "pruned_esvmccfr_a3_2p_1t.3325561.out": {
-        # "model": "final_es-vmccfr_d70h0m_D70h0m_t3468734_p0_a3_2402052116.model",
         "resumes": "train_esvmccfr_a3_2p.3280535.out",
         "at": 70/70,
         "label": "p-esv-a3-70h",
@@ -133,7 +131,6 @@ info_base = {
     },
     
     "pruned_esvmccfr_a3_2p_1t.3325562.out": {
-        # "model": "final_es-vmccfr_d40h0m_D70h0m_t1812899_p0_a3_2402041516.model",
         "resumes": "train_esvmccfr_a3_2p.3280535.out",
         "at": 40/70,
         "label": "p-esv-a3-40h",
@@ -151,7 +148,6 @@ info_base = {
     },
 
     "pruned_esv_null_2p_1t_f10.3325610.out": {
-        # "model": "final_es-vmccfr_d10h0m_D70h0m_t445443_p0_null_2402030918.model",
         "resumes": "train_esvmccfr_null_2p.3280538.out",
         "at": 10/70,
         "label": "p-esv-null-10h",
@@ -161,7 +157,6 @@ info_base = {
     },
 
     "pruned_esv_null_2p_1t_f40.3325615.out": {
-        # "model": "final_es-vmccfr_d40h0m_D70h0m_t1403826_p0_null_2402041519.model",
         "resumes": "train_esvmccfr_null_2p.3280538.out",
         "at": 40/70,
         "label": "p-esv-null-40h",
@@ -171,7 +166,6 @@ info_base = {
     },
     
     "pruned_esv_null_2p_1t_f70.3325617.out": {
-        # "model": "final_es-vmccfr_d70h0m_D70h0m_t2151893_p0_null_2402052118.model",
         "resumes": "train_esvmccfr_null_2p.3280538.out",
         "label": "p-esv-null-70h",
         "kwargs": {
@@ -180,7 +174,6 @@ info_base = {
     },
 
      "pruned_esl_null_2p_1t_f60.3325612.out": {
-        # "model": "final_eslmccfr_d60h1m_D70h0m_t1695315_p0_null_2402061320.model",
         "resumes": "train_eslmccfr_null_2p.3282695.out",
         "at": 60/70,
         "label": "p-esl-null-60h",
@@ -190,7 +183,6 @@ info_base = {
     },
 
     "pruned_esl_null_2p_1t_r60.3325616.out": {
-        # "model": "resume_eslmccfr_d60h1m_D70h0m_t2633514_p0_null_2402100446.model",
         "resumes": "resume_eslmccfr_null_2p_2t.3294059.out",
         "at": 60/70,
         "label": "p-esl-null-120h",
@@ -200,7 +192,6 @@ info_base = {
     },
 
     "pruned_esv_null_2p_1t_r70.3325620.out": {
-        # "model": "resume_esvmccfr_d70h0m_D70h0m_t3305210_p0_null_2402101309.model",
         "resumes": "resume_esvmccfr_null_2p_2t.3293687.out",
         "label": "p-esv-null-140h",
         "kwargs": {
