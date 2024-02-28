@@ -79,6 +79,10 @@ def plot_these(
             p = axs.plot(
                 xs_secs,
                 smooth(ys, .95),
+                'o',
+                ls='-',
+                ms=4,
+                markevery=[-1],
                 color=colors_used[file] if file in colors_used else info[file]["kwargs"]["color"],
                 label=None if should_skip_label else l,
                 alpha=1 if "pruned" in file else 0.5,
