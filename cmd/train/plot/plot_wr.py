@@ -57,7 +57,7 @@ info_base = {
             "color": "lightcoral",
         }
     },
-    "train_eslmccfr_null_2p.3283325.out": { # <- rename
+    "train_eslmccfr_null_2p_4t.3283325.out": {
         "label": "esl-null-4t",
         "kwargs": {
             "color": "royalblue",
@@ -251,7 +251,7 @@ fig.suptitle("1 thread vs 4 threads @ esl 2p null")
 # show only
 show_only = [
     "train_eslmccfr_null_2p.3282695.out",
-    "train_eslmccfr_null_2p.3283325.out"
+    "train_eslmccfr_null_2p_4t.3283325.out"
 ]
 not_show = []
 info = info_base
@@ -396,7 +396,7 @@ show_only = [
     "train_esvmccfr_a3_2p.3280535.out",
     # "train_esvmccfr_null_2p.3280538.out",
     "train_eslmccfr_null_2p.3282695.out",
-    # "train_eslmccfr_null_2p.3283325.out",
+    # "train_eslmccfr_null_2p_4t.3283325.out",
     "resume_esvmccfr_a3_2p_2t.3293685.out",
     "resume_eslmccfr_null_2p_2t.3294059.out",
     # "resume_esvmccfr_null_2p_2t.3293687.out",
@@ -447,7 +447,7 @@ show_only = [
     "train_esvmccfr_a3_2p.3280535.out",
     # "train_esvmccfr_null_2p.3280538.out",
     "train_eslmccfr_null_2p.3282695.out",
-    # "train_eslmccfr_null_2p.3283325.out",
+    # "train_eslmccfr_null_2p_4t.3283325.out",
     "resume_esvmccfr_a3_2p_2t.3293685.out",
     "resume_eslmccfr_null_2p_2t.3294059.out",
     # "resume_esvmccfr_null_2p_2t.3293687.out",
