@@ -58,14 +58,14 @@ func (r *Results) String() string {
 	return s
 }
 
-func Fmt(rr []*Results, agents []bot.Agent) string {
+func Fmt(rr []*Results, agents []bot.Agent, numInfosets int) string {
 	var (
 		s                   = ""
 		delta time.Duration = 0
 	)
 
 	for i, r := range rr {
-		s += fmt.Sprintf("%s=%s - ", agents[i].UID(), r)
+		s += fmt.Sprintf("%s=%s - infos=%d - ", agents[i].UID(), r, numInfosets)
 		delta += r.Delta
 	}
 

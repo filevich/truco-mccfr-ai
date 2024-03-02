@@ -129,8 +129,9 @@ func main() {
 			Model: trainer,
 		}
 		rr := eval.PlayMultipleDoubleGames(agent, agents, numPlayers, ds[:tinyEval])
+		infos := trainer.CountInfosets()
 		mem := utils.GetMemUsage()
-		log.Println(eval.Fmt(rr, agents), mem)
+		log.Println(eval.Fmt(rr, agents, infos), mem)
 	}
 
 	if *resetPtr {
