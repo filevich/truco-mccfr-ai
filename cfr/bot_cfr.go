@@ -15,7 +15,7 @@ type BotCFR struct {
 func (b *BotCFR) Initialize() {
 	// lo cargo SOLO si no fue cargado aun
 	if b.Model == nil {
-		b.Model = LoadModel(b.F, true, 1_000_000)
+		b.Model = LoadModel(b.F, true, 1_000_000, false)
 	}
 }
 

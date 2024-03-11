@@ -300,7 +300,12 @@ func lineCounter(filename string) (int, error) {
 	}
 }
 
-func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
+func LoadModel(
+	filename string,
+	verbose bool,
+	report_interval int,
+	lazy bool,
+) ITrainer {
 
 	var t Trainer_T
 	base := &Trainer{
@@ -350,7 +355,11 @@ func LoadModel(filename string, verbose bool, report_interval int) ITrainer {
 
 			if line == "" {
 				return_counter++
-				continue
+				if return_counter == 2 && lazy {
+					break
+				} else {
+					continue
+				}
 			}
 
 			words := strings.Fields(line)

@@ -106,7 +106,7 @@ func main() {
 			*infoPtr,
 			*absPtr)
 	} else {
-		trainer = cfr.LoadModel(model, true, 1_000_000)
+		trainer = cfr.LoadModel(model, true, 1_000_000, false)
 	}
 
 	// tiny eval
