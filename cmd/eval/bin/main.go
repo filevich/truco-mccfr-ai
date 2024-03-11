@@ -21,9 +21,12 @@ var (
 )
 
 func init() {
-	// arg 0 - whole program
-	// arg 1 - numPlayers:int
-	// args 2..n - model|simple|random
+	// arg 0 - whole program (+1)
+	// arg 1 - numPlayers:int (+1)
+	// args 2..n - model|simple|random (at least 2 so, +2)
+
+	// e.g.,
+	// go run cmd/eval/bin/main.go 2 simple random /models/2p/a1/example1.model
 
 	if len(os.Args) < 1+1+2 {
 		panic("not enough arguments")
