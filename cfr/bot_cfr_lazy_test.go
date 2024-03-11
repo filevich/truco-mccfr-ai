@@ -2,9 +2,11 @@ package cfr_test
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"os"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -16,7 +18,7 @@ var (
 	sampleHash  = "1207b37ae629fa3d2cb8aa11bbc56602b2a0e389"
 )
 
-func readLimit(
+func ReadLimit(
 	hash string,
 	limit int64,
 	r io.Reader,
@@ -28,9 +30,9 @@ func readLimit(
 	scanner := bufio.NewScanner(r)
 
 	// buff size
-	// const maxCapacity = 1024 * 1024
-	// buf := make([]byte, maxCapacity)
-	// scanner.Buffer(buf, maxCapacity)
+	const maxCapacity = 1024 * 1024
+	buf := make([]byte, maxCapacity)
+	scanner.Buffer(buf, maxCapacity)
 
 	var totalRead int64 = 0
 
@@ -45,6 +47,46 @@ func readLimit(
 	}
 
 	return found, line
+}
+
+func ReadLimitMultithread(
+	hash string,
+	limit int64,
+	r io.Reader,
+	done chan struct{},
+) (
+	found bool,
+	line string,
+
+) {
+	scanner := bufio.NewScanner(r)
+
+	// buff size
+	const maxCapacity = 1024 * 1024
+	buf := make([]byte, maxCapacity)
+	scanner.Buffer(buf, maxCapacity)
+
+	var totalRead int64 = 0
+
+	for scanner.Scan() {
+		select {
+		case <-done:
+			// Terminate early if done signal received
+			return false, ""
+		default:
+			bytesRead := len(scanner.Bytes())
+			totalRead += int64(bytesRead)
+			line = scanner.Text()
+			found = strings.HasPrefix(line, hash)
+			if found {
+				return found, line
+			} else if totalRead >= limit {
+				return false, ""
+			}
+		}
+	}
+
+	return false, ""
 }
 
 func TestLinealRead(t *testing.T) {
@@ -63,7 +105,7 @@ func TestLinealRead(t *testing.T) {
 	{
 		limit := int64(937_619_324)
 		start := time.Now()
-		found, line := readLimit(hash, limit, f)
+		found, line := ReadLimit(hash, limit, f)
 		if ok := found; !ok {
 			t.Error("it should find the line for the given limit")
 			t.Fail()
@@ -78,7 +120,7 @@ func TestLinealRead(t *testing.T) {
 
 	{
 		limit := int64(619_324)
-		found, _ := readLimit(hash, limit, f)
+		found, _ := ReadLimit(hash, limit, f)
 		if ok := !found; !ok {
 			t.Error("it should NOT find the line for the given limit")
 			t.Fail()
@@ -88,6 +130,10 @@ func TestLinealRead(t *testing.T) {
 }
 
 func TestMultithreadRead(t *testing.T) {
+	wg := sync.WaitGroup{}
+	resultChan := make(chan string, 1) // Buffer for one result
+	done := make(chan struct{})
+
 	filename := sampleModel
 	threads := int64(6)
 
@@ -114,14 +160,27 @@ func TestMultithreadRead(t *testing.T) {
 	}
 
 	hash := sampleHash
+	// hash := "be3445aa21c7798c22f531906962185d09dccd1f"
 	limit := blockSize
 
 	for i := 0; i < int(threads); i++ {
-		start := time.Now()
-		found, _ := readLimit(hash, limit, fs[i])
-		t.Log("delta", time.Since(start))
-		t.Log("fileSize", fileSize)
-		t.Log("found", found)
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			if found, line := ReadLimitMultithread(hash, limit, fs[i], done); found {
+				resultChan <- line // Send true if found
+				close(done)        // Signal other goroutines to stop
+			}
+		}(i)
+	}
+
+	wg.Wait() // Ensure goroutines finish before closing channel
+	close(resultChan)
+
+	if s := <-resultChan; len(s) > 0 {
+		fmt.Println("hash found!", s)
+	} else {
+		fmt.Println("hash not found :(")
 	}
 }
 
