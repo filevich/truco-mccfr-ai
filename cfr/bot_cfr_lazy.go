@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"strings"
 
@@ -21,7 +22,7 @@ type BotLazyCFR struct {
 }
 
 func (b *BotLazyCFR) Initialize() {
-	fmt.Println("initing lazy")
+	log.Println("initing lazy")
 	// lo cargo SOLO si no fue cargado aun
 	if b.filePtr == nil {
 		f, err := os.Open(b.Filepath)
@@ -31,7 +32,7 @@ func (b *BotLazyCFR) Initialize() {
 		b.filePtr = f
 		// b.
 		b.trainer = LoadModel(b.Filepath, false, 1_000_000, true)
-		fmt.Println("done lazy loading", b.trainer.GetAbs().String())
+		log.Println("done lazy loading", b.trainer.GetAbs().String())
 	}
 }
 
@@ -111,7 +112,7 @@ func (b *BotLazyCFR) Action(
 
 	// obtengo el infoset
 	aixs := pdt.GetA(p, active_player)
-	// fmt.Println(b.trainer, inGameID, active_player, p)
+	// log.Println(b.trainer, inGameID, active_player, p)
 	i := b.trainer.GetBuilder().Info(p, active_player, nil)
 	hash, _ := i.Hash(b.trainer.GetBuilder().Hash), i.ChiLen()
 
