@@ -39,7 +39,8 @@ def plot_these(
         plot_smoothed=True,
 ):
     colors_used = {}
-    record = max([ max([e["wr"] for e in d[metric]]) for d in data.values()])
+    bests = [ max([e["wr"] for e in d[metric]]) if d[metric] else 0 for d in data.values()]
+    record = max(bests)
 
     for file in order:
         d = data[file]
