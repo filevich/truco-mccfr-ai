@@ -1,11 +1,9 @@
 package cfr_test
 
 import (
-	"bufio"
 	"fmt"
 	"io"
 	"os"
-	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -17,77 +15,6 @@ var (
 	sampleModel = "/Users/jp/Downloads/cluster/train-cfr/models/2p/irb-a3/pruned_esvmccfr_d70h0m_D70h0m_t288652014_p1_a3_2402151230.model"
 	sampleHash  = "1207b37ae629fa3d2cb8aa11bbc56602b2a0e389"
 )
-
-func ReadLimit(
-	hash string,
-	limit int64,
-	r io.Reader,
-) (
-	found bool,
-	line string,
-
-) {
-	scanner := bufio.NewScanner(r)
-
-	// buff size
-	const maxCapacity = 1024 * 1024
-	buf := make([]byte, maxCapacity)
-	scanner.Buffer(buf, maxCapacity)
-
-	var totalRead int64 = 0
-
-	for scanner.Scan() {
-		bytesRead := len(scanner.Bytes())
-		totalRead += int64(bytesRead)
-		line = scanner.Text()
-		found = strings.HasPrefix(line, hash)
-		if found || totalRead >= limit {
-			break
-		}
-	}
-
-	return found, line
-}
-
-func ReadLimitMultithread(
-	hash string,
-	limit int64,
-	r io.Reader,
-	done chan struct{},
-) (
-	found bool,
-	line string,
-
-) {
-	scanner := bufio.NewScanner(r)
-
-	// buff size
-	const maxCapacity = 1024 * 1024
-	buf := make([]byte, maxCapacity)
-	scanner.Buffer(buf, maxCapacity)
-
-	var totalRead int64 = 0
-
-	for scanner.Scan() {
-		select {
-		case <-done:
-			// Terminate early if done signal received
-			return false, ""
-		default:
-			bytesRead := len(scanner.Bytes())
-			totalRead += int64(bytesRead)
-			line = scanner.Text()
-			found = strings.HasPrefix(line, hash)
-			if found {
-				return found, line
-			} else if totalRead >= limit {
-				return false, ""
-			}
-		}
-	}
-
-	return false, ""
-}
 
 func TestLinealRead(t *testing.T) {
 	filename := sampleModel
@@ -105,7 +32,7 @@ func TestLinealRead(t *testing.T) {
 	{
 		limit := int64(937_619_324)
 		start := time.Now()
-		found, line := ReadLimit(hash, limit, f)
+		found, line := cfr.ReadLimit(hash, limit, f)
 		if ok := found; !ok {
 			t.Error("it should find the line for the given limit")
 			t.Fail()
@@ -120,7 +47,7 @@ func TestLinealRead(t *testing.T) {
 
 	{
 		limit := int64(619_324)
-		found, _ := ReadLimit(hash, limit, f)
+		found, _ := cfr.ReadLimit(hash, limit, f)
 		if ok := !found; !ok {
 			t.Error("it should NOT find the line for the given limit")
 			t.Fail()
@@ -167,7 +94,7 @@ func TestMultithreadRead(t *testing.T) {
 		wg.Add(1)
 		go func(i int) {
 			defer wg.Done()
-			if found, line := ReadLimitMultithread(hash, limit, fs[i], done); found {
+			if found, line := cfr.ReadLimitMultithread(hash, limit, fs[i], done); found {
 				resultChan <- line // Send true if found
 				close(done)        // Signal other goroutines to stop
 			}

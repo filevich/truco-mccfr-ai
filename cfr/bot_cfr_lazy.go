@@ -8,37 +8,124 @@ import (
 	"log"
 	"os"
 	"strings"
+	"sync"
 
 	"github.com/filevich/truco-ai/utils"
 	"github.com/truquito/truco/enco"
 	"github.com/truquito/truco/pdt"
 )
 
+// on avg, it takes 6.2s to play an entire game of Truco between Simple bot
+// and BotLazyCFR, on a 512GiB M2 MBA.
+// if we play 2*1,000 matches then that implies a total of 3,44 hours :(
+
+func ReadLimit(
+	hash string,
+	limit int64,
+	r io.Reader,
+) (
+	found bool,
+	line string,
+
+) {
+	scanner := bufio.NewScanner(r)
+
+	// buff size
+	const maxCapacity = 1024 * 1024
+	buf := make([]byte, maxCapacity)
+	scanner.Buffer(buf, maxCapacity)
+
+	var totalRead int64 = 0
+
+	for scanner.Scan() {
+		bytesRead := len(scanner.Bytes())
+		totalRead += int64(bytesRead)
+		line = scanner.Text()
+		found = strings.HasPrefix(line, hash)
+		if found || totalRead >= limit {
+			break
+		}
+	}
+
+	return found, line
+}
+
+func ReadLimitMultithread(
+	hash string,
+	limit int64,
+	r io.Reader,
+	done chan struct{},
+) (
+	found bool,
+	line string,
+
+) {
+	scanner := bufio.NewScanner(r)
+
+	// buff size
+	const maxCapacity = 1024 * 1024
+	buf := make([]byte, maxCapacity)
+	scanner.Buffer(buf, maxCapacity)
+
+	var totalRead int64 = 0
+
+	for scanner.Scan() {
+		select {
+		case <-done:
+			// Terminate early if done signal received
+			return false, ""
+		default:
+			bytesRead := len(scanner.Bytes())
+			totalRead += int64(bytesRead)
+			line = scanner.Text()
+			found = strings.HasPrefix(line, hash)
+			if found {
+				return found, line
+			} else if totalRead >= limit {
+				return false, ""
+			}
+		}
+	}
+
+	return false, ""
+}
+
 type BotLazyCFR struct {
 	ID       string
 	Filepath string
 	trainer  ITrainer
-	filePtr  *os.File
+
+	Threads  int64
+	fs       []*os.File
+	fileSize int64
 }
 
 func (b *BotLazyCFR) Initialize() {
 	log.Println("initing lazy")
-	// lo cargo SOLO si no fue cargado aun
-	if b.filePtr == nil {
-		f, err := os.Open(b.Filepath)
-		if err != nil {
-			panic(err)
-		}
-		b.filePtr = f
-		// b.
-		b.trainer = LoadModel(b.Filepath, false, 1_000_000, true)
-		log.Println("done lazy loading", b.trainer.GetAbs().String())
+
+	if b.fs != nil {
+		return
 	}
+
+	b.fs = make([]*os.File, b.Threads)
+	for i := 0; i < int(b.Threads); i++ {
+		f, _ := os.Open(b.Filepath)
+		b.fs[i] = f
+	}
+
+	stat, err := b.fs[0].Stat()
+	if err != nil {
+		panic(err)
+	}
+	b.fileSize = stat.Size()
+
+	b.trainer = LoadModel(b.Filepath, false, 1_000_000, true)
+	log.Println("done lazy loading", b.trainer.GetAbs().String())
 }
 
 func (b *BotLazyCFR) Free() {
-	if b.filePtr != nil {
-		b.filePtr.Close()
+	for i := 0; i < int(b.Threads); i++ {
+		b.fs[i].Close()
 	}
 }
 
@@ -51,10 +138,9 @@ func (b *BotLazyCFR) Catch(*pdt.Partida, []enco.Envelope) {}
 func (b *BotLazyCFR) ResetCatch() {}
 
 func (b *BotLazyCFR) _resetfilePtr() {
-	// call the Seek method first
-	_, err := b.filePtr.Seek(0, io.SeekStart)
-	if err != nil {
-		panic(err)
+	blockSize := b.fileSize / b.Threads
+	for i := 0; i < int(b.Threads); i++ {
+		b.fs[i].Seek(int64(i)*blockSize, io.SeekStart)
 	}
 }
 
@@ -64,35 +150,39 @@ func _branch(s, match string) (head, tail string) {
 }
 
 func (b *BotLazyCFR) Find(hash string) (rnode *RNode, err error) {
-	defer b._resetfilePtr()
+	wg := sync.WaitGroup{}
+	resultChan := make(chan string, 1) // Buffer for one result
+	done := make(chan struct{})
 
-	c, l, found := 0, "", false
+	// jumps
+	b._resetfilePtr()
 
-	scanner := bufio.NewScanner(b.filePtr)
-	const maxCapacity = 1024 * 1024
-	buf := make([]byte, maxCapacity)
-	scanner.Buffer(buf, maxCapacity)
+	limit := b.fileSize / b.Threads
 
-	for scanner.Scan() {
-		c++
-		l = scanner.Text()
-		if found = strings.HasPrefix(l, hash); found {
-			break
+	for i := 0; i < int(b.Threads); i++ {
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			if found, line := ReadLimitMultithread(hash, limit, b.fs[i], done); found {
+				resultChan <- line // Send true if found
+				close(done)        // Signal other goroutines to stop
+			}
+		}(i)
+	}
+
+	wg.Wait() // Ensure goroutines finish before closing channel
+	close(resultChan)
+
+	if l := <-resultChan; len(l) > 0 {
+		_, tail := _branch(l, hash+" ")
+		rnode = &RNode{}
+		if err := json.Unmarshal([]byte(tail), rnode); err != nil {
+			return nil, fmt.Errorf("no se pudo parsear la linea %s", hash)
 		}
+		return rnode, nil
 	}
 
-	if err := scanner.Err(); err != nil {
-		return nil, fmt.Errorf("no se pudo parsear la linea %s", hash)
-	}
-
-	_, tail := _branch(l, hash+" ")
-
-	rnode = &RNode{}
-	if err := json.Unmarshal([]byte(tail), rnode); err != nil {
-		return nil, fmt.Errorf("no se pudo parsear la linea %s", hash)
-	}
-
-	return rnode, nil
+	return nil, fmt.Errorf("hash not found %s", hash)
 }
 
 func (b *BotLazyCFR) Action(

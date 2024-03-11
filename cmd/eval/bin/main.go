@@ -52,6 +52,11 @@ func init() {
 				N: name,
 				F: a,
 			}
+			// agent := &cfr.BotLazyCFR{
+			// 	ID:       name,
+			// 	Filepath: a,
+			// 	Threads:  4,
+			// }
 			agents = append(agents, agent)
 		} else {
 			panic(fmt.Sprintf("unknown agent `%s`", a))
