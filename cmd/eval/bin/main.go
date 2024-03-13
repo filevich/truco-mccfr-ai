@@ -2,14 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 	"strconv"
-	"strings"
 
 	"github.com/filevich/truco-ai/bot"
-	"github.com/filevich/truco-ai/cfr"
 	"github.com/filevich/truco-ai/eval"
 	"github.com/filevich/truco-ai/eval/dataset"
 	"github.com/filevich/truco-ai/utils"
@@ -40,27 +37,8 @@ func init() {
 
 	// agents
 	agents = make([]bot.Agent, 0, len(os.Args[2:]))
-	for i, a := range os.Args[2:] {
-		if a == "simple" {
-			agents = append(agents, &bot.Simple{})
-		} else if a == "random" {
-			agents = append(agents, &bot.Random{})
-		} else if strings.HasSuffix(a, ".model") {
-			name := fmt.Sprintf("m%d", i)
-			log.Printf("m%d = %s\n", i, a)
-			agent := &cfr.BotCFR{
-				N: name,
-				F: a,
-			}
-			// agent := &cfr.BotLazyCFR{
-			// 	ID:       name,
-			// 	Filepath: a,
-			// 	Threads:  4,
-			// }
-			agents = append(agents, agent)
-		} else {
-			panic(fmt.Sprintf("unknown agent `%s`", a))
-		}
+	for _, a := range os.Args[2:] {
+		agents = append(agents, bot.Parser(a))
 	}
 }
 

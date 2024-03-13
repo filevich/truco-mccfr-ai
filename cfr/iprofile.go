@@ -1,7 +1,5 @@
 package cfr
 
-import "github.com/filevich/truco-ai/bot"
-
 // silent:
 // solo los [*]
 // no silent:
@@ -24,5 +22,5 @@ type IProfile interface {
 	Checkpoint(ITrainer)
 	Check(ITrainer)
 	// eplotabilidad
-	Exploit() bot.Agent
+	// Exploit() bot.Agent
 }

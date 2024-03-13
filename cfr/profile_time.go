@@ -8,7 +8,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/filevich/truco-ai/bot"
 	"github.com/filevich/truco-ai/utils"
 )
 
@@ -49,7 +48,7 @@ type ProfileTime struct {
 	GCEvery time.Duration
 
 	// exploitability
-	Exploiting bot.Agent
+	// Exploiting bot.Agent
 
 	// eval
 	EvalEvery time.Duration
@@ -282,6 +281,6 @@ func (p *ProfileTime) CheckGC(t ITrainer) {
 	// log.Println(" [done]")
 }
 
-func (p *ProfileTime) Exploit() bot.Agent {
-	return p.Exploiting
-}
+// func (p *ProfileTime) Exploit() bot.Agent {
+// 	return p.Exploiting
+// }
