@@ -114,7 +114,7 @@ func main() {
 	var ds dataset.Dataset = dataset.LoadDataset("t1k22.json")
 	log.Println("Done loading t1k22")
 
-	agents := []bot.Agent{
+	agents := []eval.Agent{
 		&bot.Random{},
 		&bot.Simple{},
 		// &bot.BotCFR{

@@ -22,7 +22,7 @@ func main() {
 	var ds dataset.Dataset = dataset.LoadDataset("t1k22.json")
 	log.Println("done loading t1k22")
 
-	testThese := []bot.Agent{
+	testThese := []eval.Agent{
 		&cfr.BotCFR{
 			N: "esva2",
 			F: b + "/2p/a2/final_es-vmccfr_d70h0m_D70h0m_t7077536_p0_a2_2402052107.model",
@@ -33,7 +33,7 @@ func main() {
 		},
 	}
 
-	againstThese := []bot.Agent{
+	againstThese := []eval.Agent{
 		&bot.Random{},
 		&bot.Simple{},
 		&bot.SimpleX{},

@@ -6,7 +6,6 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/filevich/truco-ai/bot"
 	"github.com/filevich/truco-ai/eval/dataset"
 	"github.com/jedib0t/go-pretty/v6/table"
 )
@@ -14,7 +13,7 @@ import (
 type Tournament struct {
 	NumPlayers     int
 	NumDoubleGames int
-	Agents         []bot.Agent
+	Agents         []Agent
 	Table          Table
 }
 

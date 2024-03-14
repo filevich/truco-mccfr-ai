@@ -1,4 +1,4 @@
-package bot
+package eval
 
 import (
 	"github.com/truquito/truco/enco"

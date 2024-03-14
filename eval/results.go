@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/filevich/truco-ai/bot"
 	"github.com/filevich/truco-ai/utils"
 )
 
@@ -58,7 +57,7 @@ func (r *Results) String() string {
 	return s
 }
 
-func Fmt(rr []*Results, agents []bot.Agent, numInfosets int) string {
+func Fmt(rr []*Results, agents []Agent, numInfosets int) string {
 	var (
 		s                   = ""
 		delta time.Duration = 0

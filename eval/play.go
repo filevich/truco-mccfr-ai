@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/filevich/truco-ai/abs"
-	"github.com/filevich/truco-ai/bot"
 	"github.com/filevich/truco-ai/cfr"
 	"github.com/filevich/truco-ai/eval/dataset"
 	"github.com/filevich/truco-ai/eval/dumbo"
@@ -19,8 +18,8 @@ import (
 
 func PlayMultipleDoubleGames(
 
-	agent bot.Agent,
-	ops []bot.Agent,
+	agent Agent,
+	ops []Agent,
 	numPlayers int,
 	ds dataset.Dataset,
 
@@ -51,7 +50,7 @@ func PlayDoubleGames(
 
 	ds dataset.Dataset,
 	agent1,
-	agent2 bot.Agent,
+	agent2 Agent,
 	numPlayers int,
 
 ) *Results {
@@ -112,7 +111,7 @@ func playSingleGame(
 
 	rows []*dataset.Row,
 	agent1,
-	agent2 bot.Agent,
+	agent2 Agent,
 	Num_players int,
 
 ) (
@@ -151,7 +150,7 @@ func playSingleGame(
 	return gent1Won, diffPtsWonByAgent1, d1Total, d2Total
 }
 
-func generateNames(agent1, agent2 bot.Agent, numPlayers int) (A, B []string) {
+func generateNames(agent1, agent2 Agent, numPlayers int) (A, B []string) {
 
 	for i := 0; i < numPlayers; i++ {
 		if utils.Mod(i, 2) == 0 {
@@ -169,7 +168,7 @@ func generateNames(agent1, agent2 bot.Agent, numPlayers int) (A, B []string) {
 func PlayRound(
 
 	azul,
-	rojo bot.Agent,
+	rojo Agent,
 	numPlayers int,
 	p *pdt.Partida,
 

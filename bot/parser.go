@@ -6,11 +6,12 @@ import (
 	"strings"
 
 	"github.com/filevich/truco-ai/cfr"
+	"github.com/filevich/truco-ai/eval"
 )
 
 const sep = ":"
 
-func Parser(data string) Agent {
+func Parser(data string) eval.Agent {
 	fields := strings.Split(data, sep)
 	agent := strings.ToLower(fields[0])
 

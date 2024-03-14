@@ -13,8 +13,8 @@ import (
 )
 
 var (
-	numPlayers             = 0
-	agents     []bot.Agent = nil
+	numPlayers              = 0
+	agents     []eval.Agent = nil
 )
 
 func init() {
@@ -36,7 +36,7 @@ func init() {
 	numPlayers = n
 
 	// agents
-	agents = make([]bot.Agent, 0, len(os.Args[2:]))
+	agents = make([]eval.Agent, 0, len(os.Args[2:]))
 	for _, a := range os.Args[2:] {
 		agents = append(agents, bot.Parser(a))
 	}
