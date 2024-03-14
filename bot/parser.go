@@ -31,8 +31,8 @@ func Parser(data string) eval.Agent {
 		}
 		name, pathToModel := fields[1], fields[2]
 		agent := &cfr.BotCFR{
-			N: name,
-			F: pathToModel,
+			ID:       name,
+			Filepath: pathToModel,
 		}
 		return agent
 

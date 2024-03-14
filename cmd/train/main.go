@@ -125,7 +125,7 @@ func main() {
 
 	evaluator := func() {
 		agent := &cfr.BotCFR{
-			N:     trainer.String(),
+			ID:    trainer.String(),
 			Model: trainer,
 		}
 		rr := eval.PlayMultipleDoubleGames(agent, agents, numPlayers, ds[:tinyEval])

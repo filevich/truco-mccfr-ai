@@ -24,12 +24,12 @@ func main() {
 
 	testThese := []eval.Agent{
 		&cfr.BotCFR{
-			N: "esva2",
-			F: b + "/2p/a2/final_es-vmccfr_d70h0m_D70h0m_t7077536_p0_a2_2402052107.model",
+			ID:       "esva2",
+			Filepath: b + "/2p/a2/final_es-vmccfr_d70h0m_D70h0m_t7077536_p0_a2_2402052107.model",
 		},
 		&cfr.BotCFR{
-			N: "esva3",
-			F: b + "/2p/a3/final_es-vmccfr_d70h0m_D70h0m_t3468734_p0_a3_2402052116.model",
+			ID:       "esva3",
+			Filepath: b + "/2p/a3/final_es-vmccfr_d70h0m_D70h0m_t3468734_p0_a3_2402052116.model",
 		},
 	}
 

@@ -7,15 +7,15 @@ import (
 )
 
 type BotCFR struct {
-	N     string
-	F     string
-	Model ITrainer
+	ID       string
+	Filepath string
+	Model    ITrainer
 }
 
 func (b *BotCFR) Initialize() {
 	// lo cargo SOLO si no fue cargado aun
 	if b.Model == nil {
-		b.Model = LoadModel(b.F, true, 1_000_000, false)
+		b.Model = LoadModel(b.Filepath, true, 1_000_000, false)
 	}
 }
 
@@ -24,7 +24,7 @@ func (b *BotCFR) Free() {
 }
 
 func (b *BotCFR) UID() string {
-	return b.N
+	return b.ID
 }
 
 func (b *BotCFR) Catch(*pdt.Partida, []enco.Envelope) {}
