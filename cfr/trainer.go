@@ -367,6 +367,7 @@ func LoadModel(
 
 			switch words[0] {
 			case "version":
+				words[1] = strings.TrimSuffix(words[1], "-distil")
 				v, err := strconv.ParseFloat(words[1], 64)
 				if err != nil {
 					panic(fmt.Sprintf("couldn't parse version: %s", err))
