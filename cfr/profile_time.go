@@ -133,11 +133,11 @@ func (p ProfileTime) shouldSave(trainer ITrainer) bool {
 	return time.Since(p.lastSave) >= p.SaveEvery || (lastIter && lastThread)
 }
 
-func (p ProfileTime) shouldEval(trainer ITrainer) bool {
+func (p ProfileTime) shouldEval() bool {
 	return time.Since(p.lastEval) >= p.EvalEvery
 }
 
-func (p ProfileTime) shouldGC(trainer ITrainer) bool {
+func (p ProfileTime) shouldGC() bool {
 	return time.Since(p.lastGC) >= p.GCEvery
 }
 
@@ -204,7 +204,7 @@ func (p *ProfileTime) PrintProgress(trainer ITrainer) {
 
 func (p *ProfileTime) Checkpoint(t ITrainer) {
 	// eval ?
-	if p.shouldEval(t) {
+	if p.shouldEval() {
 		if p.Evaluator != nil {
 			p.Evaluator()
 		}
@@ -268,7 +268,7 @@ func (p *ProfileTime) CheckGC(t ITrainer) {
 		return
 	}
 
-	if !p.shouldGC(t) {
+	if !p.shouldGC() {
 		if !p.Silent {
 			log.Println()
 		}
