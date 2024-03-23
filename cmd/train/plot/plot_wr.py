@@ -98,7 +98,7 @@ info_base = {
 
     "pruned_esvmccfr_a1_2p_1t.3325490.out": {
         "resumes": "train_esvmccfr_a1_2p.3280505.out",
-        "label": "p-esv-a1",
+        "label": "p01-esv-a1",
         "kwargs": {
             "color": "gold",
         }
@@ -106,7 +106,7 @@ info_base = {
     
     "pruned_esvmccfr_a2_2p_1t.3325556.out": {
         "resumes": "train_esvmccfr_a2_2p.3280483.out",
-        "label": "p-esv-a2",
+        "label": "p01-esv-a2",
         "kwargs": {
             "color": "rebeccapurple",
         }
@@ -115,7 +115,7 @@ info_base = {
     "pruned_esvmccfr_a3_2p_1t.3325559.out": {
         "resumes": "train_esvmccfr_a3_2p.3280535.out",
         "at": 10/70,
-        "label": "p-esv-a3-10h",
+        "label": "p01-esv-a3-10h",
         "kwargs": {
             "color": "royalblue",
         }
@@ -124,7 +124,7 @@ info_base = {
     "pruned_esvmccfr_a3_2p_1t.3325561.out": {
         "resumes": "train_esvmccfr_a3_2p.3280535.out",
         "at": 70/70,
-        "label": "p-esv-a3-70h",
+        "label": "p01-esv-a3-70h",
         "kwargs": {
             "color": "royalblue",
         }
@@ -133,7 +133,7 @@ info_base = {
     "pruned_esvmccfr_a3_2p_1t.3325562.out": {
         "resumes": "train_esvmccfr_a3_2p.3280535.out",
         "at": 40/70,
-        "label": "p-esv-a3-40h",
+        "label": "p01-esv-a3-40h",
         "kwargs": {
             "color": "royalblue",
         }
@@ -141,7 +141,7 @@ info_base = {
 
     "pruned_esvmccfr_a3_2p_1t.3325567.out": {
         "resumes": "resume_esvmccfr_a3_2p_2t.3293685.out",
-        "label": "p-esv-a3-140h",
+        "label": "p01-esv-a3-140h",
         "kwargs": {
             "color": "royalblue",
         }
@@ -150,7 +150,7 @@ info_base = {
     "pruned_esv_null_2p_1t_f10.3325610.out": {
         "resumes": "train_esvmccfr_null_2p.3280538.out",
         "at": 10/70,
-        "label": "p-esv-null-10h",
+        "label": "p01-esv-null-10h",
         "kwargs": {
             "color": "darkgreen",
         }
@@ -159,7 +159,7 @@ info_base = {
     "pruned_esv_null_2p_1t_f40.3325615.out": {
         "resumes": "train_esvmccfr_null_2p.3280538.out",
         "at": 40/70,
-        "label": "p-esv-null-40h",
+        "label": "p01-esv-null-40h",
         "kwargs": {
             "color": "darkgreen",
         }
@@ -167,7 +167,7 @@ info_base = {
     
     "pruned_esv_null_2p_1t_f70.3325617.out": {
         "resumes": "train_esvmccfr_null_2p.3280538.out",
-        "label": "p-esv-null-70h",
+        "label": "p01-esv-null-70h",
         "kwargs": {
             "color": "darkgreen",
         }
@@ -176,7 +176,7 @@ info_base = {
      "pruned_esl_null_2p_1t_f60.3325612.out": {
         "resumes": "train_eslmccfr_null_2p.3282695.out",
         "at": 60/70,
-        "label": "p-esl-null-60h",
+        "label": "p01-esl-null-60h",
         "kwargs": {
             "color": "firebrick",
         }
@@ -185,7 +185,7 @@ info_base = {
     "pruned_esl_null_2p_1t_r60.3325616.out": {
         "resumes": "resume_eslmccfr_null_2p_2t.3294059.out",
         "at": 60/70,
-        "label": "p-esl-null-120h",
+        "label": "p01-esl-null-120h",
         "kwargs": {
             "color": "firebrick",
         }
@@ -193,7 +193,7 @@ info_base = {
 
     "pruned_esv_null_2p_1t_r70.3325620.out": {
         "resumes": "resume_esvmccfr_null_2p_2t.3293687.out",
-        "label": "p-esv-null-140h",
+        "label": "p01-esv-null-140h",
         "kwargs": {
             "color": "darkgreen",
         }
@@ -207,6 +207,70 @@ info_base = {
         }
     },
 
+    "train_esl_a3_2p_1t_irxl.3411014.out": {
+        "label": "esl-a3-irxl",
+         "kwargs": {
+            "color": "darkslategrey",
+        }
+    },
+
+    "train_esl_a3_2p_1t_irxl_BE.3422035.out": {
+        "label": "esl-a3-irxl",
+         "kwargs": {
+            "color": "darkslategrey",
+        }
+    },
+
+    # resume IRXL
+    "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out": {
+        "resumes": "train_esl_a3_2p_1t_irxl_BE.3422035.out",
+        "at": 96/120,
+        "label": "p01-esl-a3-irxl",
+        "kwargs": {
+            "color": "black",
+        }
+    },
+
+    # resume IRXL take 2 10d
+    "pruned_esl_a3_2p_1t_irxl_240h_pp01.3449686.out": {
+        "resumes": "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out",
+        "at": 120/120,
+        "label": "p01-esl-a3-irxl-9d",
+        "kwargs": {
+            "color": "black",
+        }
+    },
+
+    "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out": {
+        "resumes": "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out",
+        "at": 120/120,
+        "label": "p1-esl-a3-irxl-9d",
+        "kwargs": {
+            "color": "green",
+        }
+    },
+
+    # ???
+
+    "resume_esl_a3_2p_1t_irxl_96h_pp1.3431947.out": { # <- interrupted
+        "resumes": "train_esl_a3_2p_1t_irxl_BE.3422035.out",
+        "at": 96/120,
+        "label": "p1-esl-a3-irxl",
+        "kwargs": {
+            "color": "black",
+        }
+    },
+
+    "resume_esl_a3_2p_1t_irxl_96h_pp1.3433223.out": {
+        "resumes": "train_esl_a3_2p_1t_irxl_BE.3422035.out",
+        "at": 96/120,
+        "label": "p1-esl-a3-irxl",
+        "kwargs": {
+            "color": "black",
+        }
+    },
+
+    # old
     "train_esl_a3_2p_1t_irxl.3383571.out": {
         "label": "esl-a3-irxl",
          "kwargs": {
@@ -224,7 +288,7 @@ info_base = {
     # InfosetRondaLarge 2nd run
     "pruned_esl_a3_2p_1t_irl_f70.3373018.out": {
         "resumes": "train_esl_a3_2p_1t_irl.3356924.out",
-        "label": "p-esv-a3-irl",
+        "label": "p01-esv-a3-irl",
          "kwargs": {
             "color": "darkorange",
         }
@@ -241,6 +305,12 @@ info_base = {
 # read it
 with open(args.input, 'r') as f:
     data = json.loads(f.read())
+
+# check
+diff = set(data.keys()).difference(set(info_base.keys()))
+there_are_not_registered = len(diff) > 0
+if there_are_not_registered:
+    raise Exception(f"these cases are not contemplated: {diff}")
 
 #
 #
@@ -351,14 +421,20 @@ plt.show()
 #
 
 fig, axs = plt.subplots(1, 1, figsize=(12, 6))
-fig.suptitle("InfosetRondaBase vs InfosetRondaLarge @ 2p")
+fig.suptitle("InfosetRondaBase vs InfosetRondaLarge @ 2p vs Simple")
 # show only
 show_only = [
     # InfosetRondaLarge a3
     "train_esl_a3_2p_1t_irl.3356924.out",
     "pruned_esl_a3_2p_1t_irl_f70.3373018.out",
     # InfosetRondaXLarge a3
-    "train_esl_a3_2p_1t_irxl.3383571.out",
+    # "train_esl_a3_2p_1t_irxl.3383571.out", # old
+    # "train_esl_a3_2p_1t_irxl.3411014.out",
+    "train_esl_a3_2p_1t_irxl_BE.3422035.out",
+    "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out",
+    "pruned_esl_a3_2p_1t_irxl_240h_pp01.3449686.out", # 10d
+    "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out", # 10d
+    "resume_esl_a3_2p_1t_irxl_96h_pp1.3433223.out",
     # InfosetRondaXXLarge a3
     "train_esl_a3_2p_1t_irxxl.3384958.out",
 
@@ -413,7 +489,17 @@ show_only = [
     "pruned_esl_null_2p_1t_r60.3325616.out",
     # "pruned_esv_null_2p_1t_r70.3325620.out",
     "train_esl_a3_2p_1t_irl.3356924.out",
-    "train_esl_a3_2p_1t_irxl.3383571.out",
+
+    # IRXL
+    # "train_esl_a3_2p_1t_irxl.3383571.out", # failed
+    # "train_esl_a3_2p_1t_irxl.3411014.out", # failed
+    "train_esl_a3_2p_1t_irxl_BE.3422035.out", 
+    "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out", # resumes pp01
+    "pruned_esl_a3_2p_1t_irxl_240h_pp01.3449686.out", # 10d
+    "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out", # 10d
+    "resume_esl_a3_2p_1t_irxl_96h_pp1.3431947.out", # resumes pp1
+    "resume_esl_a3_2p_1t_irxl_96h_pp1.3433223.out",
+
     "train_esl_a3_2p_1t_irxxl.3384958.out",
     "pruned_esl_a3_2p_1t_irl_f70.3373018.out",
 ]
@@ -464,7 +550,17 @@ show_only = [
     "pruned_esl_null_2p_1t_r60.3325616.out",
     # "pruned_esv_null_2p_1t_r70.3325620.out",
     "train_esl_a3_2p_1t_irl.3356924.out",
-    "train_esl_a3_2p_1t_irxl.3383571.out",
+
+    # IRXL
+    # "train_esl_a3_2p_1t_irxl.3383571.out", # failed
+    # "train_esl_a3_2p_1t_irxl.3411014.out", # failed
+    "train_esl_a3_2p_1t_irxl_BE.3422035.out",
+    "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out", # resumes pp01
+    "pruned_esl_a3_2p_1t_irxl_240h_pp01.3449686.out", # 10d
+    "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out", # 10d
+    "resume_esl_a3_2p_1t_irxl_96h_pp1.3431947.out", # resumes pp1
+    "resume_esl_a3_2p_1t_irxl_96h_pp1.3433223.out",
+
     "train_esl_a3_2p_1t_irxxl.3384958.out",
     "pruned_esl_a3_2p_1t_irl_f70.3373018.out",
 ]
