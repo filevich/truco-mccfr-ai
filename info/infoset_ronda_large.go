@@ -84,7 +84,7 @@ type InfosetRondaLarge struct {
 	chi []pdt.IJugada
 }
 
-func (info *InfosetRondaLarge) setMuestra(p *pdt.Partida) {
+func (info *InfosetRondaLarge) setMuestra(_ *pdt.Partida) {
 	// InfosetRondaLarge
 	info.muestra = 0
 	// InfosetRondaXLarge
