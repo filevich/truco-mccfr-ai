@@ -207,13 +207,6 @@ info_base = {
         }
     },
 
-    "train_esl_a3_2p_1t_irxl.3411014.out": {
-        "label": "esl-a3-irxl",
-         "kwargs": {
-            "color": "darkslategrey",
-        }
-    },
-
     "train_esl_a3_2p_1t_irxl_BE.3422035.out": {
         "label": "esl-a3-irxl",
          "kwargs": {
@@ -250,17 +243,6 @@ info_base = {
         }
     },
 
-    # ???
-
-    "resume_esl_a3_2p_1t_irxl_96h_pp1.3431947.out": { # <- interrupted
-        "resumes": "train_esl_a3_2p_1t_irxl_BE.3422035.out",
-        "at": 96/120,
-        "label": "p1-esl-a3-irxl",
-        "kwargs": {
-            "color": "black",
-        }
-    },
-
     "resume_esl_a3_2p_1t_irxl_96h_pp1.3433223.out": {
         "resumes": "train_esl_a3_2p_1t_irxl_BE.3422035.out",
         "at": 96/120,
@@ -271,12 +253,6 @@ info_base = {
     },
 
     # old
-    "train_esl_a3_2p_1t_irxl.3383571.out": {
-        "label": "esl-a3-irxl",
-         "kwargs": {
-            "color": "darkslategrey",
-        }
-    },
 
     "train_esl_a3_2p_1t_irxxl.3384958.out": {
         "label": "esl-a3-irxxl",
@@ -429,7 +405,6 @@ show_only = [
     "pruned_esl_a3_2p_1t_irl_f70.3373018.out",
     # InfosetRondaXLarge a3
     # "train_esl_a3_2p_1t_irxl.3383571.out", # old
-    # "train_esl_a3_2p_1t_irxl.3411014.out",
     "train_esl_a3_2p_1t_irxl_BE.3422035.out",
     "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out",
     "pruned_esl_a3_2p_1t_irxl_240h_pp01.3449686.out", # 10d
@@ -491,13 +466,10 @@ show_only = [
     "train_esl_a3_2p_1t_irl.3356924.out",
 
     # IRXL
-    # "train_esl_a3_2p_1t_irxl.3383571.out", # failed
-    # "train_esl_a3_2p_1t_irxl.3411014.out", # failed
     "train_esl_a3_2p_1t_irxl_BE.3422035.out", 
     "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out", # resumes pp01
     "pruned_esl_a3_2p_1t_irxl_240h_pp01.3449686.out", # 10d
     "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out", # 10d
-    "resume_esl_a3_2p_1t_irxl_96h_pp1.3431947.out", # resumes pp1
     "resume_esl_a3_2p_1t_irxl_96h_pp1.3433223.out",
 
     "train_esl_a3_2p_1t_irxxl.3384958.out",
@@ -552,13 +524,10 @@ show_only = [
     "train_esl_a3_2p_1t_irl.3356924.out",
 
     # IRXL
-    # "train_esl_a3_2p_1t_irxl.3383571.out", # failed
-    # "train_esl_a3_2p_1t_irxl.3411014.out", # failed
     "train_esl_a3_2p_1t_irxl_BE.3422035.out",
     "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out", # resumes pp01
     "pruned_esl_a3_2p_1t_irxl_240h_pp01.3449686.out", # 10d
     "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out", # 10d
-    "resume_esl_a3_2p_1t_irxl_96h_pp1.3431947.out", # resumes pp1
     "resume_esl_a3_2p_1t_irxl_96h_pp1.3433223.out",
 
     "train_esl_a3_2p_1t_irxxl.3384958.out",
