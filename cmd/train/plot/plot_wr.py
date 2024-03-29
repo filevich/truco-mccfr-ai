@@ -408,7 +408,7 @@ show_only = [
     "train_esl_a3_2p_1t_irxl_BE.3422035.out",
     "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out",
     "pruned_esl_a3_2p_1t_irxl_240h_pp01.3449686.out", # 10d
-    "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out", # 10d
+    # "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out", # 10d
     "resume_esl_a3_2p_1t_irxl_96h_pp1.3433223.out",
     # InfosetRondaXXLarge a3
     "train_esl_a3_2p_1t_irxxl.3384958.out",
@@ -469,7 +469,7 @@ show_only = [
     "train_esl_a3_2p_1t_irxl_BE.3422035.out", 
     "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out", # resumes pp01
     "pruned_esl_a3_2p_1t_irxl_240h_pp01.3449686.out", # 10d
-    "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out", # 10d
+    # "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out", # 10d
     "resume_esl_a3_2p_1t_irxl_96h_pp1.3433223.out",
 
     "train_esl_a3_2p_1t_irxxl.3384958.out",
@@ -527,7 +527,7 @@ show_only = [
     "train_esl_a3_2p_1t_irxl_BE.3422035.out",
     "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out", # resumes pp01
     "pruned_esl_a3_2p_1t_irxl_240h_pp01.3449686.out", # 10d
-    "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out", # 10d
+    # "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out", # 10d
     "resume_esl_a3_2p_1t_irxl_96h_pp1.3433223.out",
 
     "train_esl_a3_2p_1t_irxxl.3384958.out",
