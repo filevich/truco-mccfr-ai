@@ -31,6 +31,7 @@ var (
 	evalEveryPtr    = flag.String("eval_every", "1m", "Eval interval")
 	silentPtr       = flag.Bool("silent", true, "Silent model")
 	prefixPtr       = flag.String("prefix", "final_", "Model prefix")
+	fmtPtr          = flag.String("fmt", "", "Model name format")
 	resetPtr        = flag.Bool("reset", false, "Reset strategy sum")
 )
 
@@ -153,6 +154,7 @@ func main() {
 			Silent:     *silentPtr,
 			SaveDir:    saveDir,
 			SavePrefix: *prefixPtr,
+			SaveFormat: *fmtPtr,
 			PostSave:   nil,
 			// tiny eval
 			EvalEvery: evalEvery,

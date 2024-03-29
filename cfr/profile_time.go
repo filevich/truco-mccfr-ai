@@ -42,6 +42,7 @@ type ProfileTime struct {
 	FullySilent bool
 	SaveDir     string
 	SavePrefix  string
+	SaveFormat  string
 	PostSave    func()
 
 	// gc
@@ -235,17 +236,22 @@ func (p *ProfileTime) Checkpoint(t ITrainer) {
 		prunned = 1
 	}
 
-	filename := fmt.Sprintf("%s/%s%s_d%s_D%s_t%d_p%d_%s_%s.model",
-		p.SaveDir,
-		p.SavePrefix,
-		t.String(),
-		d[:len(d)-2],
-		D[:len(D)-2],
-		iter_name,
-		prunned,
-		t.GetAbs().String(),
-		utils.MiniCurrentTime(),
-	)
+	filename := ""
+
+	if len(p.SaveFormat) > 0 {
+		filename = fmt.Sprintf("%s/%s", p.SaveDir, p.SaveFormat)
+	} else {
+		filename = fmt.Sprintf("%s/%s%s_d%s_D%s_t%d_p%d_%s_%s.model",
+			p.SaveDir,
+			p.SavePrefix,
+			t.String(),
+			d[:len(d)-2],
+			D[:len(D)-2],
+			iter_name,
+			prunned,
+			t.GetAbs().String(),
+			utils.MiniCurrentTime())
+	}
 
 	// iter 0 *hecha* -> t1
 	// pero la strucy dice Current_Iter=0
