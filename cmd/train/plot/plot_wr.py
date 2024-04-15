@@ -28,37 +28,37 @@ info_base = {
     # 
 
     "train_esvmccfr_a2_2p.3280483.out": {
-        "label": "esv-a2",
+        "label": "esv-a2-irb",
         "kwargs": {
             "color": "mediumpurple",
         }
     },
     "train_esvmccfr_a1_2p.3280505.out": {
-        "label": "esv-a1",
+        "label": "esv-a1-irb",
         "kwargs": {
             "color": "wheat",
         }
     },
     "train_esvmccfr_a3_2p.3280535.out": {
-        "label": "esv-a3",
+        "label": "esv-a3-irb",
         "kwargs": {
             "color": "cornflowerblue",
         }
     },
     "train_esvmccfr_null_2p.3280538.out": {
-        "label": "esv-null",
+        "label": "esv-null-irb",
         "kwargs": {
             "color": "darkseagreen",
         }
     },
     "train_eslmccfr_null_2p.3282695.out": {
-        "label": "esl-null",
+        "label": "esl-null-irb",
         "kwargs": {
             "color": "lightcoral",
         }
     },
     "train_eslmccfr_null_2p_4t.3283325.out": {
-        "label": "esl-null-4t",
+        "label": "esl-null-irb-4t",
         "kwargs": {
             "color": "royalblue",
         }
@@ -71,21 +71,21 @@ info_base = {
     # 
 
     "resume_esvmccfr_a3_2p_2t.3293685.out": {
-        "label": "esv-a3",
+        "label": "esv-a3-irb",
         "resumes": "train_esvmccfr_a3_2p.3280535.out",
         "kwargs": {
             "color": "royalblue",
         }
     },
     "resume_eslmccfr_null_2p_2t.3294059.out": {
-        "label": "esl-null",
+        "label": "esl-null-irb",
         "resumes": "train_eslmccfr_null_2p.3282695.out",
         "kwargs": {
             "color": "lightcoral",
         }
     },
     "resume_esvmccfr_null_2p_2t.3293687.out": {
-        "label": "esv-null",
+        "label": "esv-null-irb",
         "resumes": "train_esvmccfr_null_2p.3280538.out",
         "kwargs": {
             "color": "darkseagreen",
@@ -98,7 +98,7 @@ info_base = {
 
     "pruned_esvmccfr_a1_2p_1t.3325490.out": {
         "resumes": "train_esvmccfr_a1_2p.3280505.out",
-        "label": "p01-esv-a1",
+        "label": "p01-esv-a1-irb",
         "kwargs": {
             "color": "gold",
         }
@@ -106,7 +106,7 @@ info_base = {
     
     "pruned_esvmccfr_a2_2p_1t.3325556.out": {
         "resumes": "train_esvmccfr_a2_2p.3280483.out",
-        "label": "p01-esv-a2",
+        "label": "p01-esv-a2-irb",
         "kwargs": {
             "color": "rebeccapurple",
         }
@@ -115,7 +115,7 @@ info_base = {
     "pruned_esvmccfr_a3_2p_1t.3325559.out": {
         "resumes": "train_esvmccfr_a3_2p.3280535.out",
         "at": 10/70,
-        "label": "p01-esv-a3-10h",
+        "label": "p01-esv-a3-irb-10h",
         "kwargs": {
             "color": "royalblue",
         }
@@ -124,7 +124,7 @@ info_base = {
     "pruned_esvmccfr_a3_2p_1t.3325561.out": {
         "resumes": "train_esvmccfr_a3_2p.3280535.out",
         "at": 70/70,
-        "label": "p01-esv-a3-70h",
+        "label": "p01-esv-a3-irb-70h",
         "kwargs": {
             "color": "royalblue",
         }
@@ -133,7 +133,7 @@ info_base = {
     "pruned_esvmccfr_a3_2p_1t.3325562.out": {
         "resumes": "train_esvmccfr_a3_2p.3280535.out",
         "at": 40/70,
-        "label": "p01-esv-a3-40h",
+        "label": "p01-esv-a3-irb-40h",
         "kwargs": {
             "color": "royalblue",
         }
@@ -141,7 +141,7 @@ info_base = {
 
     "pruned_esvmccfr_a3_2p_1t.3325567.out": {
         "resumes": "resume_esvmccfr_a3_2p_2t.3293685.out",
-        "label": "p01-esv-a3-140h",
+        "label": "p01-esv-a3-irb-140h",
         "kwargs": {
             "color": "royalblue",
         }
@@ -150,7 +150,7 @@ info_base = {
     "pruned_esv_null_2p_1t_f10.3325610.out": {
         "resumes": "train_esvmccfr_null_2p.3280538.out",
         "at": 10/70,
-        "label": "p01-esv-null-10h",
+        "label": "p01-esv-null-irb-10h",
         "kwargs": {
             "color": "darkgreen",
         }
@@ -159,7 +159,7 @@ info_base = {
     "pruned_esv_null_2p_1t_f40.3325615.out": {
         "resumes": "train_esvmccfr_null_2p.3280538.out",
         "at": 40/70,
-        "label": "p01-esv-null-40h",
+        "label": "p01-esv-null-irb-40h",
         "kwargs": {
             "color": "darkgreen",
         }
@@ -167,7 +167,7 @@ info_base = {
     
     "pruned_esv_null_2p_1t_f70.3325617.out": {
         "resumes": "train_esvmccfr_null_2p.3280538.out",
-        "label": "p01-esv-null-70h",
+        "label": "p01-esv-null-irb-70h",
         "kwargs": {
             "color": "darkgreen",
         }
@@ -176,7 +176,7 @@ info_base = {
      "pruned_esl_null_2p_1t_f60.3325612.out": {
         "resumes": "train_eslmccfr_null_2p.3282695.out",
         "at": 60/70,
-        "label": "p01-esl-null-60h",
+        "label": "p01-esl-null-irb-60h",
         "kwargs": {
             "color": "firebrick",
         }
@@ -185,7 +185,7 @@ info_base = {
     "pruned_esl_null_2p_1t_r60.3325616.out": {
         "resumes": "resume_eslmccfr_null_2p_2t.3294059.out",
         "at": 60/70,
-        "label": "p01-esl-null-120h",
+        "label": "p01-esl-null-irb-120h",
         "kwargs": {
             "color": "firebrick",
         }
@@ -193,7 +193,7 @@ info_base = {
 
     "pruned_esv_null_2p_1t_r70.3325620.out": {
         "resumes": "resume_esvmccfr_null_2p_2t.3293687.out",
-        "label": "p01-esv-null-140h",
+        "label": "p01-esv-null-irb-140h",
         "kwargs": {
             "color": "darkgreen",
         }
@@ -267,6 +267,42 @@ info_base = {
         "label": "p01-esv-a3-irl",
          "kwargs": {
             "color": "darkorange",
+        }
+    },
+
+    # InfosetRondaBase MAESTRO: 4 steps
+    # run 70h
+    # run 65h
+    # run 65h
+    # run 65h
+    "train_esl_a3_2p_irb.3472691.out": {
+        "label": "esl-a3-irb",
+         "kwargs": {
+            "color": "deeppink",
+        }
+    },
+    "step_2_resume_esl_irb_a3_2p.3478100.out": {
+        "resumes": "train_esl_a3_2p_irb.3472691.out",
+        "at": 70/70,
+        "label": "p01-esl-a3-irb",
+        "kwargs": {
+            "color": "fuchsia",
+        }
+    },
+    "step_3_pruning_esl_irb_a3_2p.3487761.out": {
+        "resumes": "step_2_resume_esl_irb_a3_2p.3478100.out",
+        "at": 65/65,
+        "label": "p01-esl-a3-irb",
+        "kwargs": {
+            "color": "fuchsia",
+        }
+    },
+    "step_4_pruning_esl_irb_a3_2p.3487762.out": {
+        "resumes": "step_3_pruning_esl_irb_a3_2p.3487761.out",
+        "at": 65/65,
+        "label": "p01-esl-a3-irb",
+        "kwargs": {
+            "color": "fuchsia",
         }
     },
 
@@ -358,8 +394,8 @@ show_only = [
     "train_esvmccfr_a3_2p.3280535.out",
     "resume_esvmccfr_a3_2p_2t.3293685.out",
     "pruned_esvmccfr_a3_2p_1t.3325559.out",
-    "pruned_esvmccfr_a3_2p_1t.3325561.out",
     "pruned_esvmccfr_a3_2p_1t.3325562.out",
+    "pruned_esvmccfr_a3_2p_1t.3325561.out",
     "pruned_esvmccfr_a3_2p_1t.3325567.out",
 
     # esv-irb-null
@@ -397,23 +433,23 @@ plt.show()
 #
 
 fig, axs = plt.subplots(1, 1, figsize=(12, 6))
-fig.suptitle("InfosetRondaBase vs InfosetRondaLarge @ 2p vs Simple")
+fig.suptitle("InfosetRondaBase vs InfosetRondaLarge vs InfosetRondaXLarge vs InfosetRondaXXLarge @ 2p vs Simple")
 # show only
 show_only = [
-    # InfosetRondaLarge a3
+    # esv a3 IRL
     "train_esl_a3_2p_1t_irl.3356924.out",
     "pruned_esl_a3_2p_1t_irl_f70.3373018.out",
-    # InfosetRondaXLarge a3
-    # "train_esl_a3_2p_1t_irxl.3383571.out", # old
+
+    # esl a3 IRXL
     "train_esl_a3_2p_1t_irxl_BE.3422035.out",
     "resume_esl_a3_2p_1t_irxl_96h_pp01.3431934.out",
     "pruned_esl_a3_2p_1t_irxl_240h_pp01.3449686.out", # 10d
-    # "pruned_esl_a3_2p_1t_irxl_240h_pp1.3449690.out", # 10d
     "resume_esl_a3_2p_1t_irxl_96h_pp1.3433223.out",
-    # InfosetRondaXXLarge a3
+
+    # esl a3 IRXXL
     "train_esl_a3_2p_1t_irxxl.3384958.out",
 
-    # InfosetRondaBase a3
+    # esv a3 IRB
     "train_esvmccfr_a3_2p.3280535.out",
     "resume_esvmccfr_a3_2p_2t.3293685.out",
     "pruned_esvmccfr_a3_2p_1t.3325567.out",
@@ -474,6 +510,12 @@ show_only = [
 
     "train_esl_a3_2p_1t_irxxl.3384958.out",
     "pruned_esl_a3_2p_1t_irl_f70.3373018.out",
+
+    # maestro: 4 * irb x a3
+    "train_esl_a3_2p_irb.3472691.out",
+    "step_2_resume_esl_irb_a3_2p.3478100.out",
+    "step_3_pruning_esl_irb_a3_2p.3487761.out",
+    "step_4_pruning_esl_irb_a3_2p.3487762.out",
 ]
 # not show
 not_show = []
@@ -532,6 +574,12 @@ show_only = [
 
     "train_esl_a3_2p_1t_irxxl.3384958.out",
     "pruned_esl_a3_2p_1t_irl_f70.3373018.out",
+
+    # maestro: 4 * irb x a3
+    "train_esl_a3_2p_irb.3472691.out",
+    "step_2_resume_esl_irb_a3_2p.3478100.out",
+    "step_3_pruning_esl_irb_a3_2p.3487761.out",
+    "step_4_pruning_esl_irb_a3_2p.3487762.out",
 ]
 # not show
 not_show = []
