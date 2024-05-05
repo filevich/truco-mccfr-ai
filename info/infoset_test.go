@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/filevich/truco-ai/abs"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 // p, _ := pdt.NuevaPartida(pdt.A20, []string{"Alice", "Anna"}, []string{"Bob", "Ben"}, 1, true)

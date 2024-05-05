@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"github.com/truquito/truco/enco"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/enco"
+	"github.com/truquito/gotruco/pdt"
 )
 
 func IsDoneAndPts(pkts []enco.Envelope) (bool, int, string) {

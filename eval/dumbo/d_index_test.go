@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/filevich/truco-ai/abs"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 func gen_partida(num_players int) *pdt.Partida {

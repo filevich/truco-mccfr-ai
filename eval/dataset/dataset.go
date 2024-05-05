@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 type Row struct {

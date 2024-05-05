@@ -3,7 +3,7 @@ package cfr
 import (
 	"github.com/filevich/truco-ai/abs"
 	"github.com/filevich/truco-ai/info"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 type ITrainer interface {

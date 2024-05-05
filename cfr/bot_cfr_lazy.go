@@ -11,8 +11,8 @@ import (
 	"sync"
 
 	"github.com/filevich/truco-ai/utils"
-	"github.com/truquito/truco/enco"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/enco"
+	"github.com/truquito/gotruco/pdt"
 )
 
 // on avg, it takes 6.2s to play an entire game of Truco between Simple bot

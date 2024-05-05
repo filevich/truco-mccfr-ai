@@ -2,7 +2,7 @@ package cfr
 
 import (
 	"github.com/filevich/truco-ai/utils"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 // implementacion con simultaneous updates

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/filevich/truco-ai/abs"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 func esElUltimoEnTirar(p *pdt.Partida, m *pdt.Manojo) bool {

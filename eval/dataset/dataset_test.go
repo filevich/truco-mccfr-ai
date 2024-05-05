@@ -3,7 +3,7 @@ package dataset
 import (
 	"testing"
 
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 func TestEntryOverride2p(t *testing.T) {

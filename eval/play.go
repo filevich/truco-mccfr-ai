@@ -13,7 +13,7 @@ import (
 	"github.com/filevich/truco-ai/eval/dataset"
 	"github.com/filevich/truco-ai/eval/dumbo"
 	"github.com/filevich/truco-ai/utils"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 func PlayMultipleDoubleGames(

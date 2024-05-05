@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/filevich/truco-ai/info"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 func TestRix(t *testing.T) {

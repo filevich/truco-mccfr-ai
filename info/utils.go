@@ -3,7 +3,7 @@ package info
 import (
 	"github.com/filevich/truco-ai/abs"
 	"github.com/filevich/truco-ai/utils"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 // Nota: `maxWe` y `maxOp` retorna la abstraccion!!

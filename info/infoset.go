@@ -4,7 +4,7 @@ import (
 	"hash"
 
 	"github.com/filevich/truco-ai/abs"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 const (

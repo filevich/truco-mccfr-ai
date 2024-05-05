@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/filevich/truco-ai/abs"
-	"github.com/truquito/truco/enco"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/enco"
+	"github.com/truquito/gotruco/pdt"
 )
 
 type InfosetBuilder func(

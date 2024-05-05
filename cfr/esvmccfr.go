@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/filevich/truco-ai/utils"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 type ESVMCCFR struct {

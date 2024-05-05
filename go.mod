@@ -2,7 +2,7 @@ module github.com/filevich/truco-ai
 
 go 1.18
 
-require github.com/truquito/truco v0.1.0
+require github.com/truquito/gotruco v0.1.0
 
 require (
 	github.com/mattn/go-runewidth v0.0.15 // indirect
@@ -16,4 +16,4 @@ require (
 	github.com/jedib0t/go-pretty/v6 v6.5.4
 )
 
-replace github.com/truquito/truco => ../truco
+replace github.com/truquito/gotruco => ../gotruco

@@ -2,8 +2,8 @@ package cfr
 
 import (
 	"github.com/filevich/truco-ai/utils"
-	"github.com/truquito/truco/enco"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/enco"
+	"github.com/truquito/gotruco/pdt"
 )
 
 type BotCFR struct {

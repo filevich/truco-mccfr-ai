@@ -6,7 +6,7 @@ import (
 
 	"github.com/filevich/combinatronics"
 	"github.com/filevich/truco-ai/utils"
-	"github.com/truquito/truco/pdt"
+	"github.com/truquito/gotruco/pdt"
 )
 
 func calcPoder(c *pdt.Carta, muestra pdt.Carta) int {
