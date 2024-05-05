@@ -11,6 +11,7 @@ import (
 	"github.com/filevich/truco-ai/eval"
 	"github.com/filevich/truco-ai/eval/dataset"
 	"github.com/filevich/truco-ai/utils"
+	"github.com/truquito/gotruco"
 )
 
 // flags
@@ -55,6 +56,7 @@ func init() {
 	log.Println("silent", *silentPtr)
 	log.Println("prefix", *prefixPtr)
 	log.Println("reset", *resetPtr)
+	log.Println("gotruco", gotruco.VERSION)
 }
 
 func main() {
