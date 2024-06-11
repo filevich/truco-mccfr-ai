@@ -12,3 +12,7 @@ Cite this work
   keywords={Training;Deep learning;Monte Carlo methods;Machine learning algorithms;Memory management;Games;Reinforcement learning;Truco;Computational Game Theory;Imperfect-Information Games;Artificial Intelligence;Regret Minimization;Reinforcement Learning;Deep Reinforcement Learning},
   doi={10.1109/CLEI60451.2023.10346191}}
 ```
+
+You can download the `t1k22` dataset from HF or the Internet Archive:
+
+- [huggingface.co/datasets/filevich/t1k22](https://huggingface.co/datasets/filevich/t1k22)
