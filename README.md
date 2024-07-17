@@ -16,3 +16,4 @@ Cite this work
 You can download the `t1k22` dataset from HF or the Internet Archive:
 
 - [huggingface.co/datasets/filevich/t1k22](https://huggingface.co/datasets/filevich/t1k22)
+- [archive.org/details/t1k22](https://archive.org/details/t1k22)
