@@ -55,29 +55,28 @@ func PlayDoubleGames(
 
 ) *Results {
 
-	num_partidas := 2 * len(ds)
 	start := time.Now()
 
 	res := &Results{
 		Title:              fmt.Sprintf("Double games %s vs %s", agent1.UID(), agent2.UID()),
-		TotalNumberOfGames: num_partidas,
+		TotalNumberOfGames: 2 * len(ds),
 		WonByACounter:      0,
-		Wons:               make([]float64, num_partidas/2),
-		PointsWonDiff:      make([]float32, 0, num_partidas),
+		Wons:               make([]float64, 2*len(ds)),
+		PointsWonDiff:      make([]float32, 0, 2*len(ds)),
 		Dumbo1:             0,
 		Dumbo2:             0,
 	}
 
 	// IDA
 	// partidas simples (hasta el final)
-	for i := 0; i < num_partidas/2; i++ {
+	for i := 0; i < len(ds); i++ {
 		entries := ds[i]
 		agent1Won, diffPtsWonByAgent1Acc, d1, d2 := playSingleGame(entries, agent1, agent2, numPlayers)
 		res.Dumbo1 += d1
 		res.Dumbo2 += d2
 		if agent1Won {
 			res.WonByACounter++
-			res.Wons[i] += 0.5
+			res.Wons[i] = 1
 		}
 		res.PointsWonDiff = append(
 			res.PointsWonDiff,
@@ -87,14 +86,14 @@ func PlayDoubleGames(
 
 	// VUELTA
 	// ahora los cambio de posicion
-	for i := 0; i < num_partidas/2; i++ {
+	for i := 0; i < len(ds); i++ {
 		entries := ds[i]
 		agent2Won, diffPtsWonAgent2Acc, d2, d1 := playSingleGame(entries, agent2, agent1, numPlayers)
 		res.Dumbo1 += d1
 		res.Dumbo2 += d2
 		if !agent2Won {
 			res.WonByACounter++
-			res.Wons[i] += 0.5
+			res.Wons[i+len(ds)] = 1
 		}
 		res.PointsWonDiff = append(
 			res.PointsWonDiff,
@@ -103,7 +102,6 @@ func PlayDoubleGames(
 	}
 
 	res.Delta = time.Since(start)
-
 	return res
 }
 
@@ -144,10 +142,10 @@ func playSingleGame(
 	// termino la partida
 
 	// EXTRAIDO de `jugar_partida_hasta_el_final`
-	gent1Won := p.ElQueVaGanando() == pdt.Azul
+	agent1Won = p.ElQueVaGanando() == pdt.Azul
 	diffPtsWonByAgent1 = float32(p.Puntajes[pdt.Azul] - p.Puntajes[pdt.Rojo])
 
-	return gent1Won, diffPtsWonByAgent1, d1Total, d2Total
+	return agent1Won, diffPtsWonByAgent1, d1Total, d2Total
 }
 
 func generateNames(agent1, agent2 Agent, numPlayers int) (A, B []string) {
