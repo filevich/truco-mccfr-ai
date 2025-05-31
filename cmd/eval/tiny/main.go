@@ -15,7 +15,7 @@ func main() {
 	const (
 		tinyEval   = 1_000
 		numPlayers = 2
-		b          = "/Users/jp/Downloads/cluster/train-cfr/models"
+		b          = "/Users/jp/Downloads/output/truco/go-cfr-models/models"
 	)
 
 	log.Println("loading t1k22")
@@ -24,12 +24,12 @@ func main() {
 
 	testThese := []eval.Agent{
 		&cfr.BotCFR{
-			ID:       "esva2",
-			Filepath: b + "/2p/a2/final_es-vmccfr_d70h0m_D70h0m_t7077536_p0_a2_2402052107.model",
+			ID:       "botcfr",
+			Filepath: b + "/2p/irb-a3/pruned_esvmccfr_d70h0m_D70h0m_t288652014_p1_a3_2402151230.model",
 		},
 		&cfr.BotCFR{
-			ID:       "esva3",
-			Filepath: b + "/2p/a3/final_es-vmccfr_d70h0m_D70h0m_t3468734_p0_a3_2402052116.model",
+			ID:       "twin",
+			Filepath: b + "/2p/irb-a3/pruned_esvmccfr_d70h0m_D70h0m_t288652014_p1_a3_2402151230.model",
 		},
 	}
 
