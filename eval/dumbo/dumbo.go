@@ -3,7 +3,7 @@ package dumbo
 import (
 	"fmt"
 
-	"github.com/filevich/truco-ai/abs"
+	"github.com/filevich/truco-mccfr-ai/abs"
 	"github.com/truquito/gotruco/pdt"
 )
 

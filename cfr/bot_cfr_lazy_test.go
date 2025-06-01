@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/filevich/truco-ai/cfr"
+	"github.com/filevich/truco-mccfr-ai/cfr"
 )
 
 var (

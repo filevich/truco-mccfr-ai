@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/filevich/combinatronics"
-	"github.com/filevich/truco-ai/utils"
+	"github.com/filevich/truco-mccfr-ai/utils"
 	"github.com/truquito/gotruco/pdt"
 )
 

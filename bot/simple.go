@@ -3,7 +3,7 @@ package bot
 import (
 	"math"
 
-	"github.com/filevich/truco-ai/info"
+	"github.com/filevich/truco-mccfr-ai/info"
 	"github.com/truquito/gotruco/enco"
 	"github.com/truquito/gotruco/pdt"
 )

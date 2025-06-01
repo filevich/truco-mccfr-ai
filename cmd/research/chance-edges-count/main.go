@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/filevich/combinatronics"
-	"github.com/filevich/truco-ai/utils"
+	"github.com/filevich/truco-mccfr-ai/utils"
 )
 
 func main() {

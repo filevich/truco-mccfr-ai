@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/filevich/truco-ai/utils"
+	"github.com/filevich/truco-mccfr-ai/utils"
 )
 
 type Results struct {

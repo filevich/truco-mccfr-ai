@@ -13,9 +13,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/filevich/truco-ai/abs"
-	"github.com/filevich/truco-ai/info"
-	"github.com/filevich/truco-ai/utils"
+	"github.com/filevich/truco-mccfr-ai/abs"
+	"github.com/filevich/truco-mccfr-ai/info"
+	"github.com/filevich/truco-mccfr-ai/utils"
 	"github.com/truquito/gotruco/pdt"
 )
 

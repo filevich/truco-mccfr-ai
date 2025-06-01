@@ -1,6 +1,6 @@
 package cfr
 
-import "github.com/filevich/truco-ai/utils"
+import "github.com/filevich/truco-mccfr-ai/utils"
 
 type CFR struct {
 	*Trainer

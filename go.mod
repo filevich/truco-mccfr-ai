@@ -1,4 +1,4 @@
-module github.com/filevich/truco-ai
+module github.com/filevich/truco-mccfr-ai
 
 go 1.18
 

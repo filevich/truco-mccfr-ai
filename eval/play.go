@@ -8,11 +8,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/filevich/truco-ai/abs"
-	"github.com/filevich/truco-ai/cfr"
-	"github.com/filevich/truco-ai/eval/dataset"
-	"github.com/filevich/truco-ai/eval/dumbo"
-	"github.com/filevich/truco-ai/utils"
+	"github.com/filevich/truco-mccfr-ai/abs"
+	"github.com/filevich/truco-mccfr-ai/cfr"
+	"github.com/filevich/truco-mccfr-ai/eval/dataset"
+	"github.com/filevich/truco-mccfr-ai/eval/dumbo"
+	"github.com/filevich/truco-mccfr-ai/utils"
 	"github.com/truquito/gotruco/pdt"
 )
 

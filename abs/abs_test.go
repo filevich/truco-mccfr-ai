@@ -3,7 +3,7 @@ package abs_test
 import (
 	"testing"
 
-	"github.com/filevich/truco-ai/abs"
+	"github.com/filevich/truco-mccfr-ai/abs"
 	"github.com/truquito/gotruco/pdt"
 )
 

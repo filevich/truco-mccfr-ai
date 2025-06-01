@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/filevich/truco-ai/utils"
+	"github.com/filevich/truco-mccfr-ai/utils"
 )
 
 const (

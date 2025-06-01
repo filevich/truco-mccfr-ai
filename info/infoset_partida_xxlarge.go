@@ -5,7 +5,7 @@ import (
 	"hash"
 	"strconv"
 
-	"github.com/filevich/truco-ai/abs"
+	"github.com/filevich/truco-mccfr-ai/abs"
 	"github.com/truquito/gotruco/enco"
 	"github.com/truquito/gotruco/pdt"
 )

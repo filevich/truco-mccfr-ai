@@ -1,8 +1,8 @@
 package info
 
 import (
-	"github.com/filevich/truco-ai/abs"
-	"github.com/filevich/truco-ai/utils"
+	"github.com/filevich/truco-mccfr-ai/abs"
+	"github.com/filevich/truco-mccfr-ai/utils"
 	"github.com/truquito/gotruco/pdt"
 )
 

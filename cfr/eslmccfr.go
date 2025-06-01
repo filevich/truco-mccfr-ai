@@ -3,7 +3,7 @@ package cfr
 import (
 	"encoding/json"
 
-	"github.com/filevich/truco-ai/utils"
+	"github.com/filevich/truco-mccfr-ai/utils"
 
 	"github.com/truquito/gotruco/pdt"
 )

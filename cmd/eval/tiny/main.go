@@ -5,10 +5,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/filevich/truco-ai/bot"
-	"github.com/filevich/truco-ai/cfr"
-	"github.com/filevich/truco-ai/eval"
-	"github.com/filevich/truco-ai/eval/dataset"
+	"github.com/filevich/truco-mccfr-ai/bot"
+	"github.com/filevich/truco-mccfr-ai/cfr"
+	"github.com/filevich/truco-mccfr-ai/eval"
+	"github.com/filevich/truco-mccfr-ai/eval/dataset"
 )
 
 func main() {

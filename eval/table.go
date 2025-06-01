@@ -1,6 +1,6 @@
 package eval
 
-import "github.com/filevich/truco-ai/utils"
+import "github.com/filevich/truco-mccfr-ai/utils"
 
 type Table map[string](map[string]*Results)
 
