@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"log/slog"
 	"os"
 	"runtime"
 	"strconv"
@@ -252,7 +253,8 @@ func (t *Trainer) SaveModel(
 	for hash, rnode := range t.InfosetMap {
 		if verbose && utils.Mod(i+1, report_interval) == 0 {
 			progress := float32(i+1) / float32(len(t.InfosetMap))
-			fmt.Printf(" | %d%%", int(progress*100))
+			p := fmt.Sprintf("%d%%", int(progress*100))
+			slog.Warn("loading", "progress", p)
 			runtime.GC()
 		}
 
@@ -401,7 +403,8 @@ func LoadModel(
 				runtime.GC()
 				if verbose {
 					progress := float32(i+1) / float32(locs)
-					log.Printf(" | %d%%", int(progress*100))
+					p := fmt.Sprintf("%d%%", int(progress*100))
+					slog.Warn("loading", "progress", p)
 				}
 			}
 
@@ -426,7 +429,7 @@ func LoadModel(
 	base.Builder = info.BuilderFactory(_hash, _info, _abs)
 
 	if verbose {
-		log.Println()
+		slog.Warn("loading", "progress", "done")
 	}
 
 	return Embed(t, base)
