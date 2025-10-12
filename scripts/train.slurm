@@ -3,7 +3,7 @@
 #SBATCH --job-name=defaultname
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=1
 #SBATCH --mem=60G
 #SBATCH --time=5-00:00:00 
 #SBATCH --partition=normal 
@@ -37,7 +37,7 @@ if [ "$fmt" = "auto" ]; then
     fmt="$SLURM_JOB_ID.model"
 fi
 
-cd /clusteruy/home/juan.filevich/Workspace/truco-ai/truco-mccfr-ai
+cd $HOME/Workspace/truco-ai/truco-mccfr-ai
 go run cmd/train/main.go \
     -p=${1} \
     -trainer=${2} \
