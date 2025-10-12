@@ -3,6 +3,7 @@ package cfr
 import (
 	"fmt"
 	"log"
+	"log/slog"
 	"math"
 	"runtime"
 	"sync"
@@ -72,25 +73,24 @@ func (p *ProfileTime) Init(trainer ITrainer) {
 	}
 
 	// no seteo T porque no se
-	mode := "[verbose]"
+	mode := "verbose"
 	if p.Silent {
-		mode = "[silent]"
+		mode = "silent"
 	}
 
-	prunning := "[no prunning]"
+	prunning := "never"
 	if p.PrunningTreshold != NEVER {
-		prunning = fmt.Sprintf("[prunning @ %s]", p.PrunningTreshold.Round(time.Second))
+		prunning = p.PrunningTreshold.Round(time.Second).String()
 	}
 
-	log.Printf("Running %s x %s for %s [saving every %s][GC every %s] %s %s [%d threads]\n",
-		trainer.String(),
-		trainer.GetAbs().String(),
-		p.TotalRunningTime,
-		p.SaveEvery,
-		p.GCEvery,
-		prunning,
-		mode,
-		p.Threads,
+	slog.Info("RUNNING",
+		"trainer", trainer.String(),
+		"abs", trainer.GetAbs().String(),
+		"TotalRunningTime", p.TotalRunningTime,
+		"SaveEvery", p.SaveEvery,
+		"prunning", prunning,
+		"verbose_mode", mode,
+		"threads", p.Threads,
 	)
 }
 

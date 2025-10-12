@@ -17,3 +17,9 @@ func GetMemUsage() string {
 		ByteToMb(m.TotalAlloc),
 		ByteToMb(m.Sys))
 }
+
+func GetMemUsageMiB() (heapAlloc uint64, totalAlloc uint64, sys uint64) {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	return ByteToMb(m.HeapAlloc), ByteToMb(m.TotalAlloc), ByteToMb(m.Sys)
+}

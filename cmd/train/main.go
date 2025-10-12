@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"log"
+	"log/slog"
 	"sync"
 	"time"
 
@@ -38,25 +39,28 @@ var (
 
 func init() {
 	flag.Parse()
-	if len(*modelPtr) > 0 {
-		log.Println("model", *modelPtr)
-	} else {
-		log.Println("numPlayers", *numPlayersPtr)
-		log.Println("trainer", *trainerPtr)
-		log.Println("hash", *hashPtr)
-		log.Println("info", *infoPtr)
-		log.Println("abs", *absPtr)
-	}
-	log.Println("threads", *threadsPtr)
-	log.Println("saveDir", *saveDirPtr)
-	log.Println("tinyEval", *tinyEvalPtr)
-	log.Println("run", *runPtr)
-	log.Println("saveEvery", *saveEveryPtr)
-	log.Println("evalEvery", *evalEveryPtr)
-	log.Println("silent", *silentPtr)
-	log.Println("prefix", *prefixPtr)
-	log.Println("reset", *resetPtr)
-	log.Println("gotruco", gotruco.VERSION)
+	slog.Info(
+		"START",
+		"model", *modelPtr,
+		"numPlayers", *numPlayersPtr,
+		"trainer", *trainerPtr,
+		"hash", *hashPtr,
+		"info", *infoPtr,
+		"abs", *absPtr,
+		"threads", *threadsPtr,
+		"saveDir", *saveDirPtr,
+		"tinyEval", *tinyEvalPtr,
+		"run", *runPtr,
+		"prunning", *prunningPtr,
+		"prunningProb", *prunningProbPtr,
+		"saveEvery", *saveEveryPtr,
+		"evalEvery", *evalEveryPtr,
+		"silent", *silentPtr,
+		"prefix", *prefixPtr,
+		"fmt", *fmtPtr,
+		"reset", *resetPtr,
+		"gotruco", gotruco.VERSION,
+	)
 }
 
 func main() {
@@ -81,11 +85,8 @@ func main() {
 
 	if *prunningPtr == "" {
 		prunningTreshold = cfr.NEVER
-		log.Println("prunning", "never")
 	} else {
 		prunningTreshold, err = time.ParseDuration(*prunningPtr)
-		log.Println("prunning", prunningTreshold)
-		log.Println("prunningProb", *prunningProbPtr)
 		if err != nil {
 			panic(err)
 		}
@@ -113,9 +114,10 @@ func main() {
 	}
 
 	// tiny eval
-	log.Println("Loading t1k22")
+	slog.Info("LOADING_t1k22")
+	tic := time.Now()
 	var ds dataset.Dataset = dataset.LoadDataset("t1k22.json")
-	log.Println("Done loading t1k22")
+	slog.Info("FINISHED_LOADING_t1k22", "delta", time.Since(tic))
 
 	agents := []eval.Agent{
 		&bot.Random{},
@@ -129,8 +131,30 @@ func main() {
 		}
 		rr := eval.PlayMultipleDoubleGames(agent, agents, numPlayers, ds[:tinyEval])
 		infos := trainer.CountInfosets()
-		mem := utils.GetMemUsage()
-		log.Println(eval.Fmt(rr, agents, infos), mem)
+
+		heapAlloc, totalAlloc, sys := utils.GetMemUsageMiB()
+
+		var delta time.Duration = 0
+
+		for i, r := range rr {
+			delta += r.Delta
+			u, l := r.WaldInterval(true)
+			slog.Info(
+				"RESULTS",
+				"opponent", agents[i].UID(),
+				"wr", r.WP(),
+				"wald_interval_upper", u,
+				"wald_interval_lower", l,
+				"di", r.Dumbo1,
+				"infos", infos,
+			)
+		}
+		slog.Info("EVAL_DONE", "delta", delta)
+		slog.Info("MEMORY",
+			"heapAlloc", heapAlloc,
+			"totalAlloc", totalAlloc,
+			"sys", sys,
+		)
 	}
 
 	if *resetPtr {

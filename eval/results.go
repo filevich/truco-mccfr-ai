@@ -1,7 +1,6 @@
 package eval
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/filevich/truco-mccfr-ai/utils"
@@ -45,28 +44,4 @@ func (r *Results) WaldInterval(agent1 bool) (upper, lower float64) {
 	}
 
 	return utils.WaldAdjusted(success, trials)
-}
-
-func (r *Results) String() string {
-	u, l := r.WaldInterval(true)
-	s := fmt.Sprintf("%.3f [%.3f, %.3f] (di=%d)",
-		r.WP(),
-		l,
-		u,
-		r.Dumbo1)
-	return s
-}
-
-func Fmt(rr []*Results, agents []Agent, numInfosets int) string {
-	var (
-		s                   = ""
-		delta time.Duration = 0
-	)
-
-	for i, r := range rr {
-		s += fmt.Sprintf("%s=%s - infos=%d - ", agents[i].UID(), r, numInfosets)
-		delta += r.Delta
-	}
-
-	return s + delta.Round(time.Second).String()
 }
