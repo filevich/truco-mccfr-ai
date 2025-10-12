@@ -1,11 +1,8 @@
 module github.com/filevich/truco-mccfr-ai
 
-go 1.21.5
+go 1.18
 
-require (
-	github.com/filevich/truco-tournament v0.0.0-00010101000000-000000000000
-	github.com/truquito/gotruco v0.0.0
-)
+require github.com/truquito/gotruco v0.0.0
 
 require (
 	github.com/mattn/go-runewidth v0.0.15 // indirect
@@ -17,18 +14,14 @@ require (
 	github.com/filevich/canvas v0.0.0 // indirect
 	github.com/filevich/combinatronics v0.0.0-20220316214652-26aa6db09482
 	github.com/jedib0t/go-pretty/v6 v6.5.4
+	github.com/truquito/bot v0.0.0-00010101000000-000000000000
 )
 
 replace github.com/truquito/gotruco => ../gotruco
-
 replace github.com/truquito/bot => ../bot
-
 replace github.com/truquito/bot/pers => ../bot/pers
-
 replace github.com/truquito/bot/schema => ../bot/schema
 
 replace github.com/filevich/truco-tournament => ../truco-tournament
-
 replace github.com/filevich/truco-tournament/utils => ../truco-tournament/utils
-
 replace github.com/filevich/truco-tournament/policies => ../truco-tournament/policies
