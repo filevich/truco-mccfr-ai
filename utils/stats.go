@@ -2,6 +2,24 @@ package utils
 
 import "math/rand"
 
+func Argmax(dist []float32) int {
+	if len(dist) == 0 {
+		return -1 // or panic with a meaningful message
+	}
+
+	maxIdx := 0
+	maxVal := dist[0]
+
+	for i := 1; i < len(dist); i++ {
+		if dist[i] > maxVal {
+			maxVal = dist[i]
+			maxIdx = i
+		}
+	}
+
+	return maxIdx
+}
+
 func Sample(dist []float32) int {
 	var (
 		r                     float32 = rand.Float32()
