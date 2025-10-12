@@ -3,3 +3,4 @@ go.sum
 .vscode
 __pycache__
 .DS_Store
+vendor
