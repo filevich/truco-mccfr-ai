@@ -8,6 +8,7 @@ import (
 type Agent interface {
 	Initialize()
 	Free()
+	SetUID(string)
 	UID() string
 	Catch(*pdt.Partida, []enco.Envelope)
 	ResetCatch()

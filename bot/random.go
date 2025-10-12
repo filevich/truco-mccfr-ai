@@ -13,6 +13,8 @@ func (b *Random) Initialize() {}
 
 func (b *Random) Free() {}
 
+func (b *Random) SetUID(string) {}
+
 func (b *Random) UID() string {
 	return "Random"
 }

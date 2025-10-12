@@ -58,6 +58,10 @@ func (b *BotLazyDistilCFR) Free() {
 	log.Printf("hit=%d miss=%d hit_ratio=%.2f", b.Hit, b.Miss, r)
 }
 
+func (b *BotLazyDistilCFR) SetUID(id string) {
+	b.ID = id
+}
+
 func (b *BotLazyDistilCFR) UID() string {
 	return b.ID
 }
