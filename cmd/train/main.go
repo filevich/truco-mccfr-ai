@@ -120,10 +120,6 @@ func main() {
 	agents := []eval.Agent{
 		&bot.Random{},
 		&bot.Simple{},
-		// &bot.BotCFR{
-		// 	N: "final_es-lmccfr_d25h0m_D48h0m_t24878_p0_a1_2208092259",
-		// 	F: b + "/final_es-lmccfr_d25h0m_D48h0m_t24878_p0_a1_2208092259.model",
-		// },
 	}
 
 	evaluator := func() {
