@@ -42,12 +42,12 @@ func TestInfosetRondaLarge1NullAbs(t *testing.T) {
 
 	// para Anna
 	{
-		infobuilder := infosetRondaBaseFactory(a)
+		infobuilder := infosetRondaXXLargeFactory(a)
 		i := infobuilder(p, p.Manojo("Anna"), nil)
 
 		// t.Log(i.Dump(true))
 
-		irl, _ := i.(*InfosetRondaLarge)
+		irl, _ := i.(*InfosetRondaXXLarge)
 
 		// 1. `muestra`
 		if ok := irl.muestra == 25; !ok {
@@ -138,9 +138,9 @@ func TestInfosetRondaLarge1NullAbs(t *testing.T) {
 
 	// para Alice
 	{
-		infobuilder := infosetRondaBaseFactory(a)
+		infobuilder := infosetRondaXXLargeFactory(a)
 		i := infobuilder(p, p.Manojo("Alice"), nil)
-		irl, _ := i.(*InfosetRondaLarge)
+		irl, _ := i.(*InfosetRondaXXLarge)
 
 		// 3. `rixMe` ~ RIX: who?
 		if ok := irl.rixMe == 0; !ok {
@@ -155,11 +155,11 @@ func TestInfosetRondaLarge1NullAbs(t *testing.T) {
 
 	// para Bob
 	{
-		infobuilder := infosetRondaBaseFactory(a)
+		infobuilder := infosetRondaXXLargeFactory(a)
 		i := infobuilder(p, p.Manojo("Bob"), nil)
 		// t.Log(i.Dump(true))
 
-		irl, _ := i.(*InfosetRondaLarge)
+		irl, _ := i.(*InfosetRondaXXLarge)
 
 		// 1. `muestra`
 		if ok := irl.muestra == 25; !ok {
@@ -249,11 +249,11 @@ func TestInfosetRondaLarge1NullAbs(t *testing.T) {
 
 	// para Ben
 	{
-		infobuilder := infosetRondaBaseFactory(a)
+		infobuilder := infosetRondaXXLargeFactory(a)
 		i := infobuilder(p, p.Manojo("Ben"), nil)
 		// t.Log(i.Dump(true))
 
-		irl, _ := i.(*InfosetRondaLarge)
+		irl, _ := i.(*InfosetRondaXXLarge)
 
 		// 3. `rixMe` ~ RIX: who?
 		if ok := irl.rixMe == 3; !ok {
@@ -289,11 +289,11 @@ func TestInfosetRondaLarge1A1Abs(t *testing.T) {
 
 	// para Anna
 	{
-		infobuilder := infosetRondaBaseFactory(a)
+		infobuilder := infosetRondaXXLargeFactory(a)
 		i := infobuilder(p, p.Manojo("Anna"), nil)
 		// t.Log(i.Dump(true))
 
-		irl, _ := i.(*InfosetRondaLarge)
+		irl, _ := i.(*InfosetRondaXXLarge)
 
 		// 1. `muestra`
 		if ok := irl.muestra == 25; !ok {
@@ -324,9 +324,9 @@ func TestInfosetRondaLarge1A1Abs(t *testing.T) {
 
 	// para Alice
 	{
-		infobuilder := infosetRondaBaseFactory(a)
+		infobuilder := infosetRondaXXLargeFactory(a)
 		i := infobuilder(p, p.Manojo("Alice"), nil)
-		irl, _ := i.(*InfosetRondaLarge)
+		irl, _ := i.(*InfosetRondaXXLarge)
 
 		// 9. chi: 2C + E|RE|FE + T + M = 7
 		// Notar que tiene solo 2 acción de carta porque son 1 muestra + 2 matas
@@ -337,11 +337,11 @@ func TestInfosetRondaLarge1A1Abs(t *testing.T) {
 
 	// para Bob
 	{
-		infobuilder := infosetRondaBaseFactory(a)
+		infobuilder := infosetRondaXXLargeFactory(a)
 		i := infobuilder(p, p.Manojo("Bob"), nil)
 		// t.Log(i.Dump(true))
 
-		irl, _ := i.(*InfosetRondaLarge)
+		irl, _ := i.(*InfosetRondaXXLarge)
 
 		// 6. `nuestrasCartas` representa nuestras cartas.
 		{
@@ -361,11 +361,11 @@ func TestInfosetRondaLarge1A1Abs(t *testing.T) {
 
 	// para Ben
 	{
-		infobuilder := infosetRondaBaseFactory(a)
+		infobuilder := infosetRondaXXLargeFactory(a)
 		i := infobuilder(p, p.Manojo("Ben"), nil)
 		// t.Log(i.Dump(true))
 
-		irl, _ := i.(*InfosetRondaLarge)
+		irl, _ := i.(*InfosetRondaXXLarge)
 
 		// 3. `rixMe` ~ RIX: who?
 		if ok := irl.rixMe == 3; !ok {

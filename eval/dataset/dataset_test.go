@@ -1,12 +1,22 @@
 package dataset
 
 import (
+	"os"
 	"testing"
 
 	"github.com/truquito/gotruco/pdt"
 )
 
 func TestEntryOverride2p(t *testing.T) {
+	// Use os.Stat to get file info. It returns an error if the file doesn't exist.
+	_, err := os.Stat("t1k22.json")
+
+	// Check if an error occurred AND if that error indicates the file does not exist.
+	if os.IsNotExist(err) {
+		t.Skip("skipping test: t1k22 file not found")
+		return
+	}
+
 	ds := LoadDataset("t1k22.json")
 
 	p, _ := pdt.NuevaPartida(
@@ -64,6 +74,15 @@ func TestEntryOverride2p(t *testing.T) {
 }
 
 func TestEntryOverride4p(t *testing.T) {
+	// Use os.Stat to get file info. It returns an error if the file doesn't exist.
+	_, err := os.Stat("t1k22.json")
+
+	// Check if an error occurred AND if that error indicates the file does not exist.
+	if os.IsNotExist(err) {
+		t.Skip("skipping test: t1k22 file not found")
+		return
+	}
+
 	ds := LoadDataset("t1k22.json")
 
 	p, _ := pdt.NuevaPartida(
@@ -121,6 +140,15 @@ func TestEntryOverride4p(t *testing.T) {
 }
 
 func TestEntryOverride6p(t *testing.T) {
+	// Use os.Stat to get file info. It returns an error if the file doesn't exist.
+	_, err := os.Stat("t1k22.json")
+
+	// Check if an error occurred AND if that error indicates the file does not exist.
+	if os.IsNotExist(err) {
+		t.Skip("skipping test: t1k22 file not found")
+		return
+	}
+
 	ds := LoadDataset("t1k22.json")
 
 	p, _ := pdt.NuevaPartida(

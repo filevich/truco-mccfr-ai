@@ -20,7 +20,8 @@ func TestLinealRead(t *testing.T) {
 	filename := sampleModel
 	f, err := os.Open(filename)
 	if err != nil {
-		t.Fatal(err)
+		t.Skip("skipping test: model file not found")
+		return
 	}
 	defer f.Close()
 
@@ -66,7 +67,11 @@ func TestMultithreadRead(t *testing.T) {
 
 	fs := make([]*os.File, threads)
 	for i := 0; i < int(threads); i++ {
-		f, _ := os.Open(filename)
+		f, err := os.Open(filename)
+		if err != nil {
+			t.Skip("skipping test: model file not found")
+			return
+		}
 		fs[i] = f
 	}
 
@@ -112,6 +117,15 @@ func TestMultithreadRead(t *testing.T) {
 }
 
 func TestCFRLazy1(t *testing.T) {
+	// Use os.Stat to get file info. It returns an error if the file doesn't exist.
+	_, err := os.Stat(sampleModel)
+
+	// Check if an error occurred AND if that error indicates the file does not exist.
+	if os.IsNotExist(err) {
+		t.Skip("skipping test: model file not found")
+		return
+	}
+
 	b := &cfr.BotLazyCFR{
 		ID:       "example",
 		Filepath: sampleModel,
