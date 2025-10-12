@@ -16,6 +16,10 @@ func (b *SimpleX) Initialize() {}
 
 func (b *SimpleX) Free() {}
 
+func (b *SimpleX) SetUID(id string) {
+	b.inGameID = id
+}
+
 func (b *SimpleX) UID() string {
 	return "SimpleX"
 }

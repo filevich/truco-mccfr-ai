@@ -23,6 +23,10 @@ func (b *BotCFR) Free() {
 	b.Model = nil
 }
 
+func (b *BotCFR) SetUID(id string) {
+	b.ID = id
+}
+
 func (b *BotCFR) UID() string {
 	return b.ID
 }
@@ -56,6 +60,36 @@ func (b *BotCFR) Action(
 	// obtengo la strategy
 	strategy := b.Model.GetAvgStrategy(hash, chi_len)
 	aix := utils.Sample(strategy)
+
+	// obtengo el chi
+	Chi := i.Iterable(p, active_player, aixs, b.Model.GetAbs())
+
+	return Chi[aix], strategy[aix]
+}
+
+type BotCFR_Greedy struct {
+	BotCFR
+}
+
+// Override only the Action method
+func (b *BotCFR_Greedy) Action(
+	p *pdt.Partida,
+	inGameID string,
+) (
+	pdt.IJugada,
+	float32,
+) {
+	// pseudo jugador activo
+	active_player := p.Manojo(inGameID)
+
+	// obtengo el infoset
+	aixs := pdt.GetA(p, active_player)
+	i := b.Model.GetBuilder().Info(p, active_player, nil)
+	hash, chi_len := i.Hash(b.Model.GetBuilder().Hash), i.ChiLen()
+
+	// obtengo la strategy
+	strategy := b.Model.GetAvgStrategy(hash, chi_len)
+	aix := utils.Argmax(strategy)
 
 	// obtengo el chi
 	Chi := i.Iterable(p, active_player, aixs, b.Model.GetAbs())

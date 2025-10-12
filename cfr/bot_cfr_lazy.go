@@ -129,6 +129,10 @@ func (b *BotLazyCFR) Free() {
 	}
 }
 
+func (b *BotLazyCFR) SetUID(id string) {
+	b.ID = id
+}
+
 func (b *BotLazyCFR) UID() string {
 	return b.ID
 }
