@@ -4,6 +4,7 @@ go 1.21.5
 
 require (
 	github.com/filevich/truco-tournament v0.0.0-00010101000000-000000000000
+	github.com/truquito/bot v0.0.0-00010101000000-000000000000
 	github.com/truquito/gotruco v0.0.0
 )
 
