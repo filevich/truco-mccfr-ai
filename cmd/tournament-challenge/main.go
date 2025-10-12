@@ -69,28 +69,6 @@ func policyFactory(policy string) policies.Policy {
 	return pol
 }
 
-func PingN(conn *net.Conn, scanner *bufio.Scanner, n int) {
-	// send 3 PING messages
-	for i := 0; i < n; i++ {
-		utils.Send(conn, "PING")
-		msg := ""
-		if scanner.Scan() {
-			msg = scanner.Text()
-		}
-		slog.Info("RECEIVED", "i", i, "msg", msg)
-		time.Sleep(time.Millisecond * 300)
-	}
-}
-
-func SetID(conn *net.Conn, scanner *bufio.Scanner, id string) {
-	utils.Send(conn, fmt.Sprintf("SET_ID %s", id))
-	msg := ""
-	if scanner.Scan() {
-		msg = scanner.Text()
-	}
-	slog.Info("RECEIVED", "msg", msg)
-}
-
 func TimeLimitReached(start time.Time) bool {
 	limit_sec_str := os.Getenv("LIMIT")
 	if len(limit_sec_str) == 0 {
@@ -106,39 +84,6 @@ func TimeLimitReached(start time.Time) bool {
 	}
 
 	return false
-}
-
-func StartNewChallenge(conn *net.Conn, scanner *bufio.Scanner) {
-	utils.Send(conn, fmt.Sprintf("CHALLENGE %d;2;t1k22;", n))
-	msg := ""
-	if scanner.Scan() {
-		msg = scanner.Text()
-	}
-	slog.Info("RECEIVED", "msg", msg)
-}
-
-func GetName(name string, active bool) string {
-	if len(name) == 0 {
-		if active {
-			name = "activer"
-		} else {
-			name = utils.RandomString(5)
-		}
-	}
-
-	// Enforce naming convention: passive agents must start with '_', active agents must not
-	if active {
-		if strings.HasPrefix(name, "_") {
-			panic("Active agents cannot have names starting with '_'")
-		}
-	} else {
-		// Passive agent: ensure '_' prefix
-		if !strings.HasPrefix(name, "_") {
-			name = "_" + name
-		}
-	}
-
-	return name
 }
 
 func handle(
@@ -161,7 +106,7 @@ func handle(
 		}
 	}()
 
-	name = GetName(name, active)
+	name = tournament.GetName(name, active)
 	var (
 		p   = &pers.Pers{Nick: name}
 		pol = policyFactory(policy)
@@ -169,21 +114,13 @@ func handle(
 
 	// Initial Setup
 	// Set ID and wait for the single "OK" response
-	utils.Send(conn, fmt.Sprintf("SET_ID %s", name))
-	if scanner.Scan() {
-		msg := scanner.Text()
-		slog.Info("RECEIVED", "msg", msg)
-	}
+	tournament.SetID(conn, scanner, name)
 
 	start := time.Now()
 
 	if active {
 		// Start a challenge and wait for the single "OK" response
-		utils.Send(conn, fmt.Sprintf("CHALLENGE %d;2;t1k22;", n))
-		if scanner.Scan() {
-			msg := scanner.Text()
-			slog.Info("RECEIVED", "msg", msg)
-		}
+		tournament.StartNewChallenge(conn, scanner, n)
 	}
 
 	// Main Message Processing Loop
@@ -262,12 +199,7 @@ func handle(
 						return
 					}
 					// Start a new challenge
-					utils.Send(conn, fmt.Sprintf("CHALLENGE %d;2;t1k22;", n))
-					// We expect a single response, so we can call Scan() again here
-					if scanner.Scan() {
-						response := scanner.Text()
-						slog.Info("RECEIVED", "msg", response)
-					}
+					tournament.StartNewChallenge(conn, scanner, n)
 				}
 			} else {
 				return
