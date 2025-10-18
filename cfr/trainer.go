@@ -474,30 +474,13 @@ func NewTrainer(
 
 func Embed(t Trainer_T, base *Trainer) ITrainer {
 	switch t {
-	// vanilla
-	case CFR_T:
-		return &CFR{base}
-
-	// variantes
-	// case CFRP_T:
-	// 	return &CFRP{base}
-
-	// case DCFR_T:
-	// 	return &DCFR{base, 1.5, 0, 2}
-
 	case ESLMCCFR_T:
 		return &ESLMCCFR{base}
-
 	case ESVMCCFR_T:
 		return &ESVMCCFR{base}
-
+	// unimplemented yet:
 	// case OSMCCFR_T:
 	// 	return &OSMCCFR{base, 0.1} // epsilon
-
-	// // exploitability
-	// case BR_T:
-	// 	return &BestResponse{base}
-
 	default:
 		panic("trainer unknown")
 	}
