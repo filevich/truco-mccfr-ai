@@ -132,7 +132,7 @@ func (b *BotLazyDistilCFR) Action(
 	aixs := pdt.GetA(p, active_player)
 	// log.Println(b.trainer, inGameID, active_player, p)
 	i := b.trainer.GetBuilder().Info(p, active_player, nil)
-	hash, _ := i.Hash(b.trainer.GetBuilder().Hash), i.ChiLen()
+	hash, _ := i.Hash(b.trainer.GetBuilder().Hash()), i.ChiLen()
 
 	// creo un Rnode
 	aix, err := b.Find(hash)

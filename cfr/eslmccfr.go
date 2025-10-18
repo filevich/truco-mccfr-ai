@@ -100,7 +100,7 @@ func (trainer *ESLMCCFR) run(
 	// hash, chi_len := i.Hash(), i.Chi_len()
 	// i := info.NewInfosetRondaBase(p, active_player, trainer.GetAbs(), nil)
 	i := trainer.GetBuilder().Info(p, active_player, nil)
-	hash, chi_len := i.Hash(trainer.GetBuilder().Hash), i.ChiLen()
+	hash, chi_len := i.Hash(trainer.GetBuilder().Hash()), i.ChiLen()
 
 	// obtengo el RNode
 	rnode := trainer.GetRnode(hash, chi_len)

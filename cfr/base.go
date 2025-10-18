@@ -26,7 +26,7 @@ func _baseNonMcRun(
 	aixs := pdt.GetA(p, active_player)
 	// i := MkInfoset1(p, active_player, aixs, trainer.GetAbs())
 	i := trainer.GetBuilder().Info(p, active_player, nil)
-	hash, chi_len := i.Hash(trainer.GetBuilder().Hash), i.ChiLen()
+	hash, chi_len := i.Hash(trainer.GetBuilder().Hash()), i.ChiLen()
 
 	// obtengo el RNode
 	rnode := trainer.GetRnode(hash, chi_len)

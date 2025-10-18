@@ -55,7 +55,7 @@ func (b *BotCFR) Action(
 	aixs := pdt.GetA(p, active_player)
 	// i := info.NewInfosetRondaBase(p, active_player, b.Model.GetAbs(), nil)
 	i := b.Model.GetBuilder().Info(p, active_player, nil)
-	hash, chi_len := i.Hash(b.Model.GetBuilder().Hash), i.ChiLen()
+	hash, chi_len := i.Hash(b.Model.GetBuilder().Hash()), i.ChiLen()
 
 	// obtengo la strategy
 	strategy := b.Model.GetAvgStrategy(hash, chi_len)
@@ -85,7 +85,7 @@ func (b *BotCFR_Greedy) Action(
 	// obtengo el infoset
 	aixs := pdt.GetA(p, active_player)
 	i := b.Model.GetBuilder().Info(p, active_player, nil)
-	hash, chi_len := i.Hash(b.Model.GetBuilder().Hash), i.ChiLen()
+	hash, chi_len := i.Hash(b.Model.GetBuilder().Hash()), i.ChiLen()
 
 	// obtengo la strategy
 	strategy := b.Model.GetAvgStrategy(hash, chi_len)

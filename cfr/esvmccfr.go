@@ -93,7 +93,7 @@ func (trainer *ESVMCCFR) run(
 	// i := MkInfoset1(p, active_player, aixs, trainer.GetAbs())
 	// i := info.NewInfosetRondaBase(p, active_player, trainer.GetAbs(), nil)
 	i := trainer.GetBuilder().Info(p, active_player, nil)
-	hash, chi_len := i.Hash(trainer.GetBuilder().Hash), i.ChiLen()
+	hash, chi_len := i.Hash(trainer.GetBuilder().Hash()), i.ChiLen()
 
 	// obtengo el RNode
 	rnode := trainer.GetRnode(hash, chi_len)

@@ -26,7 +26,7 @@ type Builder struct {
 	// data fields
 	Data *BuilderData
 	//
-	Hash hash.Hash
+	Hash func() hash.Hash // Factory function to create new hash instances
 	Info InfosetBuilder
 	Abs  abs.IAbstraction
 }
