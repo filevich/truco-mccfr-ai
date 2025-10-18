@@ -18,27 +18,27 @@ import (
 
 // flags
 var (
-	modelPtr           = flag.String("model", "", "Filepath to .model file to continue training from")
-	numPlayersPtr      = flag.Int("p", 2, "Number of players")
-	trainerPtr         = flag.String("trainer", "esvmccfr", "CFR variant")
-	hashPtr            = flag.String("hash", "sha160", "Hash fn")                // builder
-	infoPtr            = flag.String("info", "InfosetRondaBase", "Infoset Impl") // builder
-	absPtr             = flag.String("abs", "a1", "Abstraction")                 // builder
-	threadsPtr         = flag.Int("threads", 1, "Threads")
-	saveDirPtr         = flag.String("dir", "/tmp", "Save directory")
-	tinyEvalPtr        = flag.Int("eval", 1_000, "Progress eval length")
-	runPtr             = flag.String("run", "30m", "Total run time")
-	prunningPtr        = flag.String("prunning", "", "Start prunning after")
-	prunningProbPtr    = flag.Float64("prunning_prob", 0.01, "Pruning prob")
-	saveEveryPtr       = flag.String("save_every", "10m", "Saving interval")
-	evalEveryPtr       = flag.String("eval_every", "1m", "Eval interval")
-	silentPtr          = flag.Bool("silent", true, "Silent model")
-	prefixPtr          = flag.String("prefix", "final_", "Model prefix")
-	fmtPtr             = flag.String("fmt", "", "Model name format")
-	resetPtr           = flag.Bool("reset", false, "Reset strategy sum")
-	tournamentAddrPtr  = flag.String("tournament-addr", "", "Tournament server address (empty to skip tournament eval)")
-	tournamentNPtr     = flag.Int("tournament-n", 1000, "Number of (doubled) games for tournament eval")
-	tournamentNamePtr  = flag.String("tournament-name", "", "Bot name for tournament eval")
+	modelPtr          = flag.String("model", "", "Filepath to .model file to continue training from")
+	numPlayersPtr     = flag.Int("p", 2, "Number of players")
+	trainerPtr        = flag.String("trainer", "esvmccfr", "CFR variant")
+	hashPtr           = flag.String("hash", "sha160", "Hash fn")                // builder
+	infoPtr           = flag.String("info", "InfosetRondaBase", "Infoset Impl") // builder
+	absPtr            = flag.String("abs", "a1", "Abstraction")                 // builder
+	threadsPtr        = flag.Int("threads", 1, "Threads")
+	saveDirPtr        = flag.String("dir", "/tmp", "Save directory")
+	tinyEvalPtr       = flag.Int("eval", 1_000, "Progress eval length")
+	runPtr            = flag.String("run", "30m", "Total run time")
+	prunningPtr       = flag.String("prunning", "", "Start prunning after")
+	prunningProbPtr   = flag.Float64("prunning_prob", 0.01, "Pruning prob")
+	saveEveryPtr      = flag.String("save_every", "10m", "Saving interval")
+	evalEveryPtr      = flag.String("eval_every", "1m", "Eval interval")
+	silentPtr         = flag.Bool("silent", true, "Silent model")
+	prefixPtr         = flag.String("prefix", "final_", "Model prefix")
+	fmtPtr            = flag.String("fmt", "", "Model name format")
+	resetPtr          = flag.Bool("reset", false, "Reset strategy sum")
+	tournamentAddrPtr = flag.String("tournament-addr", "", "Tournament server address (empty to skip tournament eval)")
+	tournamentNPtr    = flag.Int("tournament-n", 1000, "Number of (doubled) games for tournament eval")
+	tournamentNamePtr = flag.String("tournament-name", "", "Bot name for tournament eval")
 )
 
 func init() {
@@ -143,6 +143,9 @@ func main() {
 
 		var delta time.Duration = 0
 
+		// general progress info
+		slog.Info("REPORT", "infos", infos, "iters", trainer.Get_t())
+
 		for i, r := range rr {
 			delta += r.Delta
 			u, l := r.WaldInterval(true)
@@ -153,11 +156,11 @@ func main() {
 				"wald_interval_upper", u,
 				"wald_interval_lower", l,
 				"di", r.Dumbo1,
-				"infos", infos,
 			)
 		}
 		slog.Info("EVAL_DONE", "delta", delta)
-		slog.Info("MEMORY",
+		slog.Info(
+			"MEMORY",
 			"heapAlloc", heapAlloc,
 			"totalAlloc", totalAlloc,
 			"sys", sys,
