@@ -16,31 +16,23 @@ func (trainer *ESVMCCFR) String() string {
 }
 
 func (trainer *ESVMCCFR) regretUpdateEquation(
-
 	t int,
 	regret float32,
 	cf_reach_prob float32,
 	reg_acc float32,
-
 ) float32 {
-
 	// vanilla cfr regret equation
 	return reg_acc + (cf_reach_prob * regret)
-
 }
 
 func (trainer *ESVMCCFR) strategyUpdateEquation(
-
 	t int,
 	reach_prob float32,
 	action_prob float32, // ~ strategy[a]
 	strategy_acc float32,
-
 ) float32 {
-
 	// vanilla cfr strategy update equation
 	return strategy_acc + (reach_prob * action_prob)
-
 }
 
 func (trainer *ESVMCCFR) Train(profile IProfile) {
@@ -73,15 +65,12 @@ func (trainer *ESVMCCFR) Train(profile IProfile) {
 }
 
 func (trainer *ESVMCCFR) run(
-
 	profile IProfile,
 	p *pdt.Partida,
 	reach_probabilities []float32,
 	acc []float32,
 	update_player int,
-
 ) []float32 {
-
 	// pseudo jugador activo
 	elMano := p.Ronda.GetElMano().Jugador.ID
 	active_player := pdt.Rho(p)
@@ -90,8 +79,6 @@ func (trainer *ESVMCCFR) run(
 
 	// obtengo el infoset
 	aixs := pdt.GetA(p, active_player)
-	// i := MkInfoset1(p, active_player, aixs, trainer.GetAbs())
-	// i := info.NewInfosetRondaBase(p, active_player, trainer.GetAbs(), nil)
 	i := trainer.GetBuilder().Info(p, active_player, nil)
 	hash, chi_len := i.Hash(trainer.GetBuilder().Hash()), i.ChiLen()
 
@@ -114,7 +101,6 @@ func (trainer *ESVMCCFR) run(
 
 	// no es el `update_player` -> actualizo solo la estrategia
 	if rix_mod2 != update_player {
-
 		// acumulo la strategy (solo a raix ?)
 		trainer.Lock()
 		rnode.StrUpdates++
@@ -135,44 +121,33 @@ func (trainer *ESVMCCFR) run(
 		}
 		trainer.Unlock()
 
-		////////////////////////////////////////////////////////////
-
 		pkts := A[raix].Hacer(p)
 		termino, pts_ganados, ganador := utils.IsDoneAndPts(pkts)
-		if termino {
 
+		if termino {
 			// fin de la ronda, fin de la recursion:
 			// no hace falta que vuelva a llamar recursivamente a cfr
 			// ya se lo que deberia devolver
 			new_pts := utils.Payoffs(p.Manojo(elMano), pts_ganados, p.Manojo(ganador))
 			new_acc := utils.SumFloat32Slices(acc, new_pts)
 			return new_acc
-
 		} else {
-
 			if pts_ganados > 0 {
-
 				// acumulo los puntos (del envite)
 				new_pts := utils.Payoffs(p.Manojo(elMano), pts_ganados, p.Manojo(ganador))
 				new_acc := utils.SumFloat32Slices(acc, new_pts)
 				return trainer.run(profile, p, new_reach_probabilities, new_acc, update_player)
-
 			} else {
-
 				// ni hay puntos nuevos, ni termino -> paso el acc intacto
 				return trainer.run(profile, p, new_reach_probabilities, acc, update_player)
-
 			}
 		}
-
-		//////////////////////////////////////////////////////////////
 	}
 
 	// sino todo "igual" que antes:
 	counterfactual_values := make([][]float32, chi_len)
 
 	for aix, j := range A {
-
 		// prunning
 		skip := profile.IsPrunable(trainer, strategy[aix])
 		if skip {
@@ -184,23 +159,17 @@ func (trainer *ESVMCCFR) run(
 		p, _ = pdt.Parse(string(bs), true)
 		pkts := j.Hacer(p)
 
-		////////////////////////////////////////////////////////////
-
 		// hemos llegado a un nodo terminal ?
 		termino, pts_ganados, ganador := utils.IsDoneAndPts(pkts)
 		if termino {
-
 			// fin de la ronda, fin de la recursion:
 			// no hace falta que vuelva a llamar recursivamente a cfr
 			// ya se lo que deberia devolver
 			new_pts := utils.Payoffs(p.Manojo(elMano), pts_ganados, p.Manojo(ganador))
 			new_acc := utils.SumFloat32Slices(acc, new_pts)
 			counterfactual_values[aix] = new_acc
-
 		} else {
-
 			if pts_ganados > 0 {
-
 				// acumulo los puntos (del envite)
 				new_pts := utils.Payoffs(p.Manojo(elMano), pts_ganados, p.Manojo(ganador))
 				new_acc := utils.SumFloat32Slices(acc, new_pts)
@@ -211,9 +180,7 @@ func (trainer *ESVMCCFR) run(
 					new_acc,
 					update_player,
 				)
-
 			} else {
-
 				// ni hay puntos nuevos, ni termino -> paso el acc intacto
 				counterfactual_values[aix] = trainer.run(
 					profile,
@@ -222,12 +189,8 @@ func (trainer *ESVMCCFR) run(
 					acc,
 					update_player,
 				)
-
 			}
 		}
-
-		////////////////////////////////////////////////////////////
-
 	}
 
 	node_values := utils.Ndot(strategy, counterfactual_values)
@@ -238,7 +201,6 @@ func (trainer *ESVMCCFR) run(
 	t := rnode.RegUpdates // alt: trainer.Get_t()+1
 
 	for aix := range A {
-
 		// prunning
 		prunning := profile.IsPrunable(trainer, strategy[aix])
 		if prunning {
@@ -247,7 +209,6 @@ func (trainer *ESVMCCFR) run(
 
 		// actualizacion de regrets
 		regret := counterfactual_values[aix][rix_mod2] - node_values[rix_mod2]
-
 		rnode.CumulativeRegrets[aix] = trainer.regretUpdateEquation(
 			t,
 			regret,
@@ -257,7 +218,5 @@ func (trainer *ESVMCCFR) run(
 	}
 
 	trainer.Unlock()
-
 	return node_values
-
 }
