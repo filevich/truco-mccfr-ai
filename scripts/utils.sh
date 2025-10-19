@@ -338,7 +338,81 @@ acquire_tournament_connection() {
     fi
 }
 
-# Export the main function for use by other scripts
+# Function to monitor tournament health and restart if needed
+# This function monitors a running training process and ensures tournament availability
+# by periodically checking tournament health and restarting it if necessary.
+#
+# Args:
+#   $1: PID of the training process to monitor
+#   $2: Check interval in seconds (default: 3600 = 1 hour)
+#
+# Usage:
+#   go run cmd/train/main.go ... &
+#   TRAIN_PID=$!
+#   monitor_tournament_health $TRAIN_PID 3600
+#   wait $TRAIN_PID
+monitor_tournament_health() {
+    local train_pid=$1
+    local check_interval=${2:-3600}
+
+    if [ -z "$train_pid" ]; then
+        echo "ERROR: monitor_tournament_health requires training PID as first argument" >&2
+        return 1
+    fi
+
+    echo "Starting tournament health monitor..." >&2
+    echo "  Training PID: $train_pid" >&2
+    echo "  Check interval: ${check_interval}s" >&2
+
+    local check_count=0
+
+    while kill -0 $train_pid 2>/dev/null; do
+        sleep $check_interval
+        check_count=$((check_count + 1))
+
+        echo "Tournament health check #${check_count} at $(date)" >&2
+
+        # Check if tournament is still alive
+        if [ -f "$CONNECTION_FILE" ]; then
+            local current_addr=$(cat "$CONNECTION_FILE" 2>/dev/null)
+
+            if [ -z "$current_addr" ]; then
+                echo "WARNING: Connection file is empty" >&2
+                echo "Attempting to restart tournament..." >&2
+                new_addr=$(acquire_tournament_connection)
+                if [ $? -eq 0 ]; then
+                    echo "Tournament restarted successfully at: $new_addr" >&2
+                else
+                    echo "ERROR: Failed to restart tournament" >&2
+                fi
+            elif ! tournament_is_alive "$current_addr"; then
+                echo "WARNING: Tournament at $current_addr appears dead" >&2
+                echo "Attempting to restart tournament..." >&2
+                new_addr=$(acquire_tournament_connection)
+                if [ $? -eq 0 ]; then
+                    echo "Tournament restarted successfully at: $new_addr" >&2
+                else
+                    echo "ERROR: Failed to restart tournament" >&2
+                fi
+            else
+                echo "Tournament health OK at: $current_addr" >&2
+            fi
+        else
+            echo "WARNING: Tournament connection file not found at: $CONNECTION_FILE" >&2
+            echo "Attempting to acquire tournament connection..." >&2
+            new_addr=$(acquire_tournament_connection)
+            if [ $? -eq 0 ]; then
+                echo "Tournament connection acquired at: $new_addr" >&2
+            else
+                echo "ERROR: Failed to acquire tournament connection" >&2
+            fi
+        fi
+    done
+
+    echo "Training process finished, stopping tournament monitor" >&2
+    echo "Total health checks performed: $check_count" >&2
+}
+
 export -f find_available_port
 export -f wait_for_service
 export -f cleanup_training
@@ -349,3 +423,4 @@ export -f release_lock
 export -f launch_tournament_job
 export -f wait_for_connection_info
 export -f acquire_tournament_connection
+export -f monitor_tournament_health

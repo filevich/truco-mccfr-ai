@@ -72,6 +72,8 @@ fi
 # Use the connection file path for dynamic address resolution
 TOURNAMENT_CONNECTION_FILE=$HOME/shared/tournament/connection.txt
 
+# Start training in background so we can monitor tournament health
+echo "Starting training process..."
 cd $HOME/Workspace/truco-ai/truco-mccfr-ai
 go run cmd/train/main.go \
     -p=${1} \
@@ -90,9 +92,21 @@ go run cmd/train/main.go \
     -fmt=$fmt \
     --tournament-addr=$TOURNAMENT_CONNECTION_FILE \
     --tournament-name=train_${SLURM_JOB_ID} \
-    --tournament-n=$TOURNAMENT_N
+    --tournament-n=$TOURNAMENT_N &
+
+TRAIN_PID=$!
+echo "Training started with PID: $TRAIN_PID"
+
+# Monitor tournament health while training runs (checks every hour by default)
+# This will automatically restart the tournament if it dies during training
+monitor_tournament_health $TRAIN_PID 3600
+
+# Wait for training to complete
+wait $TRAIN_PID
+TRAIN_EXIT_CODE=$?
 
 hr
+echo "Training finished with exit code: $TRAIN_EXIT_CODE"
 echo "done $(date)"
 
 # Cleanup will happen automatically via trap
