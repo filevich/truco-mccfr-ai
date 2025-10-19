@@ -4,6 +4,8 @@ import (
 	"flag"
 	"log"
 	"log/slog"
+	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -68,6 +70,35 @@ func init() {
 		"tournamentName", *tournamentNamePtr,
 		"gotruco", gotruco.VERSION,
 	)
+}
+
+// resolveTournamentAddr resolves the tournament address from either a file or literal string.
+// If addrOrFile points to an existing file, it reads the address from the file.
+// Otherwise, it treats addrOrFile as a literal address.
+// This allows dynamic address resolution for SLURM environments where the tournament
+// server may be restarted with a new address, while maintaining simplicity for local experiments.
+func resolveTournamentAddr(addrOrFile string) string {
+	if addrOrFile == "" {
+		return ""
+	}
+
+	// Check if it's a file
+	fileInfo, err := os.Stat(addrOrFile)
+	if err == nil && !fileInfo.IsDir() {
+		// It's a file, read it
+		content, err := os.ReadFile(addrOrFile)
+		if err != nil {
+			slog.Warn("Failed to read tournament addr file, using as literal address", "file", addrOrFile, "err", err)
+			return addrOrFile
+		}
+		addr := strings.TrimSpace(string(content))
+		slog.Warn("Resolved tournament address from file", "file", addrOrFile, "addr", addr)
+		return addr
+	}
+
+	// Not a file (or doesn't exist), treat as literal address
+	slog.Warn("Using tournament address as literal", "addr", addrOrFile)
+	return addrOrFile
 }
 
 func main() {
@@ -168,18 +199,24 @@ func main() {
 
 		// Tournament evaluation (if configured)
 		if *tournamentAddrPtr != "" {
-			slog.Info("TOURNAMENT_EVAL_START", "addr", *tournamentAddrPtr, "n", *tournamentNPtr)
-			tic := time.Now()
-			err := tournamentclient.RunChallenge(
-				*tournamentAddrPtr,
-				*tournamentNamePtr,
-				*tournamentNPtr,
-				trainer,
-			)
-			if err != nil {
-				slog.Error("TOURNAMENT_EVAL_ERROR", "error", err)
+			// Resolve tournament address (may read from file for dynamic updates)
+			tournamentAddr := resolveTournamentAddr(*tournamentAddrPtr)
+			if tournamentAddr == "" {
+				slog.Warn("TOURNAMENT_EVAL_SKIPPED", "reason", "empty address after resolution")
 			} else {
-				slog.Info("TOURNAMENT_EVAL_DONE", "delta", time.Since(tic))
+				slog.Info("TOURNAMENT_EVAL_START", "addr", tournamentAddr, "n", *tournamentNPtr)
+				tic := time.Now()
+				err := tournamentclient.RunChallenge(
+					tournamentAddr,
+					*tournamentNamePtr,
+					*tournamentNPtr,
+					trainer,
+				)
+				if err != nil {
+					slog.Error("TOURNAMENT_EVAL_ERROR", "error", err)
+				} else {
+					slog.Info("TOURNAMENT_EVAL_DONE", "delta", time.Since(tic))
+				}
 			}
 		}
 	}
