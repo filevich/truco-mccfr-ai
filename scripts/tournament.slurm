@@ -24,6 +24,9 @@ cleanup_tournament() {
     rm -f $HOME/shared/tournament/connection.txt
     rm -f $HOME/shared/tournament/tournament.pid
 
+    # Remove lock directory (if it exists)
+    rmdir $HOME/shared/tournament/.lock 2>/dev/null || true
+
     # Kill any baseline agents we launched
     if [ -f $HOME/shared/tournament/random_agent.pid ]; then
         kill $(cat $HOME/shared/tournament/random_agent.pid) 2>/dev/null || true
@@ -33,6 +36,11 @@ cleanup_tournament() {
     if [ -f $HOME/shared/tournament/simple_agent.pid ]; then
         kill $(cat $HOME/shared/tournament/simple_agent.pid) 2>/dev/null || true
         rm -f $HOME/shared/tournament/simple_agent.pid
+    fi
+
+    if [ -f $HOME/shared/tournament/cfr_agent.pid ]; then
+        kill $(cat $HOME/shared/tournament/cfr_agent.pid) 2>/dev/null || true
+        rm -f $HOME/shared/tournament/cfr_agent.pid
     fi
 
     echo "Tournament cleanup complete"
@@ -73,7 +81,6 @@ echo "Launching Tournament Master Service..."
 cd ~/Workspace/truco-ai/truco-tournament/ || exit
 
 t1k22=$HOME/data/t1k22.json \
-model=$HOME/checkpoints/go-mccfr/pruned_esvmccfr_d70h0m_D70h0m_t288652014_p1_a3_2402151230.model \
 go run cmd/tournament/main.go \
     -port=$TOURNAMENT_PORT \
     -level=info &> $HOME/batches/out/tournament/tournament_${SLURM_JOB_ID}.log &
@@ -115,6 +122,21 @@ go run cmd/cli-example/main.go \
     -tournament_addr=${TOURNAMENT_ADDR} \
     -level=warn &> $HOME/batches/out/tournament/simple_agent_${SLURM_JOB_ID}.log &
 echo $! > $HOME/shared/tournament/simple_agent.pid
+
+# Launch the CFR Agent
+echo "Launching CFR Agent..."
+cd ~/Workspace/truco-ai/truco-mccfr-ai/ || exit
+model=$HOME/checkpoints/go-mccfr/pruned_esvmccfr_d70h0m_D70h0m_t288652014_p1_a3_2402151230.model \
+go run cmd/tournament-challenge/main.go \
+    -name=cfr_2402 \
+    -active=false \
+    -loop=true \
+    -policy=cfr \
+    -level=warn \
+    -shutdown=false \
+    -tournament_addr=${TOURNAMENT_ADDR} \
+    &> $HOME/batches/out/tournament/cfr_agent_${SLURM_JOB_ID}.log &
+echo $! > $HOME/shared/tournament/cfr_agent.pid
 
 echo "Tournament services launched and ready at ${TOURNAMENT_ADDR}"
 echo "Baseline agents running"
