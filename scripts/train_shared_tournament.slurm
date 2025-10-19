@@ -36,6 +36,19 @@ echo $@
 
 hr
 
+# Parse mode (first argument: "train" or "resume")
+MODE=$1
+shift  # Remove mode from positional arguments
+
+if [ "$MODE" != "train" ] && [ "$MODE" != "resume" ]; then
+    echo "ERROR: First argument must be 'train' or 'resume'" >&2
+    echo "Usage (train):  sbatch $0 train <p> <trainer> <hash> <info> <abs> <threads> <dir> <run> <prunning> <prunning_prob> <save_every> <eval_every> <prefix> <fmt>" >&2
+    echo "Usage (resume): sbatch $0 resume <model> <threads> <dir> <run> <prunning> <prunning_prob> <save_every> <eval_every> <prefix> <fmt>" >&2
+    exit 1
+fi
+
+echo "MODE: $MODE"
+
 # Defaults for tournament configuration
 if [ -z "$TOURNAMENT_N" ]; then
     TOURNAMENT_N=1000
@@ -62,37 +75,63 @@ echo ""
 
 hr
 
-# special arg
-fmt=${14}
-if [ "$fmt" = "auto" ]; then
-    # Assign $SLURM_JOB_ID to $fmt
-    fmt="$SLURM_JOB_ID.model"
-fi
-
 # Use the connection file path for dynamic address resolution
 TOURNAMENT_CONNECTION_FILE=$HOME/shared/tournament/connection.txt
 
 # Start training in background so we can monitor tournament health
-echo "Starting training process..."
-cd $HOME/Workspace/truco-ai/truco-mccfr-ai
-go run cmd/train/main.go \
-    -p=${1} \
-    -trainer=${2} \
-    -hash=${3} \
-    -info=${4} \
-    -abs=${5} \
-    -threads=${6} \
-    -dir=${7} \
-    -run=${8} \
-    -prunning=${9} \
-    -prunning_prob=${10} \
-    -save_every=${11} \
-    -eval_every=${12} \
-    -prefix=${13} \
-    -fmt=$fmt \
-    --tournament-addr=$TOURNAMENT_CONNECTION_FILE \
-    --tournament-name=train_${SLURM_JOB_ID} \
-    --tournament-n=$TOURNAMENT_N &
+if [ "$MODE" = "train" ]; then
+    echo "Starting new training process..."
+
+    # special arg for train mode
+    fmt=${14}
+    if [ "$fmt" = "auto" ]; then
+        fmt="$SLURM_JOB_ID.model"
+    fi
+
+    cd $HOME/Workspace/truco-ai/truco-mccfr-ai
+    go run cmd/train/main.go \
+        -p=${1} \
+        -trainer=${2} \
+        -hash=${3} \
+        -info=${4} \
+        -abs=${5} \
+        -threads=${6} \
+        -dir=${7} \
+        -run=${8} \
+        -prunning=${9} \
+        -prunning_prob=${10} \
+        -save_every=${11} \
+        -eval_every=${12} \
+        -prefix=${13} \
+        -fmt=$fmt \
+        --tournament-addr=$TOURNAMENT_CONNECTION_FILE \
+        --tournament-name=train_${SLURM_JOB_ID} \
+        --tournament-n=$TOURNAMENT_N &
+elif [ "$MODE" = "resume" ]; then
+    echo "Resuming training from model checkpoint..."
+
+    # special arg for resume mode
+    fmt=${10}
+    if [ "$fmt" = "auto" ]; then
+        fmt="$SLURM_JOB_ID.model"
+    fi
+
+    cd $HOME/Workspace/truco-ai/truco-mccfr-ai
+    go run cmd/train/main.go \
+        -model=${1} \
+        -threads=${2} \
+        -dir=${3} \
+        -run=${4} \
+        -prunning=${5} \
+        -prunning_prob=${6} \
+        -save_every=${7} \
+        -eval_every=${8} \
+        -prefix=${9} \
+        -fmt=$fmt \
+        --tournament-addr=$TOURNAMENT_CONNECTION_FILE \
+        --tournament-name=train_${SLURM_JOB_ID} \
+        --tournament-n=$TOURNAMENT_N &
+fi
 
 TRAIN_PID=$!
 echo "Training started with PID: $TRAIN_PID"
