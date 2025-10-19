@@ -14,7 +14,7 @@
 #SBATCH --mail-user=juan.filevich@fing.edu.uy
 
 # Source the utility functions
-source $HOME/Workspace/truco-ai/truco-mccfr-ai/scripts/utils.sh
+source $HOME/scripts/gotruco-tab-ai/utils.sh
 
 # Set trap to cleanup on exit
 trap cleanup_training EXIT
@@ -57,8 +57,22 @@ if [ $? -ne 0 ] || [ -z "$TOURNAMENT_ADDR" ]; then
     exit 1
 fi
 
+# Wait for the tournament server to be ready
+if ! wait_for_service "${TOURNAMENT_ADDR}"; then
+    echo "Tournament server failed to start, exiting..."
+    exit 1
+fi
+
 echo "Successfully connected to tournament at: $TOURNAMENT_ADDR"
 echo ""
+
+# Give the tournament server (AND THE BASELINES) an extra moment to start up
+tournament_sleep=60
+echo "Server is up. Let's give it some extra ${tournament_sleep} seconds..."
+for i in $(seq 1 ${tournament_sleep}); do
+    echo "Waited ${i}/${tournament_sleep} seconds..."
+    sleep 1
+done
 
 hr
 

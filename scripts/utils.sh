@@ -192,8 +192,8 @@ launch_tournament_job() {
 
     if [ -z "$tournament_script" ]; then
         # Try common locations
-        if [ -f "$HOME/Workspace/truco-ai/truco-mccfr-ai/scripts/tournament.slurm" ]; then
-            tournament_script="$HOME/Workspace/truco-ai/truco-mccfr-ai/scripts/tournament.slurm"
+        if [ -f "$HOME/scripts/gotruco-tab-ai/tournament.slurm" ]; then
+            tournament_script="$HOME/scripts/gotruco-tab-ai/tournament.slurm"
         elif [ -f "$HOME/scripts/ismcts/tournament.slurm" ]; then
             tournament_script="$HOME/scripts/ismcts/tournament.slurm"
         else
@@ -339,4 +339,13 @@ acquire_tournament_connection() {
 }
 
 # Export the main function for use by other scripts
+export -f find_available_port
+export -f wait_for_service
+export -f cleanup_training
+export -f tournament_is_alive
+export -f tournament_job_exists
+export -f acquire_lock
+export -f release_lock
+export -f launch_tournament_job
+export -f wait_for_connection_info
 export -f acquire_tournament_connection

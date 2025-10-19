@@ -8,13 +8,13 @@
 #SBATCH --time=5-00:00:00
 #SBATCH --partition=normal
 #SBATCH --qos=normal
-#SBATCH --output=/clusteruy/home/juan.filevich/batches/out/tournament/%x.%j.out
-#SBATCH --error=/clusteruy/home/juan.filevich/batches/out/tournament/%x.%j.out
+#SBATCH --output=/clusteruy/home/juan.filevich/stdout/tournament/%x.%j.out
+#SBATCH --error=/clusteruy/home/juan.filevich/stdout/tournament/%x.%j.out
 #SBATCH --mail-type=BEGIN,FAIL,END
 #SBATCH --mail-user=juan.filevich@fing.edu.uy
 
 # Source the utility functions
-source $HOME/Workspace/truco-ai/truco-mccfr-ai/scripts/utils.sh
+source $HOME/scripts/gotruco-tab-ai/scripts/utils.sh
 
 # Tournament-specific cleanup function
 cleanup_tournament() {
@@ -50,13 +50,13 @@ cleanup_tournament() {
 trap cleanup_tournament EXIT
 
 # Print start info
-printf "Tournament server starting: $(date)\n"
+printf "Tournament server starting at: $(date)\n"
 echo "Job ID: $SLURM_JOB_ID"
 echo "Node: $(hostname)"
 
 # Ensure shared directory exists
 mkdir -p $HOME/shared/tournament
-mkdir -p $HOME/batches/out/tournament
+mkdir -p $HOME/stdout/tournament
 
 # Get the hostname and find an available port
 HOSTNAME=$(hostname)
@@ -78,12 +78,12 @@ echo "Connection info written to shared file"
 
 # Launch the Tournament Master Service
 echo "Launching Tournament Master Service..."
-cd ~/Workspace/truco-ai/truco-tournament/ || exit
+cd $HOME/Workspace/truco-ai/truco-tournament/ || exit
 
 t1k22=$HOME/data/t1k22.json \
 go run cmd/tournament/main.go \
     -port=$TOURNAMENT_PORT \
-    -level=info &> $HOME/batches/out/tournament/tournament_${SLURM_JOB_ID}.log &
+    -level=info &> $HOME/stdout/tournament/tournament_${SLURM_JOB_ID}.log &
 
 TOURNAMENT_PID=$!
 echo $TOURNAMENT_PID > $HOME/shared/tournament/tournament.pid
@@ -99,6 +99,20 @@ if ! kill -0 $TOURNAMENT_PID 2>/dev/null; then
     exit 1
 fi
 
+# Wait for the tournament server to be ready
+if ! wait_for_service "${TOURNAMENT_ADDR}"; then
+    echo "Tournament server failed to start, exiting..."
+    exit 1
+fi
+
+# Give the tournament server an extra moment to start up
+tournament_sleep=15
+echo "Server is up. Let's give it some extra ${tournament_sleep} seconds..."
+for i in $(seq 1 ${tournament_sleep}); do
+    echo "Waited ${i}/${tournament_sleep} seconds..."
+    sleep 1
+done
+
 # Launch the Random Agent
 echo "Launching Random Agent..."
 cd ~/Workspace/truco-ai/truco-tournament/ || exit
@@ -108,7 +122,7 @@ go run cmd/cli-example/main.go \
     -policy=random \
     -name=rand \
     -tournament_addr=${TOURNAMENT_ADDR} \
-    -level=warn &> $HOME/batches/out/tournament/random_agent_${SLURM_JOB_ID}.log &
+    -level=warn &> $HOME/stdout/tournament/random_agent_${SLURM_JOB_ID}.log &
 echo $! > $HOME/shared/tournament/random_agent.pid
 
 # Launch the Simple Agent
@@ -120,7 +134,7 @@ go run cmd/cli-example/main.go \
     -policy=simple \
     -name=simpl \
     -tournament_addr=${TOURNAMENT_ADDR} \
-    -level=warn &> $HOME/batches/out/tournament/simple_agent_${SLURM_JOB_ID}.log &
+    -level=warn &> $HOME/stdout/tournament/simple_agent_${SLURM_JOB_ID}.log &
 echo $! > $HOME/shared/tournament/simple_agent.pid
 
 # Launch the CFR Agent
@@ -135,7 +149,7 @@ go run cmd/tournament-challenge/main.go \
     -level=warn \
     -shutdown=false \
     -tournament_addr=${TOURNAMENT_ADDR} \
-    &> $HOME/batches/out/tournament/cfr_agent_${SLURM_JOB_ID}.log &
+    &> $HOME/stdout/tournament/cfr_agent_${SLURM_JOB_ID}.log &
 echo $! > $HOME/shared/tournament/cfr_agent.pid
 
 echo "Tournament services launched and ready at ${TOURNAMENT_ADDR}"

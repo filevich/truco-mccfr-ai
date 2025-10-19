@@ -14,7 +14,7 @@
 #SBATCH --mail-user=juan.filevich@fing.edu.uy
 
 # Source the utility functions
-source $HOME/Workspace/truco-ai/truco-mccfr-ai/scripts/utils.sh
+source $HOME/scripts/gotruco-tab-ai/utils.sh
 
 # Set trap to cleanup on exit
 trap cleanup_training EXIT
@@ -69,6 +69,9 @@ if [ "$fmt" = "auto" ]; then
     fmt="$SLURM_JOB_ID.model"
 fi
 
+# Use the connection file path for dynamic address resolution
+TOURNAMENT_CONNECTION_FILE=$HOME/shared/tournament/connection.txt
+
 cd $HOME/Workspace/truco-ai/truco-mccfr-ai
 go run cmd/train/main.go \
     -p=${1} \
@@ -85,7 +88,7 @@ go run cmd/train/main.go \
     -eval_every=${12} \
     -prefix=${13} \
     -fmt=$fmt \
-    --tournament-addr=$TOURNAMENT_ADDR \
+    --tournament-addr=$TOURNAMENT_CONNECTION_FILE \
     --tournament-name=train_${SLURM_JOB_ID} \
     --tournament-n=$TOURNAMENT_N
 
