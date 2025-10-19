@@ -57,22 +57,8 @@ if [ $? -ne 0 ] || [ -z "$TOURNAMENT_ADDR" ]; then
     exit 1
 fi
 
-# Wait for the tournament server to be ready
-if ! wait_for_service "${TOURNAMENT_ADDR}"; then
-    echo "Tournament server failed to start, exiting..."
-    exit 1
-fi
-
 echo "Successfully connected to tournament at: $TOURNAMENT_ADDR"
 echo ""
-
-# Give the tournament server (AND THE BASELINES) an extra moment to start up
-tournament_sleep=60
-echo "Server is up. Let's give it some extra ${tournament_sleep} seconds..."
-for i in $(seq 1 ${tournament_sleep}); do
-    echo "Waited ${i}/${tournament_sleep} seconds..."
-    sleep 1
-done
 
 hr
 
@@ -83,6 +69,11 @@ if [ "$fmt" = "auto" ]; then
     fmt="$SLURM_JOB_ID.model"
 fi
 
+# Use the connection file path for dynamic address resolution
+TOURNAMENT_CONNECTION_FILE=$HOME/shared/tournament/connection.txt
+
+# Start training in background so we can monitor tournament health
+echo "Resuming training process..."
 cd $HOME/Workspace/truco-ai/truco-mccfr-ai
 go run cmd/train/main.go \
     -model=${1} \
@@ -95,11 +86,23 @@ go run cmd/train/main.go \
     -eval_every=${8} \
     -prefix=${9} \
     -fmt=${fmt} \
-    --tournament-addr=$TOURNAMENT_ADDR \
-    --tournament-name=resume_${SLURM_JOB_ID} \
-    --tournament-n=$TOURNAMENT_N
+    --tournament-addr=$TOURNAMENT_CONNECTION_FILE \
+    --tournament-name=train_${SLURM_JOB_ID} \
+    --tournament-n=$TOURNAMENT_N &
+
+TRAIN_PID=$!
+echo "Training started with PID: $TRAIN_PID"
+
+# Monitor tournament health while training runs (checks every hour by default)
+# This will automatically restart the tournament if it dies during training
+monitor_tournament_health $TRAIN_PID 3600
+
+# Wait for training to complete
+wait $TRAIN_PID
+TRAIN_EXIT_CODE=$?
 
 hr
+echo "Training finished with exit code: $TRAIN_EXIT_CODE"
 echo "done $(date)"
 
 # Cleanup will happen automatically via trap
