@@ -3,7 +3,7 @@
 #SBATCH --job-name=defaultname
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=1
 #SBATCH --mem=60G
 #SBATCH --time=5-00:00:00 
 #SBATCH --partition=normal 
