@@ -13,6 +13,12 @@
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=juan.filevich@fing.edu.uy
 
+# Example for training:
+# sbatch --job-name="esl-rb-a3-shared" ~/scripts/gotruco-tab-ai/train_shared_tournament.slurm train 2 eslmccfr sha160 InfosetRondaBase a3 1 $HOME/checkpoints/go-mccfr 118h "" 0.0 118h 5m "" ""
+
+# Example for resuming:
+# sbatch --job-name="esv-rb-a3" ~/scripts/gotruco-tab-ai/resume.slurm resume $HOME/checkpoints/go-mccfr/esvmccfr_d115h0m_D115h0m_t12274641_p0_a3_2510170714.model 1 $HOME/checkpoints/go-mccfr 118h "" 0.0 60h 5m "" ""
+
 # Source the utility functions
 source $HOME/scripts/gotruco-tab-ai/utils.sh
 
