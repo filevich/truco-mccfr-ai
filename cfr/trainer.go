@@ -469,6 +469,9 @@ func Embed(t Trainer_T, base *Trainer) ITrainer {
 	// unimplemented yet:
 	// case OSMCCFR_T:
 	// 	return &OSMCCFR{base, 0.1} // epsilon
+	// exploitability
+	case BR_T:
+		return &BestResponse{base}
 	default:
 		panic("trainer unknown")
 	}
