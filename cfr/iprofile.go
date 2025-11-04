@@ -22,5 +22,5 @@ type IProfile interface {
 	Checkpoint(ITrainer)
 	Check(ITrainer)
 	// eplotabilidad
-	// Exploit() bot.Agent
+	Exploit() Agent
 }

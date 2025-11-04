@@ -50,7 +50,7 @@ type ProfileTime struct {
 	GCEvery time.Duration
 
 	// exploitability
-	// Exploiting bot.Agent
+	Exploiting Agent
 
 	// eval
 	EvalEvery time.Duration
@@ -287,6 +287,6 @@ func (p *ProfileTime) CheckGC(t ITrainer) {
 	// log.Println(" [done]")
 }
 
-// func (p *ProfileTime) Exploit() bot.Agent {
-// 	return p.Exploiting
-// }
+func (p *ProfileTime) Exploit() Agent {
+	return p.Exploiting
+}
