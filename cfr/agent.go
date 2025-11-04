@@ -1,4 +1,4 @@
-package eval
+package cfr
 
 import (
 	"github.com/truquito/gotruco/enco"

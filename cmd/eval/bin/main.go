@@ -7,14 +7,15 @@ import (
 	"strconv"
 
 	"github.com/filevich/truco-mccfr-ai/bot"
+	"github.com/filevich/truco-mccfr-ai/cfr"
 	"github.com/filevich/truco-mccfr-ai/eval"
 	"github.com/filevich/truco-mccfr-ai/eval/dataset"
 	"github.com/filevich/truco-mccfr-ai/utils"
 )
 
 var (
-	numPlayers              = 0
-	agents     []eval.Agent = nil
+	numPlayers             = 0
+	agents     []cfr.Agent = nil
 )
 
 func init() {
@@ -36,7 +37,7 @@ func init() {
 	numPlayers = n
 
 	// agents
-	agents = make([]eval.Agent, 0, len(os.Args[2:]))
+	agents = make([]cfr.Agent, 0, len(os.Args[2:]))
 	for _, a := range os.Args[2:] {
 		agents = append(agents, bot.Parser(a))
 	}

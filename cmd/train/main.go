@@ -157,7 +157,7 @@ func main() {
 	var ds dataset.Dataset = dataset.LoadDataset("t1k22.json")
 	slog.Info("FINISHED_LOADING_t1k22", "delta", time.Since(tic))
 
-	agents := []eval.Agent{
+	agents := []cfr.Agent{
 		&bot.Random{},
 		&bot.Simple{},
 	}

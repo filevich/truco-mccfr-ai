@@ -6,6 +6,7 @@ import (
 	"os"
 	"runtime"
 
+	"github.com/filevich/truco-mccfr-ai/cfr"
 	"github.com/filevich/truco-mccfr-ai/eval/dataset"
 	"github.com/jedib0t/go-pretty/v6/table"
 )
@@ -13,7 +14,7 @@ import (
 type Tournament struct {
 	NumPlayers     int
 	NumDoubleGames int
-	Agents         []Agent
+	Agents         []cfr.Agent
 	Table          Table
 }
 

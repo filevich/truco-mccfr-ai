@@ -18,8 +18,8 @@ import (
 
 func PlayMultipleDoubleGames(
 
-	agent Agent,
-	ops []Agent,
+	agent cfr.Agent,
+	ops []cfr.Agent,
 	numPlayers int,
 	ds dataset.Dataset,
 
@@ -50,7 +50,7 @@ func PlayDoubleGames(
 
 	ds dataset.Dataset,
 	agent1,
-	agent2 Agent,
+	agent2 cfr.Agent,
 	numPlayers int,
 
 ) *Results {
@@ -109,7 +109,7 @@ func playSingleGame(
 
 	rows []*dataset.Row,
 	agent1,
-	agent2 Agent,
+	agent2 cfr.Agent,
 	Num_players int,
 
 ) (
@@ -148,7 +148,7 @@ func playSingleGame(
 	return agent1Won, diffPtsWonByAgent1, d1Total, d2Total
 }
 
-func generateNames(agent1, agent2 Agent, numPlayers int) (A, B []string) {
+func generateNames(agent1, agent2 cfr.Agent, numPlayers int) (A, B []string) {
 
 	for i := 0; i < numPlayers; i++ {
 		if utils.Mod(i, 2) == 0 {
@@ -166,7 +166,7 @@ func generateNames(agent1, agent2 Agent, numPlayers int) (A, B []string) {
 func PlayRound(
 
 	azul,
-	rojo Agent,
+	rojo cfr.Agent,
 	numPlayers int,
 	p *pdt.Partida,
 
