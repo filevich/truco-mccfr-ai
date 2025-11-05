@@ -13,7 +13,7 @@ type BestResponse struct {
 }
 
 func (trainer *BestResponse) String() string {
-	return "BR"
+	return string(BR_T)
 }
 
 func (trainer *BestResponse) regretUpdateEquation(
