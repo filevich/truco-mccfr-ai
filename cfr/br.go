@@ -47,7 +47,6 @@ func (trainer *BestResponse) Train(profile IProfile) {
 	profile.Init(trainer)
 
 	for i := 0; i < profile.GetThreads(); i++ {
-
 		go func() {
 			for ; profile.Continue(trainer); trainer.inc_t() {
 				// genera una partida Alice-Bob-Ariana-Ben (segun sea 1vs1 o 2vs2)
@@ -60,29 +59,22 @@ func (trainer *BestResponse) Train(profile IProfile) {
 				// 2 veces; una ida y una vuelta
 				// for i := 0; i < 2; i++ {
 				for i := 0; i < 1; i++ {
-
 					acc := make([]float32, trainer.getNumPlayers())
 					var new_utils []float32
 
 					// ojo: inicialmente tengo que asociar el jugador 0 con el modelo, 1 con agent
 
 					if i == 0 {
-
 						new_utils = trainer.run(profile, p, acc, 0)
-
 					} else {
-
 						p, _ = pdt.Parse(string(bs), true)
 						// cambio las posiciones
 						// p.Swap()
 						// p.Ronda.Reset(0)
 						new_utils = trainer.run(profile, p, acc, 1)
-
 					}
-
 					trainer.addRootUtils(new_utils)
 				}
-
 				profile.Check(trainer)
 			}
 			// join
@@ -96,23 +88,16 @@ func (trainer *BestResponse) Train(profile IProfile) {
 }
 
 func (trainer *BestResponse) run(
-
 	profile IProfile,
 	p *pdt.Partida,
 	acc []float32,
 	update_player int,
-
 ) []float32 {
-
 	// pseudo jugador activo en el TRUCO
 	elMano := p.Ronda.GetElMano().Jugador.ID
 	active_player := pdt.Rho(p)
 	rix := utils.RIX(p, active_player) // su indice relativo al mano
 	rix_mod2 := utils.Mod(rix, 2)      // lo hago 2p. (0 ~ los que son team el-mano, 1 ~ si no)
-
-	//////////////////////////////////////////////////////////////
-	/////////////////////////// agent ////////////////////////////
-	//////////////////////////////////////////////////////////////
 
 	esTurnoDelAgente := rix_mod2 != update_player
 	if esTurnoDelAgente {
@@ -140,12 +125,6 @@ func (trainer *BestResponse) run(
 		}
 	}
 
-	// si llegue hasta aca ya se que tengo que actualizar al exploter
-
-	//////////////////////////////////////////////////////////////
-	///////////////////////// exploiter //////////////////////////
-	//////////////////////////////////////////////////////////////
-
 	// obtengo el infoset
 	aixs := pdt.GetA(p, active_player)
 	i := trainer.GetBuilder().Info(p, active_player, nil)
@@ -156,15 +135,10 @@ func (trainer *BestResponse) run(
 	trainer.Lock()
 	strategy := rnode.GetStrategy()
 	trainer.Unlock()
-	// raix := utils.Sample(strategy) // <- nunca elijo "1 al azar"
 
 	// obtengo el chi
 	A := i.Iterable(p, active_player, aixs, trainer.GetAbs())
 	bs, _ := p.MarshalJSON()
-
-	//////////////////////////////////////////////////////////////
-	////////////////// actualizacion estrategia //////////////////
-	//////////////////////////////////////////////////////////////
 
 	// solo en este caso elige una estrategia al azar
 
@@ -184,15 +158,10 @@ func (trainer *BestResponse) run(
 	}
 	trainer.Unlock()
 
-	//////////////////////////////////////////////////////////////
-	////////////// fin actualizacion estrategia //////////////////
-	//////////////////////////////////////////////////////////////
-
 	// sino todo "igual" que antes:
 	counterfactual_values := make([][]float32, chi_len)
 
 	for aix, j := range A {
-
 		// prunning
 		skip := profile.IsPrunable(trainer, strategy[aix]) // menor a 1% de prob
 		if skip {
@@ -204,48 +173,27 @@ func (trainer *BestResponse) run(
 		p, _ = pdt.Parse(string(bs), true)
 		pkts := j.Hacer(p)
 
-		////////////////////////////////////////////////////////////
-
 		// hemos llegado a un nodo terminal ?
 		termino, pts_ganados, ganador := utils.IsDoneAndPts(pkts)
 		if termino {
-
 			// fin de la ronda, fin de la recursion:
 			// no hace falta que vuelva a llamar recursivamente a cfr
 			// ya se lo que deberia devolver
 			new_pts := utils.Payoffs(p.Manojo(elMano), pts_ganados, p.Manojo(ganador))
 			new_acc := utils.SumFloat32Slices(acc, new_pts)
 			counterfactual_values[aix] = new_acc
-
 		} else {
 			if pts_ganados > 0 {
-
 				// acumulo los puntos (del envite)
 				new_pts := utils.Payoffs(p.Manojo(elMano), pts_ganados, p.Manojo(ganador))
 				new_acc := utils.SumFloat32Slices(acc, new_pts)
 				counterfactual_values[aix] = trainer.run(profile, p, new_acc, update_player)
-
 			} else {
-
 				// ni hay puntos nuevos, ni termino -> paso el acc intacto
 				counterfactual_values[aix] = trainer.run(profile, p, acc, update_player)
-
 			}
 		}
-
-		////////////////////////////////////////////////////////////
-
 	}
-
-	// solo de debug:
-	// if len(strategy) == 0 || len(counterfactual_values) == 0 {
-	// 	fmt.Println(strategy, counterfactual_values)
-	// 	fmt.Println(pdt.Renderizar(p))
-	// 	aixs := pdt.GetA(p, active_player)
-	// 	info := MkInfoset1(p, active_player, aixs, trainer.Get_abs())
-	// 	hash, chi_len := info.Hash(), info.Chi_len()
-	// 	fmt.Println(hash, chi_len)
-	// }
 
 	node_values := utils.Ndot(strategy, counterfactual_values)
 
@@ -255,7 +203,6 @@ func (trainer *BestResponse) run(
 	t := rnode.RegUpdates // alt: trainer.Get_t()+1
 
 	for aix := range A {
-
 		// prunning
 		prunning := profile.IsPrunable(trainer, strategy[aix]) // menor a 1% de prob
 		if prunning {
@@ -264,7 +211,6 @@ func (trainer *BestResponse) run(
 
 		// actualizacion de regrets
 		regret := counterfactual_values[aix][rix_mod2] - node_values[rix_mod2]
-
 		rnode.CumulativeRegrets[aix] = trainer.regretUpdateEquation(
 			t,
 			regret,
@@ -274,7 +220,5 @@ func (trainer *BestResponse) run(
 	}
 
 	trainer.Unlock()
-
 	return node_values
-
 }
