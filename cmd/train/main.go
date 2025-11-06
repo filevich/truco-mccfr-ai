@@ -170,8 +170,6 @@ func main() {
 		rr := eval.PlayMultipleDoubleGames(agent, agents, numPlayers, ds[:tinyEval])
 		infos := trainer.CountInfosets()
 
-		heapAlloc, totalAlloc, sys := utils.GetMemUsageMiB()
-
 		var delta time.Duration = 0
 
 		// general progress info
@@ -190,11 +188,15 @@ func main() {
 			)
 		}
 		slog.Info("EVAL_DONE", "delta", delta)
+
+		heapAlloc, totalAlloc, sys := utils.GetMemUsageMiB()
+		rss := utils.GetMemUsageOSMiB()
 		slog.Info(
 			"MEMORY",
 			"heapAlloc", heapAlloc,
 			"totalAlloc", totalAlloc,
 			"sys", sys,
+			"rss", rss,
 		)
 
 		// Tournament evaluation (if configured)
