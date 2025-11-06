@@ -29,10 +29,15 @@ func GetMemUsageMiB() (heapAlloc uint64, totalAlloc uint64, sys uint64) {
 }
 
 // GetMemUsageOSMiB returns the RSS (Resident Set Size) memory usage in MiB
-// as reported by the operating system using the ps command.
+// as reported by the operating system.
 // This value should match what Activity Monitor (macOS) or system monitors show.
-// Returns 0 if unable to get the memory usage.
+// Returns 0 if unable to get the memory usage or if running on Windows.
 func GetMemUsageOSMiB() uint64 {
+	// Windows is not supported - return 0
+	if runtime.GOOS == "windows" {
+		return 0
+	}
+
 	pid := os.Getpid()
 
 	// Use ps command to get RSS in KB
