@@ -9,7 +9,6 @@ import (
 
 const (
 	sep = "--" // separador
-	div = "."  // divisor
 )
 
 /*
