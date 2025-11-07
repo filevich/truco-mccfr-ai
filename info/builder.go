@@ -54,6 +54,8 @@ func BuilderFactory(hash, info, a string) *Builder {
 		b.Info = infosetRondaXXLargeFactory(b.Abs)
 	} else if strings.EqualFold(info, "InfosetPartidaXXLarge") {
 		b.Info = infosetPartidaXXLargeFactory(b.Abs)
+	} else if strings.EqualFold(info, "Floki") {
+		b.Info = infosetFlokiFactory(b.Abs)
 	} else {
 		panic("either infoset impl. does not exists or there's an error with args")
 	}
