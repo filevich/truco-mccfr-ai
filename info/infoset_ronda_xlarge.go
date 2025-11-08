@@ -11,12 +11,9 @@ type InfosetRondaXLarge struct {
 }
 
 func (info *InfosetRondaXLarge) setMuestra(p *pdt.Partida) {
-	// InfosetRondaXLarge
-	// info.muestra = 0
-	// InfosetRondaXLarge
-	info.muestra = p.Ronda.Muestra.Valor
-	// InfosetRondaXXLarge
-	// info.muestra = int(p.Ronda.Muestra.ID())
+	// info.muestra = 0 // InfosetRondaXLarge
+	info.muestra = p.Ronda.Muestra.Valor // InfosetRondaXLarge
+	// info.muestra = int(p.Ronda.Muestra.ID()) // InfosetRondaXXLarge
 }
 
 func infosetRondaXLargeFactory(

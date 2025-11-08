@@ -85,12 +85,9 @@ type InfosetRondaLarge struct {
 }
 
 func (info *InfosetRondaLarge) setMuestra(_ *pdt.Partida) {
-	// InfosetRondaLarge
-	info.muestra = 0
-	// InfosetRondaXLarge
-	// info.muestra = p.Ronda.Muestra.Valor
-	// InfosetRondaXXLarge
-	// info.muestra = int(p.Ronda.Muestra.ID())
+	info.muestra = 0 // InfosetRondaLarge
+	// info.muestra = p.Ronda.Muestra.Valor // InfosetRondaXLarge
+	// info.muestra = int(p.Ronda.Muestra.ID()) // InfosetRondaXXLarge
 }
 
 func (info *InfosetRondaLarge) setNumMano(p *pdt.Partida) {
