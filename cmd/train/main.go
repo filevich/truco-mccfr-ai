@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	gotrucotabai "github.com/filevich/truco-mccfr-ai"
 	"github.com/filevich/truco-mccfr-ai/bot"
 	"github.com/filevich/truco-mccfr-ai/cfr"
 	"github.com/filevich/truco-mccfr-ai/eval"
@@ -69,6 +70,7 @@ func init() {
 		"tournamentN", *tournamentNPtr,
 		"tournamentName", *tournamentNamePtr,
 		"gotruco", gotruco.VERSION,
+		"gotruco-tab-ai", gotrucotabai.VERSION,
 	)
 }
 
