@@ -24,6 +24,20 @@ func IsDoneAndPts(pkts []enco.Envelope) (bool, int, string) {
 	return done, pts, autor
 }
 
+func IsDoneAndPtsFull(pkts []enco.Envelope) (int, string) {
+	pts := 0
+	autor := "-1"
+
+	for _, pkt := range pkts {
+		if pkt.Message.Cod() == enco.TSumaPts {
+			m, _ := pkt.Message.(enco.SumaPts)
+			pts += m.Puntos
+			autor = m.Autor
+		}
+	}
+	return pts, autor
+}
+
 // indece del jugador relativo AL MANO
 // mano --> turno -----> pie/respondedor-envite ---> yo
 func RIX(p *pdt.Partida, m *pdt.Manojo) int {

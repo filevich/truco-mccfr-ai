@@ -433,8 +433,10 @@ const (
 	ESLMCCFR_T Trainer_T = "eslmccfr"
 	ESVMCCFR_T Trainer_T = "esvmccfr"
 	OSMCCFR_T  Trainer_T = "oslmccfr"
+	// fulls
 	// exploit
-	BR_T Trainer_T = "bestresponse"
+	BR_T      Trainer_T = "bestresponse"
+	BR_FULL_T Trainer_T = "bestresponse_full"
 )
 
 func NewTrainer(
